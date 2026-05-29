@@ -1,0 +1,27 @@
+[package]
+name = "autosuggest-data"
+version = "0.0.0"
+description = "Side-effectful generator runner (allow-list, timeout, TTL cache) for autosuggest-core."
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+
+[lib]
+name = "autosuggest_data"
+path = "src/lib.rs"
+
+[dependencies]
+# The pure engine owns the `Generator` type and the `GeneratorRunner` trait this
+# crate implements; depending on it keeps the data formats from drifting
+# (TECH.md §2). `regex` (workspace dep) powers the optional `extract` rule.
+autosuggest-core = { path = "../core" }
+regex = { workspace = true }
+
+[dev-dependencies]
+criterion = { version = "0.5", default-features = false }
+serde_json = { workspace = true }
+
+[[bench]]
+name = "generator"
+harness = false

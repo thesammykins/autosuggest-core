@@ -41,6 +41,16 @@ dependencies = [
 ]
 
 [[package]]
+name = "autosuggest-data"
+version = "0.0.0"
+dependencies = [
+ "autosuggest-core",
+ "criterion",
+ "regex",
+ "serde_json",
+]
+
+[[package]]
 name = "autosuggest-protocol"
 version = "0.0.0"
 dependencies = [
