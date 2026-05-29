@@ -10,7 +10,11 @@ Terminal autocomplete is everywhere — Warp, Fish, Zsh plugins, VS Code's integ
 - **Smarter correction** — when you type `mkdir a/b` and get "No such file", it suggests `mkdir -p a/b`
 - **History-aware ghost text** — predicts what you're about to type from recent commands, like Warp
 
-The dataset is **human-authored** from `--help` and man pages, not copied from other projects. It's what makes the engine useful for real developers who actually type commands (as opposed to AI agents that generate them).
+The dataset is **authored from primary sources** (`--help`, man pages, observed
+behaviour) and vetted against `COVERAGE.md` to ensure no verbatim content was
+copied from third-party completion projects (Fig, Warp, fish, carapace, etc.).
+It's what makes the engine useful for real developers who actually type commands
+(as opposed to AI agents that generate them).
 
 ## Capabilities
 
