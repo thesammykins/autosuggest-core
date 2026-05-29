@@ -1,0 +1,11 @@
+{
+  "id": "ssh_port_colon",
+  "description": "Use -p for the SSH port instead of host:port syntax",
+  "priority": 60,
+  "match": {
+    "scriptRegex": "^ssh\\s+([^\\s:@]+@)?[^\\s:]+:\\d+\\s*$",
+    "stderrContains": ["Could not resolve hostname"],
+    "exitCodeIn": [255]
+  },
+  "rewrite": { "regexReplace": { "pattern": "^ssh\\s+(([^\\s:@]+@)?[^\\s:]+):(\\d+)\\s*$", "with": "ssh -p $3 $1" } }
+}

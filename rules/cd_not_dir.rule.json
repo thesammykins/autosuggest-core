@@ -1,0 +1,11 @@
+{
+  "id": "cd_not_dir",
+  "description": "cd to a file: change to its parent directory instead",
+  "priority": 65,
+  "match": {
+    "scriptStartsWith": "cd ",
+    "stderrContains": ["Not a directory", "not a directory"],
+    "exitCodeIn": [1]
+  },
+  "rewrite": { "regexReplace": { "pattern": "^cd (.*)/[^/]+$", "with": "cd $1" } }
+}

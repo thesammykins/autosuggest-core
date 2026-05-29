@@ -1,0 +1,11 @@
+{
+  "id": "brew_cask",
+  "description": "Add --cask when the requested formula is actually a cask",
+  "priority": 65,
+  "match": {
+    "scriptStartsWith": "brew install ",
+    "stderrContains": ["Found a cask named", "is a cask", "brew install --cask"],
+    "exitCodeIn": [1]
+  },
+  "rewrite": { "insertFlag": { "after": "install", "flag": "--cask" } }
+}
