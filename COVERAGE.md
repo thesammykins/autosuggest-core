@@ -5,7 +5,7 @@ This document maps the shipped data set to the coverage targets in
 "what does v1 actually cover". Counts are mechanical: one `*.spec.json` per
 command, one `*.rule.json` per correction rule (native rules included).
 
-- **Specs:** 107 (`specs/*.spec.json`)
+- **Specs:** 111 (`specs/*.spec.json`)
 - **Correction rules:** 15 (`rules/*.rule.json`; 2 native, 13 JSON)
 
 ## 1. Command specs by domain (PRODUCT.md §7 + 2026 additions)
@@ -18,6 +18,7 @@ command, one `*.rule.json` per correction rule (native rules included).
 | Network | `curl wget ssh scp ping` (5) |
 | Archives | `tar gzip gunzip zip unzip` (5) |
 | Dev/VCS | `git cargo npm docker make brew gh jq uv go swift rustup rustc pip python3 node npx yarn dotnet cmake mvn` (20) |
+| **AI coding agents** | `opencode claude codex pi` (4) |
 | Cloud/DevOps | `kubectl aws terraform` (3) |
 | **Windows** | `winget ipconfig reg robocopy taskkill shutdown where systeminfo netsh findstr diskpart` (11) |
 | **macOS** | `open diskutil xcrun defaults pbcopy mdfind xcodebuild codesign plutil lipo` (10) |
@@ -25,7 +26,7 @@ command, one `*.rule.json` per correction rule (native rules included).
 | Package mgmt | `apt` (1) |
 | Editors/misc | `man echo date watch yes seq column ssh-keygen` (8) |
 
-Total: 107 specs covering 11 OS/platform domains including Windows, macOS,
+Total: 111 specs covering 12 OS/platform domains including Windows, macOS,
 and Linux ecosystems. Deep subcommand trees: `git` (25+), `swift` (6),
 `systemctl` (25+), `dpkg` (20+), `kubectl` (30+), `dotnet` (15+),
 `reg` (10+), `winget` (10+), `diskutil` (12+).

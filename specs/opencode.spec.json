@@ -1,0 +1,95 @@
+{
+  "name": "opencode",
+  "description": "AI coding assistant CLI — TUI agent for software engineering tasks",
+  "options": [
+    { "name": ["-h", "--help"], "description": "Show help" },
+    { "name": ["-v", "--version"], "description": "Show version number" },
+    { "name": "--print-logs", "description": "Print logs to stderr" },
+    { "name": "--log-level", "description": "Log level", "args": [ { "name": "level", "suggestions": ["DEBUG", "INFO", "WARN", "ERROR"] } ] },
+    { "name": "--pure", "description": "Run without external plugins" },
+    { "name": "--port", "description": "Port to listen on", "args": [ { "name": "port" } ] },
+    { "name": "--hostname", "description": "Hostname to listen on", "args": [ { "name": "hostname" } ] },
+    { "name": "--mdns", "description": "Enable mDNS service discovery" },
+    { "name": "--mdns-domain", "description": "Custom domain name for mDNS service", "args": [ { "name": "domain" } ] },
+    { "name": "--cors", "description": "Additional domains to allow for CORS", "args": [ { "name": "domain" } ], "isRepeatable": true },
+    { "name": ["-m", "--model"], "description": "Model to use in the format of provider/model", "args": [ { "name": "model" } ] },
+    { "name": ["-c", "--continue"], "description": "Continue the last session" },
+    { "name": ["-s", "--session"], "description": "Session id to continue", "args": [ { "name": "session" } ] },
+    { "name": "--fork", "description": "Fork the session when continuing" },
+    { "name": "--prompt", "description": "Prompt to use", "args": [ { "name": "prompt" } ] },
+    { "name": "--agent", "description": "Agent to use", "args": [ { "name": "agent" } ] }
+  ],
+  "subcommands": [
+    { "name": "run", "description": "Run opencode with a message", "args": [ { "name": "message", "isVariadic": true, "isOptional": true } ] },
+    { "name": "attach", "description": "Attach to a running opencode server", "args": [ { "name": "url" } ] },
+    { "name": "serve", "description": "Start a headless opencode server" },
+    { "name": "web", "description": "Start opencode server and open web interface" },
+    { "name": "acp", "description": "Start ACP (Agent Client Protocol) server" },
+    { "name": "mcp", "description": "Manage MCP servers" },
+    { "name": "debug", "description": "Debugging and troubleshooting tools" },
+    { "name": "completion", "description": "Generate shell completion script" },
+    {
+      "name": "providers",
+      "description": "Manage AI providers and credentials",
+      "aliases": ["auth"]
+    },
+    {
+      "name": "agent",
+      "description": "Manage agents"
+    },
+    {
+      "name": "upgrade",
+      "description": "Upgrade opencode to the latest or a specific version",
+      "args": [ { "name": "target", "isOptional": true } ]
+    },
+    {
+      "name": "uninstall",
+      "description": "Uninstall opencode and remove all related files"
+    },
+    {
+      "name": "models",
+      "description": "List all available models",
+      "args": [ { "name": "provider", "isOptional": true } ]
+    },
+    {
+      "name": "stats",
+      "description": "Show token usage and cost statistics"
+    },
+    {
+      "name": "export",
+      "description": "Export session data as JSON",
+      "args": [ { "name": "sessionID", "isOptional": true } ]
+    },
+    {
+      "name": "import",
+      "description": "Import session data from JSON file or URL",
+      "args": [ { "name": "file" } ]
+    },
+    {
+      "name": "github",
+      "description": "Manage GitHub agent"
+    },
+    {
+      "name": "pr",
+      "description": "Fetch and checkout a GitHub PR branch, then run opencode",
+      "args": [ { "name": "number" } ]
+    },
+    {
+      "name": "session",
+      "description": "Manage sessions"
+    },
+    {
+      "name": "plugin",
+      "description": "Install plugin and update config",
+      "aliases": ["plug"],
+      "args": [ { "name": "module" } ]
+    },
+    {
+      "name": "db",
+      "description": "Database tools"
+    }
+  ],
+  "args": [
+    { "name": "project", "description": "Path to start opencode in", "isOptional": true, "template": "folders" }
+  ]
+}

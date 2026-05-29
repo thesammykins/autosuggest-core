@@ -1,0 +1,95 @@
+{
+  "name": "claude",
+  "description": "AI coding assistant — interactive agent for software engineering tasks",
+  "requiresSubcommand": false,
+  "options": [
+    { "name": ["-h", "--help"], "description": "Display help for command" },
+    { "name": ["-v", "--version"], "description": "Output the version number" },
+    { "name": ["-p", "--print"], "description": "Print response and exit" },
+    { "name": ["-c", "--continue"], "description": "Continue the most recent conversation" },
+    { "name": ["-r", "--resume"], "description": "Resume a conversation by session ID", "args": [ { "name": "value", "isOptional": true } ] },
+    { "name": "--fork-session", "description": "Create a new session ID when resuming" },
+    { "name": "--model", "description": "Model for the current session", "args": [ { "name": "model" } ] },
+    { "name": "--agent", "description": "Agent for the current session", "args": [ { "name": "agent" } ] },
+    { "name": "--agents", "description": "JSON object defining custom agents", "args": [ { "name": "json" } ] },
+    { "name": ["-n", "--name"], "description": "Display name for this session", "args": [ { "name": "name" } ] },
+    { "name": "--system-prompt", "description": "System prompt to use", "args": [ { "name": "prompt" } ] },
+    { "name": "--append-system-prompt", "description": "Append to the default system prompt", "args": [ { "name": "prompt" } ] },
+    { "name": "--settings", "description": "Path to a settings JSON file or JSON string", "args": [ { "name": "file-or-json" } ] },
+    { "name": "--mcp-config", "description": "Load MCP servers from JSON files or strings", "args": [ { "name": "config" } ], "isRepeatable": true },
+    { "name": "--strict-mcp-config", "description": "Only use MCP servers from --mcp-config" },
+    { "name": "--plugin-dir", "description": "Load a plugin from a directory or .zip", "args": [ { "name": "path", "template": "folders" } ], "isRepeatable": true },
+    { "name": "--plugin-url", "description": "Fetch a plugin .zip from a URL", "args": [ { "name": "url" } ], "isRepeatable": true },
+    { "name": "--permission-mode", "description": "Permission mode", "args": [ { "name": "mode", "suggestions": ["acceptEdits", "auto", "bypassPermissions", "default", "dontAsk", "plan"] } ] },
+    { "name": "--effort", "description": "Effort level", "args": [ { "name": "level", "suggestions": ["low", "medium", "high", "xhigh", "max"] } ] },
+    { "name": "--allowed-tools", "description": "Comma or space-separated list of tool names to allow", "aliases": ["--allowedTools"], "args": [ { "name": "tools" } ] },
+    { "name": "--disallowed-tools", "description": "Comma or space-separated list of tool names to deny", "aliases": ["--disallowedTools"], "args": [ { "name": "tools" } ] },
+    { "name": "--tools", "description": "Specify the list of available tools", "args": [ { "name": "tools" } ] },
+    { "name": ["-d", "--debug"], "description": "Enable debug mode with optional category filtering", "args": [ { "name": "filter", "isOptional": true } ] },
+    { "name": "--debug-file", "description": "Write debug logs to a specific file", "args": [ { "name": "path" } ] },
+    { "name": "--output-format", "description": "Output format", "args": [ { "name": "format", "suggestions": ["text", "json", "stream-json"] } ] },
+    { "name": ["-w", "--worktree"], "description": "Create a new git worktree", "args": [ { "name": "name", "isOptional": true } ] },
+    { "name": "--tmux", "description": "Create a tmux session for the worktree" },
+    { "name": "--from-pr", "description": "Resume a session linked to a PR", "args": [ { "name": "value", "isOptional": true } ] },
+    { "name": "--max-budget-usd", "description": "Maximum dollar amount to spend", "args": [ { "name": "amount" } ] },
+    { "name": "--add-dir", "description": "Additional directories to allow tool access to", "args": [ { "name": "directory", "template": "folders" } ], "isRepeatable": true },
+    { "name": "--dangerously-skip-permissions", "description": "Bypass all permission checks" },
+    { "name": "--allow-dangerously-skip-permissions", "description": "Enable bypassing permission checks as an option" },
+    { "name": "--brief", "description": "Enable SendUserMessage tool for agent-to-user communication" },
+    { "name": "--chrome", "description": "Enable Claude in Chrome integration" },
+    { "name": "--no-chrome", "description": "Disable Claude in Chrome integration" },
+    { "name": "--bare", "description": "Minimal mode: skip hooks, LSP, plugin sync" },
+    { "name": "--verbose", "description": "Override verbose mode setting from config" },
+    { "name": "--disable-slash-commands", "description": "Disable all skills" },
+    { "name": "--session-id", "description": "Use a specific session ID", "args": [ { "name": "uuid" } ] },
+    { "name": "--no-session-persistence", "description": "Disable session persistence" },
+    { "name": "--include-partial-messages", "description": "Include partial message chunks as they arrive" },
+    { "name": "--include-hook-events", "description": "Include all hook lifecycle events" },
+    { "name": "--replay-user-messages", "description": "Re-emit user messages for acknowledgment" },
+    { "name": "--input-format", "description": "Input format", "args": [ { "name": "format", "suggestions": ["text", "stream-json"] } ] },
+    { "name": "--json-schema", "description": "JSON Schema for structured output", "args": [ { "name": "schema" } ] },
+    { "name": "--fallback-model", "description": "Enable automatic fallback", "args": [ { "name": "model" } ] },
+    { "name": "--remote-control", "description": "Start with Remote Control enabled", "args": [ { "name": "name", "isOptional": true } ] },
+    { "name": "--setting-sources", "description": "Comma-separated setting sources", "args": [ { "name": "sources" } ] },
+    { "name": "--exclude-dynamic-system-prompt-sections", "description": "Move per-machine sections from system prompt" },
+    { "name": "--betas", "description": "Beta headers to include in API requests", "args": [ { "name": "betas" } ], "isRepeatable": true },
+    { "name": "--file", "description": "File resources to download at startup", "args": [ { "name": "specs" } ], "isRepeatable": true },
+    { "name": "--ide", "description": "Automatically connect to IDE on startup" },
+    { "name": "--mcp-debug", "description": "Enable MCP debug mode (deprecated, use --debug)" },
+    { "name": "--remote-control-session-name-prefix", "description": "Prefix for auto-generated Remote Control session names", "args": [ { "name": "prefix" } ] }
+  ],
+  "args": [
+    { "name": "prompt", "description": "Your prompt", "isOptional": true, "isVariadic": true }
+  ],
+  "subcommands": [
+    { "name": "auth", "description": "Manage authentication" },
+    { "name": "doctor", "description": "Check health of Claude Code auto-updater" },
+    {
+      "name": "install",
+      "description": "Install Claude Code native build",
+      "args": [ { "name": "target", "description": "Version to install", "isOptional": true } ]
+    },
+    { "name": "mcp", "description": "Configure and manage MCP servers" },
+    {
+      "name": "plugin",
+      "description": "Manage Claude Code plugins",
+      "aliases": ["plugins"]
+    },
+    { "name": "project", "description": "Manage Claude Code project state" },
+    { "name": "setup-token", "description": "Set up a long-lived authentication token" },
+    {
+      "name": "ultrareview",
+      "description": "Run a cloud-hosted multi-agent code review",
+      "args": [
+        { "name": "target", "description": "PR number or base branch", "isOptional": true }
+      ]
+    },
+    {
+      "name": "update",
+      "description": "Check for updates and install if available",
+      "aliases": ["upgrade"]
+    },
+    { "name": "agents", "description": "Manage background agents" },
+    { "name": "auto-mode", "description": "Inspect auto mode classifier configuration" }
+  ]
+}

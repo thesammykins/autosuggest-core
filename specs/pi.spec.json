@@ -1,0 +1,57 @@
+{
+  "name": "pi",
+  "description": "AI coding assistant — interactive TUI with read, bash, edit, write tools",
+  "requiresSubcommand": false,
+  "options": [
+    { "name": ["-h", "--help"], "description": "Show this help" },
+    { "name": ["-v", "--version"], "description": "Show version number" },
+    { "name": ["-p", "--print"], "description": "Non-interactive mode: process prompt and exit" },
+    { "name": ["-c", "--continue"], "description": "Continue previous session" },
+    { "name": ["-r", "--resume"], "description": "Select a session to resume" },
+    { "name": "--provider", "description": "Provider name", "args": [ { "name": "name" } ] },
+    { "name": "--model", "description": "Model pattern or ID", "args": [ { "name": "pattern" } ] },
+    { "name": "--api-key", "description": "API key", "args": [ { "name": "key" } ] },
+    { "name": "--system-prompt", "description": "System prompt", "args": [ { "name": "text" } ] },
+    { "name": "--append-system-prompt", "description": "Append text to the system prompt", "args": [ { "name": "text" } ] },
+    { "name": "--mode", "description": "Output mode", "args": [ { "name": "mode", "suggestions": ["text", "json", "rpc"] } ] },
+    { "name": "--session", "description": "Use specific session file or partial UUID", "args": [ { "name": "path_or_id" } ] },
+    { "name": "--session-id", "description": "Use exact project session ID", "args": [ { "name": "id" } ] },
+    { "name": "--fork", "description": "Fork specific session into a new session", "args": [ { "name": "path_or_id" } ] },
+    { "name": "--session-dir", "description": "Directory for session storage", "args": [ { "name": "dir", "template": "folders" } ] },
+    { "name": "--no-session", "description": "Don't save session (ephemeral)" },
+    { "name": "--models", "description": "Comma-separated model patterns for cycling", "args": [ { "name": "patterns" } ] },
+    { "name": ["-t", "--tools"], "description": "Comma-separated allowlist of tool names to enable", "args": [ { "name": "tools" } ] },
+    { "name": ["-xt", "--exclude-tools"], "description": "Comma-separated denylist of tool names to disable", "args": [ { "name": "tools" } ] },
+    { "name": ["-nt", "--no-tools"], "description": "Disable all tools by default" },
+    { "name": ["-nbt", "--no-builtin-tools"], "description": "Disable built-in tools but keep extension/custom tools" },
+    { "name": "--thinking", "description": "Set thinking level", "args": [ { "name": "level", "suggestions": ["off", "minimal", "low", "medium", "high", "xhigh"] } ] },
+    { "name": ["-e", "--extension"], "description": "Load an extension file", "args": [ { "name": "path" } ], "isRepeatable": true },
+    { "name": ["-ne", "--no-extensions"], "description": "Disable extension discovery" },
+    { "name": "--skill", "description": "Load a skill file or directory", "args": [ { "name": "path", "template": "folders" } ], "isRepeatable": true },
+    { "name": ["-ns", "--no-skills"], "description": "Disable skills discovery and loading" },
+    { "name": "--prompt-template", "description": "Load a prompt template file or directory", "args": [ { "name": "path" } ], "isRepeatable": true },
+    { "name": ["-np", "--no-prompt-templates"], "description": "Disable prompt template discovery and loading" },
+    { "name": "--theme", "description": "Load a theme file", "args": [ { "name": "path" } ], "isRepeatable": true },
+    { "name": "--no-themes", "description": "Disable theme discovery and loading" },
+    { "name": ["-nc", "--no-context-files"], "description": "Disable AGENTS.md and CLAUDE.md discovery and loading" },
+    { "name": "--export", "description": "Export session file to HTML", "args": [ { "name": "file" } ] },
+    { "name": "--list-models", "description": "List available models", "args": [ { "name": "search", "isOptional": true } ] },
+    { "name": "--verbose", "description": "Force verbose startup" },
+    { "name": "--offline", "description": "Disable startup network operations" }
+  ],
+  "args": [
+    { "name": "files_or_messages", "description": "@files and messages", "isVariadic": true, "isOptional": true }
+  ],
+  "subcommands": [
+    { "name": "install", "description": "Install extension source and add to settings", "options": [
+      { "name": ["-l"], "description": "Install locally" }
+    ], "args": [
+      { "name": "source" }
+    ] },
+    { "name": "remove", "description": "Remove extension source from settings", "args": [ { "name": "source" } ] },
+    { "name": "uninstall", "description": "Alias for remove", "args": [ { "name": "source" } ] },
+    { "name": "update", "description": "Update pi and installed extensions", "args": [ { "name": "target", "isOptional": true } ] },
+    { "name": "list", "description": "List installed extensions" },
+    { "name": "config", "description": "Open TUI to enable/disable package resources" }
+  ]
+}

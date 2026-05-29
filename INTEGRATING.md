@@ -9,12 +9,12 @@ Spawn the daemon once, keep its stdin/stdout pipes, and exchange one JSON object
 per line.
 
 ```
-$ autosuggest-daemon --specs ./specs --rules ./rules
+$ autosuggest-daemon ./specs ./rules
 ```
 
 Pseudocode host loop:
 ```text
-proc = spawn("autosuggest-daemon", ["--specs", specs, "--rules", rules])
+proc = spawn("autosuggest-daemon", [specs_dir, rules_dir])
 on keystroke:
     write_line(proc.stdin, {"v":1,"id":n,"op":"complete",
                             "line":buf,"cursor":cur,"cwd":cwd})

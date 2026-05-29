@@ -1,0 +1,69 @@
+{
+  "name": "codex",
+  "description": "AI coding agent CLI — interactive and non-interactive software engineering assistant",
+  "requiresSubcommand": false,
+  "options": [
+    { "name": ["-h", "--help"], "description": "Print help" },
+    { "name": ["-V", "--version"], "description": "Print version" },
+    { "name": ["-m", "--model"], "description": "Model the agent should use", "args": [ { "name": "model" } ] },
+    { "name": ["-p", "--profile"], "description": "Configuration profile from config.toml", "args": [ { "name": "config_profile" } ] },
+    { "name": ["-s", "--sandbox"], "description": "Sandbox policy for shell commands", "args": [ { "name": "sandbox_mode", "suggestions": ["read-only", "workspace-write", "danger-full-access"] } ] },
+    { "name": ["-C", "--cd"], "description": "Use the specified directory as working root", "args": [ { "name": "dir", "template": "folders" } ] },
+    { "name": "--add-dir", "description": "Additional writable directories", "args": [ { "name": "dir", "template": "folders" } ], "isRepeatable": true },
+    { "name": ["-a", "--ask-for-approval"], "description": "Configure when human approval is needed", "args": [ { "name": "approval_policy", "suggestions": ["untrusted", "on-failure", "on-request", "never"] } ] },
+    { "name": "--search", "description": "Enable live web search" },
+    { "name": "--no-alt-screen", "description": "Disable alternate screen mode" },
+    { "name": ["-c", "--config"], "description": "Override a configuration value", "args": [ { "name": "key=value" } ], "isRepeatable": true },
+    { "name": "--enable", "description": "Enable a feature", "args": [ { "name": "feature" } ], "isRepeatable": true },
+    { "name": "--disable", "description": "Disable a feature", "args": [ { "name": "feature" } ], "isRepeatable": true },
+    { "name": "--remote", "description": "Connect TUI to a remote app server", "args": [ { "name": "addr" } ] },
+    { "name": "--remote-auth-token-env", "description": "Env var containing bearer token for remote", "args": [ { "name": "env_var" } ] },
+    { "name": ["-i", "--image"], "description": "Image(s) to attach to the initial prompt", "args": [ { "name": "file" } ], "isRepeatable": true },
+    { "name": "--oss", "description": "Use open-source provider" },
+    { "name": "--local-provider", "description": "Specify local provider", "args": [ { "name": "oss_provider", "suggestions": ["lmstudio", "ollama"] } ] },
+    { "name": "--dangerously-bypass-approvals-and-sandbox", "description": "Skip all confirmation prompts and sandboxing" }
+  ],
+  "args": [
+    { "name": "prompt", "description": "Optional user prompt to start the session", "isOptional": true, "isVariadic": true }
+  ],
+  "subcommands": [
+    { "name": "exec", "description": "Run Codex non-interactively", "aliases": ["e"] },
+    { "name": "review", "description": "Run a code review non-interactively" },
+    { "name": "login", "description": "Manage login" },
+    { "name": "logout", "description": "Remove stored authentication credentials" },
+    { "name": "mcp", "description": "Manage external MCP servers for Codex" },
+    { "name": "plugin", "description": "Manage Codex plugins" },
+    { "name": "mcp-server", "description": "Start Codex as an MCP server (stdio)" },
+    { "name": "app-server", "description": "Run the app server or related tooling" },
+    { "name": "app", "description": "Launch the Codex desktop app" },
+    { "name": "completion", "description": "Generate shell completion scripts" },
+    { "name": "update", "description": "Update Codex to the latest version" },
+    { "name": "sandbox", "description": "Run commands within a Codex-provided sandbox" },
+    { "name": "debug", "description": "Debugging tools" },
+    {
+      "name": "apply",
+      "description": "Apply the latest diff produced by Codex agent",
+      "aliases": ["a"]
+    },
+    {
+      "name": "resume",
+      "description": "Resume a previous interactive session"
+    },
+    {
+      "name": "fork",
+      "description": "Fork a previous interactive session"
+    },
+    {
+      "name": "cloud",
+      "description": "Browse tasks from Codex Cloud and apply changes locally"
+    },
+    {
+      "name": "exec-server",
+      "description": "Run the standalone exec-server service"
+    },
+    {
+      "name": "features",
+      "description": "Inspect feature flags"
+    }
+  ]
+}
