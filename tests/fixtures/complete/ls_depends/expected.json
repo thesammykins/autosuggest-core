@@ -1,0 +1,12 @@
+[
+  {
+    "desc": "Print sizes in human readable units",
+    "insert": "-h",
+    "score": 0.55
+  },
+  {
+    "desc": "Show help and exit",
+    "insert": "--help",
+    "score": 0.37
+  }
+]

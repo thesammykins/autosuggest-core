@@ -1,0 +1,11 @@
+{
+  "id": "scp_dir",
+  "description": "Add -r when scp-ing a directory",
+  "priority": 70,
+  "match": {
+    "scriptStartsWith": "scp ",
+    "stderrContains": ["not a regular file"],
+    "exitCodeIn": [1]
+  },
+  "rewrite": { "insertFlag": { "after": "scp", "flag": "-r" } }
+}

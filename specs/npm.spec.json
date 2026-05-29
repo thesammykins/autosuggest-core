@@ -1,0 +1,31 @@
+{
+  "name": "npm",
+  "description": "The package manager for JavaScript",
+  "requiresSubcommand": true,
+  "subcommands": [
+    { "name": ["install", "i", "add"], "description": "Install dependencies or a named package", "options": [
+      { "name": ["-D", "--save-dev"], "description": "Save the package to devDependencies" },
+      { "name": ["-g", "--global"], "description": "Install the package globally" },
+      { "name": ["-E", "--save-exact"], "description": "Save the exact version, not a range" }
+    ], "args": [ { "name": "package", "description": "Packages to install", "isOptional": true, "isVariadic": true } ] },
+    { "name": ["uninstall", "rm", "remove"], "description": "Remove a package", "args": [ { "name": "package", "description": "Packages to remove", "isVariadic": true } ] },
+    {
+      "name": ["run", "run-script"], "description": "Run a script defined in package.json",
+      "args": [
+        {
+          "name": "script", "description": "Script from package.json to run",
+          "generator": { "run": ["npm", "run"], "splitOn": "\n", "trim": true, "extract": "^\\s{2}(\\S+)$", "priority": 75, "cache": { "ttlMs": 4000 } }
+        }
+      ]
+    },
+    { "name": "test", "description": "Run the test script" },
+    { "name": "start", "description": "Run the start script" },
+    { "name": "init", "description": "Create a package.json file", "options": [
+      { "name": ["-y", "--yes"], "description": "Accept the defaults without prompting" }
+    ] },
+    { "name": "update", "description": "Update packages to the latest allowed version" },
+    { "name": "publish", "description": "Publish the package to the registry" },
+    { "name": "ci", "description": "Install dependencies from the lockfile cleanly" },
+    { "name": "ls", "description": "List installed packages" }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "name": "du",
+  "description": "Estimate file space usage",
+  "options": [
+    { "name": ["-h", "--human-readable"], "description": "Print sizes in a human-readable form" },
+    { "name": ["-s", "--summarize"], "description": "Display only a total for each argument" },
+    { "name": ["-a", "--all"], "description": "Write counts for files, not just directories" },
+    { "name": ["-c", "--total"], "description": "Produce a grand total" },
+    { "name": ["-d", "--max-depth"], "description": "Print totals only this many levels deep", "args": [ { "name": "depth" } ] },
+    { "name": ["--help"], "description": "Show help and exit" }
+  ],
+  "args": [
+    { "name": "file", "description": "Files or directories to measure", "template": "filepaths", "isOptional": true, "isVariadic": true }
+  ]
+}

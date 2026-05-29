@@ -1,0 +1,12 @@
+{
+  "name": "top",
+  "description": "Display and update sorted information about processes",
+  "options": [
+    { "name": "-o", "description": "Sort processes by this column", "args": [ { "name": "key", "suggestions": ["cpu", "mem", "pid", "time"] } ] },
+    { "name": "-n", "description": "Show at most this many processes", "args": [ { "name": "count" } ] },
+    { "name": "-u", "description": "Show processes for this user", "args": [ { "name": "user" } ] },
+    { "name": "-d", "description": "Refresh after this delay in seconds", "args": [ { "name": "secs" } ] },
+    { "name": "-l", "description": "Run in logging mode for this many samples", "args": [ { "name": "samples" } ] },
+    { "name": "-h", "description": "Show help and exit" }
+  ]
+}

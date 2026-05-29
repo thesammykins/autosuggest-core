@@ -1,0 +1,20 @@
+{
+  "name": "tail",
+  "description": "Output the last part of files",
+  "parserDirectives": {
+    "flagsArePosixNoncompliant": true,
+    "optionArgSeparators": ["=", " "]
+  },
+  "options": [
+    { "name": ["-n", "--lines"], "description": "Print the last NUM lines instead of 10", "args": [ { "name": "num" } ] },
+    { "name": ["-c", "--bytes"], "description": "Print the last NUM bytes of each file", "args": [ { "name": "num" } ] },
+    { "name": ["-f", "--follow"], "description": "Output appended data as the file grows" },
+    { "name": ["-F"], "description": "Follow by name and retry if the file is rotated" },
+    { "name": ["-q", "--quiet"], "description": "Never print file name headers", "exclusiveOn": ["-v"] },
+    { "name": ["-v", "--verbose"], "description": "Always print file name headers", "exclusiveOn": ["-q"] },
+    { "name": ["--help"], "description": "Show help and exit" }
+  ],
+  "args": [
+    { "name": "file", "description": "Files to read", "template": "filepaths", "isOptional": true, "isVariadic": true }
+  ]
+}

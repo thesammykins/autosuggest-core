@@ -1,0 +1,14 @@
+{
+  "name": "stat",
+  "description": "Display file or file system status",
+  "options": [
+    { "name": ["-L", "--dereference"], "description": "Follow symlinks" },
+    { "name": ["-f", "--file-system"], "description": "Display file system status instead of file status" },
+    { "name": ["-c", "--format"], "description": "Use the given format instead of the default", "args": [ { "name": "format" } ] },
+    { "name": ["-t", "--terse"], "description": "Print the information in terse form" },
+    { "name": ["--help"], "description": "Show help and exit" }
+  ],
+  "args": [
+    { "name": "file", "description": "Files to stat", "template": "filepaths", "isVariadic": true }
+  ]
+}

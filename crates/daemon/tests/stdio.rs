@@ -27,9 +27,14 @@ impl Daemon {
     /// Spawn the daemon against the repo's `specs/` and `rules/` directories.
     fn spawn() -> Self {
         let root = repo_root();
+        Self::spawn_with(&root.join("specs"), &root.join("rules"))
+    }
+
+    /// Spawn the daemon against arbitrary `specs`/`rules` directories.
+    fn spawn_with(specs: &std::path::Path, rules: &std::path::Path) -> Self {
         let mut child = Command::new(env!("CARGO_BIN_EXE_autosuggest-daemon"))
-            .arg(root.join("specs"))
-            .arg(root.join("rules"))
+            .arg(specs)
+            .arg(rules)
             .stdin(Stdio::piped())
             .stdout(Stdio::piped())
             .stderr(Stdio::inherit())
@@ -116,4 +121,53 @@ fn daemon_handles_all_ops_and_malformed_input() {
     );
 
     daemon.shutdown();
+}
+
+/// End-to-end proof that the daemon executes argument generators through the
+/// sandboxed runner and that the dynamic output is filtered by the query.
+///
+/// Uses the allow-listed, deterministic `echo` program (no dependency on `git`
+/// or any external state) on a purpose-built no-subcommand spec, so the single
+/// top-level positional argument is the reachable cursor position.
+#[test]
+fn daemon_runs_argument_generator_with_echo() {
+    let dir = std::env::temp_dir().join(format!("asc-gen-stdio-{}", std::process::id()));
+    let specs = dir.join("specs");
+    let rules = dir.join("rules");
+    std::fs::create_dir_all(&specs).expect("create specs dir");
+    std::fs::create_dir_all(&rules).expect("create rules dir");
+
+    // A command with no subcommands so its positional arg is reachable, whose
+    // generator prints a fixed, space-separated candidate set via `echo`.
+    let spec = r#"{
+        "name": "gentest",
+        "description": "deterministic generator fixture",
+        "args": [
+            {
+                "name": "item",
+                "generator": {
+                    "run": ["echo", "alpha beta betamax"],
+                    "splitOn": " "
+                }
+            }
+        ]
+    }"#;
+    std::fs::write(specs.join("gentest.spec.json"), spec).expect("write spec");
+
+    let mut daemon = Daemon::spawn_with(&specs, &rules);
+
+    // No query: all three generated candidates surface.
+    let resp = daemon.request(r#"{"v":1,"id":1,"op":"complete","line":"gentest ","cursor":8}"#);
+    assert!(resp.contains("alpha"), "generator output present: {resp}");
+    assert!(resp.contains("beta"), "generator output present: {resp}");
+    assert!(resp.contains("betamax"), "generator output present: {resp}");
+
+    // Query `bet` filters to the two matching candidates, dropping `alpha`.
+    let resp = daemon.request(r#"{"v":1,"id":2,"op":"complete","line":"gentest bet","cursor":11}"#);
+    assert!(resp.contains("beta"), "filtered keeps beta: {resp}");
+    assert!(resp.contains("betamax"), "filtered keeps betamax: {resp}");
+    assert!(!resp.contains("alpha"), "filtered drops alpha: {resp}");
+
+    daemon.shutdown();
+    let _ = std::fs::remove_dir_all(&dir);
 }

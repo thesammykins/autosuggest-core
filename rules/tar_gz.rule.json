@@ -1,0 +1,15 @@
+{
+  "id": "tar_gz",
+  "description": "Add -z when extracting a gzip archive that tar did not auto-detect",
+  "priority": 60,
+  "match": {
+    "scriptStartsWith": "tar ",
+    "scriptRegex": "\\.(tar\\.gz|tgz)\\b",
+    "stderrContains": [
+      "This does not look like a tar archive",
+      "not in gzip format",
+      "Unrecognized archive format"
+    ]
+  },
+  "rewrite": { "insertFlag": { "after": "tar", "flag": "-z" } }
+}

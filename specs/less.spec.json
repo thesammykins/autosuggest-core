@@ -1,0 +1,19 @@
+{
+  "name": "less",
+  "description": "View file contents one screen at a time",
+  "options": [
+    { "name": "-N", "description": "Show line numbers" },
+    { "name": "-i", "description": "Search case-insensitively unless the pattern has capitals" },
+    { "name": "-I", "description": "Search case-insensitively always" },
+    { "name": "-S", "description": "Chop long lines rather than wrapping them" },
+    { "name": "-F", "description": "Quit immediately if the content fits one screen" },
+    { "name": "-R", "description": "Output ANSI color escape sequences in raw form" },
+    { "name": "-X", "description": "Do not clear the screen on exit" },
+    { "name": "-g", "description": "Highlight only the last string found by a search" },
+    { "name": "+F", "description": "Start in follow mode, like tail -f" },
+    { "name": ["--help"], "description": "Show help and exit" }
+  ],
+  "args": [
+    { "name": "file", "description": "Files to view", "template": "filepaths", "isOptional": true, "isVariadic": true }
+  ]
+}

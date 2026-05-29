@@ -1,0 +1,15 @@
+{
+  "name": "wc",
+  "description": "Print newline, word, and byte counts for files",
+  "options": [
+    { "name": ["-l", "--lines"], "description": "Print the newline count" },
+    { "name": ["-w", "--words"], "description": "Print the word count" },
+    { "name": ["-c", "--bytes"], "description": "Print the byte count" },
+    { "name": ["-m", "--chars"], "description": "Print the character count" },
+    { "name": ["-L", "--max-line-length"], "description": "Print the length of the longest line" },
+    { "name": ["--help"], "description": "Show help and exit" }
+  ],
+  "args": [
+    { "name": "file", "description": "Files to count", "template": "filepaths", "isOptional": true, "isVariadic": true }
+  ]
+}

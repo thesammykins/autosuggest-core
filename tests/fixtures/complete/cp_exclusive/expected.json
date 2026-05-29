@@ -1,0 +1,42 @@
+[
+  {
+    "desc": "Follow symbolic links given on the command line",
+    "insert": "-H",
+    "score": 0.475
+  },
+  {
+    "desc": "Follow all symbolic links",
+    "insert": "-L",
+    "score": 0.475
+  },
+  {
+    "desc": "Do not follow symbolic links",
+    "insert": "-P",
+    "score": 0.475
+  },
+  {
+    "desc": "Copy directories recursively",
+    "insert": "-R",
+    "score": 0.475
+  },
+  {
+    "desc": "Archive mode; preserve structure and attributes",
+    "insert": "-a",
+    "score": 0.475
+  },
+  {
+    "desc": "Preserve modification time, modes, and ownership",
+    "insert": "-p",
+    "score": 0.475
+  },
+  {
+    "desc": "Copy directories recursively (alias of -R)",
+    "insert": "-r",
+    "score": 0.475
+  },
+  {
+    "desc": "Show files as they are copied",
+    "insert": "-v",
+    "score": 0.475
+  }
+]

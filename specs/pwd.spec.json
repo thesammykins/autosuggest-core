@@ -1,0 +1,9 @@
+{
+  "name": "pwd",
+  "description": "Print the name of the current working directory",
+  "options": [
+    { "name": "-L", "description": "Print the logical path, keeping symlinks (default)", "exclusiveOn": ["-P"] },
+    { "name": "-P", "description": "Print the physical path with symlinks resolved", "exclusiveOn": ["-L"] },
+    { "name": ["--help"], "description": "Show help and exit" }
+  ]
+}

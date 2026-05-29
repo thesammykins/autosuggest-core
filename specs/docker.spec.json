@@ -1,0 +1,62 @@
+{
+  "name": "docker",
+  "description": "Build, run, and manage containers and images",
+  "requiresSubcommand": true,
+  "options": [
+    { "name": ["-H", "--host"], "description": "Daemon socket to connect to", "args": [ { "name": "host" } ], "isPersistent": true },
+    { "name": ["-h", "--help"], "description": "Show help and exit", "isPersistent": true },
+    { "name": ["-v", "--version"], "description": "Show version and exit" }
+  ],
+  "subcommands": [
+    { "name": "run", "description": "Create and run a new container from an image", "options": [
+      { "name": ["-d", "--detach"], "description": "Run the container in the background" },
+      { "name": ["-it"], "description": "Run interactively with a pseudo-TTY" },
+      { "name": ["-p", "--publish"], "description": "Publish a container port to the host", "args": [ { "name": "host:container" } ], "isRepeatable": true },
+      { "name": ["-e", "--env"], "description": "Set an environment variable", "args": [ { "name": "key=value" } ], "isRepeatable": true },
+      { "name": ["-v", "--volume"], "description": "Bind mount a volume", "args": [ { "name": "src:dst" } ], "isRepeatable": true },
+      { "name": ["--rm"], "description": "Remove the container when it exits" },
+      { "name": ["--name"], "description": "Assign a name to the container", "args": [ { "name": "name" } ] }
+    ], "args": [ { "name": "image", "description": "Image to run" }, { "name": "command", "description": "Command to run in the container", "isOptional": true, "isCommand": true } ] },
+    { "name": "ps", "description": "List containers", "options": [
+      { "name": ["-a", "--all"], "description": "Show all containers, not just running ones" },
+      { "name": ["-q", "--quiet"], "description": "Show only container ids" }
+    ] },
+    { "name": "build", "description": "Build an image from a Dockerfile", "options": [
+      { "name": ["-t", "--tag"], "description": "Name and optionally tag the image", "args": [ { "name": "name:tag" } ] },
+      { "name": ["-f", "--file"], "description": "Name of the Dockerfile", "args": [ { "name": "file", "template": "filepaths" } ] }
+    ], "args": [ { "name": "path", "description": "Build context", "template": "folders" } ] },
+    { "name": "images", "description": "List images" },
+    { "name": "pull", "description": "Download an image from a registry", "args": [ { "name": "image" } ] },
+    { "name": "push", "description": "Upload an image to a registry", "args": [ { "name": "image" } ] },
+    {
+      "name": "exec", "description": "Run a command in a running container",
+      "options": [ { "name": ["-it"], "description": "Run interactively with a pseudo-TTY" } ],
+      "args": [
+        {
+          "name": "container", "description": "Running container to exec into",
+          "generator": { "run": ["docker", "ps", "--format", "{{.Names}}"], "splitOn": "\n", "trim": true, "priority": 75, "cache": { "ttlMs": 2000 } }
+        },
+        { "name": "command", "description": "Command to run", "isCommand": true }
+      ]
+    },
+    {
+      "name": "stop", "description": "Stop one or more running containers",
+      "args": [
+        {
+          "name": "container", "description": "Running containers to stop", "isVariadic": true,
+          "generator": { "run": ["docker", "ps", "--format", "{{.Names}}"], "splitOn": "\n", "trim": true, "priority": 75, "cache": { "ttlMs": 2000 } }
+        }
+      ]
+    },
+    {
+      "name": "logs", "description": "Fetch the logs of a container",
+      "options": [ { "name": ["-f", "--follow"], "description": "Follow log output" } ],
+      "args": [
+        {
+          "name": "container", "description": "Container whose logs to show",
+          "generator": { "run": ["docker", "ps", "--format", "{{.Names}}"], "splitOn": "\n", "trim": true, "priority": 75, "cache": { "ttlMs": 2000 } }
+        }
+      ]
+    }
+  ]
+}

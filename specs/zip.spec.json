@@ -1,0 +1,18 @@
+{
+  "name": "zip",
+  "description": "Package and compress files into a zip archive",
+  "options": [
+    { "name": "-r", "description": "Recurse into directories" },
+    { "name": "-e", "description": "Encrypt the archive, prompting for a password" },
+    { "name": "-9", "description": "Use the highest compression level", "exclusiveOn": ["-0"] },
+    { "name": "-0", "description": "Store files without compression", "exclusiveOn": ["-9"] },
+    { "name": "-q", "description": "Operate quietly" },
+    { "name": "-x", "description": "Exclude files matching this pattern", "args": [ { "name": "pattern" } ] },
+    { "name": "-d", "description": "Delete entries from the archive" },
+    { "name": "-m", "description": "Move files into the archive, deleting the originals" }
+  ],
+  "args": [
+    { "name": "zipfile", "description": "Archive to create or update", "template": "filepaths" },
+    { "name": "file", "description": "Files to add", "template": "filepaths", "isVariadic": true }
+  ]
+}

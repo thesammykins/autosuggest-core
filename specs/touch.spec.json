@@ -1,0 +1,15 @@
+{
+  "name": "touch",
+  "description": "Change file timestamps, creating empty files as needed",
+  "options": [
+    { "name": "-a", "description": "Change only the access time" },
+    { "name": "-m", "description": "Change only the modification time" },
+    { "name": "-c", "description": "Do not create files that do not exist" },
+    { "name": "-r", "description": "Use the times of this reference file", "args": [ { "name": "ref-file", "template": "filepaths" } ] },
+    { "name": "-t", "description": "Use the given [[CC]YY]MMDDhhmm[.SS] timestamp", "args": [ { "name": "stamp" } ] },
+    { "name": ["--help"], "description": "Show help and exit" }
+  ],
+  "args": [
+    { "name": "file", "description": "Files to create or update", "template": "filepaths", "isVariadic": true }
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "name": "head",
+  "description": "Output the first part of files",
+  "parserDirectives": {
+    "flagsArePosixNoncompliant": true,
+    "optionArgSeparators": ["=", " "]
+  },
+  "options": [
+    { "name": ["-n", "--lines"], "description": "Print the first NUM lines instead of 10", "args": [ { "name": "num" } ] },
+    { "name": ["-c", "--bytes"], "description": "Print the first NUM bytes of each file", "args": [ { "name": "num" } ] },
+    { "name": ["-q", "--quiet"], "description": "Never print file name headers", "exclusiveOn": ["-v"] },
+    { "name": ["-v", "--verbose"], "description": "Always print file name headers", "exclusiveOn": ["-q"] },
+    { "name": ["--help"], "description": "Show help and exit" }
+  ],
+  "args": [
+    { "name": "file", "description": "Files to read", "template": "filepaths", "isOptional": true, "isVariadic": true }
+  ]
+}

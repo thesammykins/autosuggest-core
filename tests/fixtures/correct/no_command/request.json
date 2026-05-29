@@ -1,0 +1,1 @@
+{ "v": 1, "op": "correct", "id": 20, "script": "gti status", "stderr": "gti: command not found", "exitCode": 127 }

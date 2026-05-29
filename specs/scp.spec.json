@@ -1,0 +1,17 @@
+{
+  "name": "scp",
+  "description": "Securely copy files between hosts",
+  "options": [
+    { "name": "-r", "description": "Recursively copy entire directories" },
+    { "name": "-P", "description": "Connect to this port on the remote host", "args": [ { "name": "port" } ] },
+    { "name": "-i", "description": "Use this identity (private key) file", "args": [ { "name": "identity-file", "template": "filepaths" } ] },
+    { "name": "-p", "description": "Preserve modification times, access times, and modes" },
+    { "name": "-C", "description": "Enable compression" },
+    { "name": "-q", "description": "Disable the progress meter" },
+    { "name": "-v", "description": "Increase verbosity; repeat for more detail", "isRepeatable": 3 }
+  ],
+  "args": [
+    { "name": "source", "description": "Source file, [user@]host:path", "isVariadic": true },
+    { "name": "target", "description": "Destination file, [user@]host:path" }
+  ]
+}

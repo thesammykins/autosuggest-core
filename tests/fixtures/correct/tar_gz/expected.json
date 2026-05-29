@@ -1,0 +1,7 @@
+[
+  {
+    "desc": "Add -z when extracting a gzip archive that tar did not auto-detect",
+    "insert": "tar -z -xf archive.tgz",
+    "score": 0.6
+  }
+]

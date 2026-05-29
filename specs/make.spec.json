@@ -1,0 +1,30 @@
+{
+  "name": "make",
+  "description": "Run targets defined in a Makefile",
+  "options": [
+    { "name": ["-C", "--directory"], "description": "Change to this directory before reading the Makefile", "args": [ { "name": "dir", "template": "folders" } ] },
+    { "name": ["-f", "--file", "--makefile"], "description": "Read this file as the Makefile", "args": [ { "name": "file", "template": "filepaths" } ] },
+    { "name": ["-j", "--jobs"], "description": "Run this many recipes simultaneously", "args": [ { "name": "jobs", "isOptional": true } ] },
+    { "name": ["-k", "--keep-going"], "description": "Keep going after a target fails" },
+    { "name": ["-n", "--dry-run", "--just-print"], "description": "Print the recipes without running them" },
+    { "name": ["-B", "--always-make"], "description": "Unconditionally make all targets" },
+    { "name": ["-s", "--silent", "--quiet"], "description": "Do not echo recipes as they run" },
+    { "name": ["--help"], "description": "Show help and exit" }
+  ],
+  "args": [
+    {
+      "name": "target",
+      "description": "Targets to build",
+      "isOptional": true,
+      "isVariadic": true,
+      "generator": {
+        "run": ["make", "-pRrq"],
+        "splitOn": "\n",
+        "trim": true,
+        "extract": "^([a-zA-Z0-9][^$#\\/\\t=]*):(?:[^=]|$)",
+        "priority": 70,
+        "cache": { "ttlMs": 3000 }
+      }
+    }
+  ]
+}

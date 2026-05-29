@@ -1,0 +1,21 @@
+{
+  "name": "curl",
+  "description": "Transfer data from or to a server",
+  "options": [
+    { "name": ["-X", "--request"], "description": "Specify the request method to use", "args": [ { "name": "method", "suggestions": ["GET", "POST", "PUT", "DELETE", "PATCH", "HEAD", "OPTIONS"] } ] },
+    { "name": ["-H", "--header"], "description": "Pass a custom header to the server", "args": [ { "name": "header" } ], "isRepeatable": true },
+    { "name": ["-d", "--data"], "description": "Send the given data in a POST request", "args": [ { "name": "data" } ] },
+    { "name": ["-o", "--output"], "description": "Write output to a file instead of stdout", "args": [ { "name": "file", "template": "filepaths" } ] },
+    { "name": ["-O", "--remote-name"], "description": "Save output using the remote file name" },
+    { "name": ["-L", "--location"], "description": "Follow redirects" },
+    { "name": ["-s", "--silent"], "description": "Do not show progress or error messages" },
+    { "name": ["-f", "--fail"], "description": "Fail silently on server errors" },
+    { "name": ["-i", "--include"], "description": "Include the response headers in the output" },
+    { "name": ["-k", "--insecure"], "description": "Allow insecure TLS connections" },
+    { "name": ["-u", "--user"], "description": "Server user and password", "args": [ { "name": "user:password" } ] },
+    { "name": ["--help"], "description": "Show help and exit" }
+  ],
+  "args": [
+    { "name": "url", "description": "URLs to fetch", "isVariadic": true }
+  ]
+}

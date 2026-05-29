@@ -1,0 +1,17 @@
+{
+  "name": "unzip",
+  "description": "Extract files from a zip archive",
+  "options": [
+    { "name": "-l", "description": "List the archive contents without extracting" },
+    { "name": "-d", "description": "Extract files into this directory", "args": [ { "name": "exdir", "template": "folders" } ] },
+    { "name": "-o", "description": "Overwrite existing files without prompting", "exclusiveOn": ["-n"] },
+    { "name": "-n", "description": "Never overwrite existing files", "exclusiveOn": ["-o"] },
+    { "name": "-q", "description": "Operate quietly" },
+    { "name": "-x", "description": "Exclude files matching these patterns", "args": [ { "name": "pattern" } ] },
+    { "name": "-P", "description": "Use this password to decrypt the archive", "args": [ { "name": "password" } ] }
+  ],
+  "args": [
+    { "name": "zipfile", "description": "Archive to extract", "template": "filepaths" },
+    { "name": "file", "description": "Specific members to extract", "isOptional": true, "isVariadic": true }
+  ]
+}

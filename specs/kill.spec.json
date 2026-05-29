@@ -1,0 +1,13 @@
+{
+  "name": "kill",
+  "description": "Send a signal to a process",
+  "options": [
+    { "name": "-s", "description": "Send this signal by name", "args": [ { "name": "signal", "suggestions": ["TERM", "KILL", "HUP", "INT", "QUIT", "STOP", "CONT", "USR1", "USR2"] } ] },
+    { "name": "-l", "description": "List signal names" },
+    { "name": "-9", "description": "Send SIGKILL, forcing the process to stop" },
+    { "name": "-15", "description": "Send SIGTERM, requesting a graceful stop" }
+  ],
+  "args": [
+    { "name": "pid", "description": "Process ids or job specs to signal", "isVariadic": true }
+  ]
+}

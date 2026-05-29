@@ -51,6 +51,7 @@ name = "autosuggest-daemon"
 version = "0.0.0"
 dependencies = [
  "autosuggest-core",
+ "autosuggest-data",
  "autosuggest-protocol",
  "serde",
  "serde_json",

@@ -1,0 +1,19 @@
+{
+  "name": "tar",
+  "description": "Manipulate tape archives",
+  "options": [
+    { "name": ["-c", "--create"], "description": "Create a new archive", "exclusiveOn": ["-x", "--extract", "-t", "--list"] },
+    { "name": ["-x", "--extract"], "description": "Extract files from an archive", "exclusiveOn": ["-c", "--create", "-t", "--list"] },
+    { "name": ["-t", "--list"], "description": "List the contents of an archive", "exclusiveOn": ["-c", "--create", "-x", "--extract"] },
+    { "name": ["-f", "--file"], "description": "Use this archive file", "args": [ { "name": "archive", "template": "filepaths" } ] },
+    { "name": ["-z", "--gzip"], "description": "Filter the archive through gzip" },
+    { "name": ["-j", "--bzip2"], "description": "Filter the archive through bzip2" },
+    { "name": ["-J", "--xz"], "description": "Filter the archive through xz" },
+    { "name": ["-v", "--verbose"], "description": "List each file processed" },
+    { "name": ["-C", "--directory"], "description": "Change to this directory before working", "args": [ { "name": "dir", "template": "folders" } ] },
+    { "name": ["--help"], "description": "Show help and exit" }
+  ],
+  "args": [
+    { "name": "file", "description": "Files or directories to archive or extract", "template": "filepaths", "isOptional": true, "isVariadic": true }
+  ]
+}
