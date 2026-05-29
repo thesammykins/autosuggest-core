@@ -1,0 +1,151 @@
+{
+  "name": "winget",
+  "description": "Windows Package Manager CLI (Windows)",
+  "requiresSubcommand": true,
+  "options": [
+    { "name": ["-h", "--help"], "description": "Show help" },
+    { "name": ["--version"], "description": "Show version" },
+    { "name": ["--info"], "description": "Show system info" }
+  ],
+  "subcommands": [
+    {
+      "name": "install",
+      "description": "Install a package",
+      "args": [
+        { "name": "package", "description": "Package name or ID" }
+      ],
+      "options": [
+        { "name": ["-e", "--exact"], "description": "Exact match required" },
+        { "name": ["-i", "--interactive"], "description": "Interactive install" },
+        { "name": ["-h", "--silent"], "description": "Silent install" },
+        { "name": ["--location"], "description": "Install location", "args": [{"name": "path"}] },
+        { "name": ["--version"], "description": "Specific version", "args": [{"name": "version"}] },
+        { "name": ["-s", "--source"], "description": "Package source", "args": [{"name": "source", "suggestions": ["winget", "msstore"]}] },
+        { "name": ["--scope"], "description": "Install scope", "args": [{"name": "scope", "suggestions": ["user", "machine"]}] },
+        { "name": ["--accept-package-agreements"], "description": "Accept license" },
+        { "name": ["--accept-source-agreements"], "description": "Accept source license" }
+      ]
+    },
+    {
+      "name": "show",
+      "description": "Show package details",
+      "args": [
+        { "name": "package", "description": "Package name or ID" }
+      ],
+      "options": [
+        { "name": ["-e", "--exact"], "description": "Exact match" },
+        { "name": ["-s", "--source"], "description": "Package source", "args": [{"name": "source", "suggestions": ["winget", "msstore"]}] },
+        { "name": ["--versions"], "description": "Show available versions" }
+      ]
+    },
+    {
+      "name": "search",
+      "description": "Search for packages",
+      "args": [
+        { "name": "query", "description": "Search query", "isOptional": true }
+      ],
+      "options": [
+        { "name": ["-e", "--exact"], "description": "Exact match" },
+        { "name": ["-s", "--source"], "description": "Package source", "args": [{"name": "source", "suggestions": ["winget", "msstore"]}] },
+        { "name": ["-n", "--name"], "description": "Filter by name", "args": [{"name": "name"}] },
+        { "name": ["-i", "--id"], "description": "Filter by ID", "args": [{"name": "id"}] },
+        { "name": ["-m", "--moniker"], "description": "Filter by moniker", "args": [{"name": "moniker"}] },
+        { "name": ["-t", "--tag"], "description": "Filter by tag", "args": [{"name": "tag"}] },
+        { "name": ["-q", "--query"], "description": "Search query (positional)", "args": [{"name": "text"}] }
+      ]
+    },
+    {
+      "name": "list",
+      "description": "List installed packages",
+      "options": [
+        { "name": ["-n", "--name"], "description": "Filter by name", "args": [{"name": "name"}] },
+        { "name": ["-i", "--id"], "description": "Filter by ID", "args": [{"name": "id"}] },
+        { "name": ["-s", "--source"], "description": "Package source", "args": [{"name": "source"}] }
+      ]
+    },
+    {
+      "name": "upgrade",
+      "description": "Upgrade packages",
+      "args": [
+        { "name": "package", "description": "Package to upgrade", "isOptional": true }
+      ],
+      "options": [
+        { "name": ["-e", "--exact"], "description": "Exact match" },
+        { "name": ["-i", "--interactive"], "description": "Interactive install" },
+        { "name": ["-h", "--silent"], "description": "Silent install" },
+        { "name": ["-s", "--source"], "description": "Package source", "args": [{"name": "source"}] },
+        { "name": ["--all"], "description": "Upgrade all packages" },
+        { "name": ["--include-unknown"], "description": "Include packages with unknown version" }
+      ]
+    },
+    {
+      "name": "uninstall",
+      "description": "Uninstall a package",
+      "args": [
+        { "name": "package", "description": "Package to uninstall" }
+      ],
+      "options": [
+        { "name": ["-e", "--exact"], "description": "Exact match" },
+        { "name": ["-i", "--interactive"], "description": "Interactive" },
+        { "name": ["-h", "--silent"], "description": "Silent" },
+        { "name": ["--purge"], "description": "Remove all data" },
+        { "name": ["--preserve"], "description": "Preserve app data" }
+      ]
+    },
+    {
+      "name": "source",
+      "description": "Manage package sources",
+      "subcommands": [
+        { "name": "add", "description": "Add a source", "args": [{"name": "name"}, {"name": "url"}], "options": [
+          { "name": ["-t", "--type"], "description": "Source type", "args": [{"name": "type", "suggestions": ["Microsoft.Rest", "Microsoft.PreIndexed.Package"]}] }
+        ]},
+        { "name": "list", "description": "List current sources" },
+        { "name": "update", "description": "Update sources" },
+        { "name": "remove", "description": "Remove a source", "args": [{"name": "name"}] },
+        { "name": "reset", "description": "Reset sources to defaults" }
+      ]
+    },
+    {
+      "name": "export",
+      "description": "Export installed packages",
+      "args": [
+        { "name": "file", "description": "Output file", "template": "filepaths" }
+      ],
+      "options": [
+        { "name": ["-s", "--source"], "description": "Include source", "args": [{"name": "source"}] },
+        { "name": ["--include-versions"], "description": "Include version info" }
+      ]
+    },
+    {
+      "name": "import",
+      "description": "Import packages from a file",
+      "args": [
+        { "name": "file", "description": "File to import", "template": "filepaths" }
+      ],
+      "options": [
+        { "name": ["--ignore-unavailable"], "description": "Skip unavailable packages" },
+        { "name": ["--accept-package-agreements"], "description": "Accept licenses" },
+        { "name": ["--accept-source-agreements"], "description": "Accept source licenses" }
+      ]
+    },
+    {
+      "name": "settings",
+      "description": "Open Windows Package Manager settings"
+    },
+    {
+      "name": "features",
+      "description": "Show experimental features status"
+    },
+    {
+      "name": "pin",
+      "description": "Pin package versions to prevent upgrades",
+      "subcommands": [
+        { "name": "add", "description": "Add a pin", "args": [{"name": "package"}], "options": [
+          { "name": ["--version"], "description": "Version to pin", "args": [{"name": "version"}] }
+        ]},
+        { "name": "list", "description": "List active pins" },
+        { "name": "remove", "description": "Remove a pin", "args": [{"name": "package"}] }
+      ]
+    }
+  ]
+}

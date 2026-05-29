@@ -1,0 +1,12 @@
+{
+  "name": "systeminfo",
+  "description": "Display system configuration and OS information (Windows)",
+  "options": [
+    { "name": ["/S"], "description": "Remote system", "args": [{"name": "hostname"}] },
+    { "name": ["/U"], "description": "User account", "args": [{"name": "domain\\user"}] },
+    { "name": ["/P"], "description": "Password", "args": [{"name": "password"}] },
+    { "name": ["/FO"], "description": "Output format", "args": [{"name": "format", "suggestions": ["TABLE", "LIST", "CSV"]}] },
+    { "name": ["/NH"], "description": "Skip column headers" },
+    { "name": ["/?"], "description": "Show help" }
+  ]
+}

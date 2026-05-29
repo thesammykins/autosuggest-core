@@ -1,0 +1,132 @@
+{
+  "name": "reg",
+  "description": "Query and manage Windows registry (Windows)",
+  "requiresSubcommand": true,
+  "subcommands": [
+    {
+      "name": "query",
+      "description": "Query registry keys and values",
+      "args": [
+        { "name": "key", "description": "Registry key path" }
+      ],
+      "options": [
+        { "name": ["/v"], "description": "Query a specific value", "args": [{"name": "value"}] },
+        { "name": ["/ve"], "description": "Query the default value" },
+        { "name": ["/s"], "description": "Recursively query subkeys" },
+        { "name": ["/f"], "description": "Search pattern", "args": [{"name": "pattern"}] },
+        { "name": ["/k"], "description": "Search only key names" },
+        { "name": ["/d"], "description": "Search only data" },
+        { "name": ["/c"], "description": "Case-sensitive search" },
+        { "name": ["/e"], "description": "Return exact matches" },
+        { "name": ["/t"], "description": "Value type filter", "args": [{"name": "type", "suggestions": ["REG_SZ", "REG_MULTI_SZ", "REG_EXPAND_SZ", "REG_DWORD", "REG_QWORD", "REG_BINARY", "REG_NONE"]}] },
+        { "name": ["/reg:32"], "description": "Access 32-bit registry view" },
+        { "name": ["/reg:64"], "description": "Access 64-bit registry view" }
+      ]
+    },
+    {
+      "name": "add",
+      "description": "Add a registry key or value",
+      "args": [
+        { "name": "key", "description": "Registry key path" }
+      ],
+      "options": [
+        { "name": ["/v"], "description": "Value name", "args": [{"name": "name"}] },
+        { "name": ["/ve"], "description": "Set the default value" },
+        { "name": ["/t"], "description": "Value type", "args": [{"name": "type", "suggestions": ["REG_SZ", "REG_MULTI_SZ", "REG_EXPAND_SZ", "REG_DWORD", "REG_QWORD", "REG_BINARY"]}] },
+        { "name": ["/d"], "description": "Value data", "args": [{"name": "data"}] },
+        { "name": ["/f"], "description": "Force without confirmation" },
+        { "name": ["/reg:32"], "description": "32-bit view" },
+        { "name": ["/reg:64"], "description": "64-bit view" }
+      ]
+    },
+    {
+      "name": "delete",
+      "description": "Delete a registry key or value",
+      "args": [
+        { "name": "key", "description": "Registry key path" }
+      ],
+      "options": [
+        { "name": ["/v"], "description": "Delete a specific value", "args": [{"name": "name"}] },
+        { "name": ["/ve"], "description": "Delete the default value" },
+        { "name": ["/va"], "description": "Delete all values" },
+        { "name": ["/f"], "description": "Force without confirmation" },
+        { "name": ["/reg:32"], "description": "32-bit view" },
+        { "name": ["/reg:64"], "description": "64-bit view" }
+      ]
+    },
+    {
+      "name": "copy",
+      "description": "Copy a registry key or value",
+      "args": [
+        { "name": "source", "description": "Source key" },
+        { "name": "destination", "description": "Destination key" }
+      ],
+      "options": [
+        { "name": ["/s"], "description": "Recursively copy" },
+        { "name": ["/f"], "description": "Force overwrite" },
+        { "name": ["/reg:32"], "description": "32-bit view" },
+        { "name": ["/reg:64"], "description": "64-bit view" }
+      ]
+    },
+    {
+      "name": "save",
+      "description": "Save registry key to a file",
+      "args": [
+        { "name": "key", "description": "Registry key" },
+        { "name": "file", "description": "Output file", "template": "filepaths" }
+      ],
+      "options": [
+        { "name": ["/y"], "description": "Force overwrite" },
+        { "name": ["/reg:32"], "description": "32-bit view" },
+        { "name": ["/reg:64"], "description": "64-bit view" }
+      ]
+    },
+    {
+      "name": "restore",
+      "description": "Restore registry key from a file",
+      "args": [
+        { "name": "key", "description": "Registry key" },
+        { "name": "file", "description": "File to restore", "template": "filepaths" }
+      ]
+    },
+    {
+      "name": "load",
+      "description": "Load a hive from a file",
+      "args": [
+        { "name": "key", "description": "Temporary key name" },
+        { "name": "file", "description": "Hive file to load", "template": "filepaths" }
+      ]
+    },
+    {
+      "name": "unload",
+      "description": "Unload a registry hive",
+      "args": [
+        { "name": "key", "description": "Key to unload" }
+      ]
+    },
+    {
+      "name": "compare",
+      "description": "Compare registry keys",
+      "args": [
+        { "name": "key1", "description": "First key" },
+        { "name": "key2", "description": "Second key" }
+      ],
+      "options": [
+        { "name": ["/v"], "description": "Compare specific value", "args": [{"name": "name"}] },
+        { "name": ["/ve"], "description": "Compare default value" },
+        { "name": ["/s"], "description": "Recursively compare" },
+        { "name": ["/oa"], "description": "Show all differences" },
+        { "name": ["/od"], "description": "Show only differences" },
+        { "name": ["/os"], "description": "Show only matches" },
+        { "name": ["/on"], "description": "Show no details" }
+      ]
+    },
+    {
+      "name": "flags",
+      "description": "Manage registry flag operations",
+      "args": [
+        { "name": "operation", "description": "Flag operation" }
+      ]
+    }
+  ]
+}

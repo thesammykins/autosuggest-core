@@ -1,0 +1,73 @@
+{
+  "name": "cmake",
+  "description": "Cross-platform build system generator",
+  "requiresSubcommand": true,
+  "options": [
+    { "name": ["-h", "--help"], "description": "Show help" },
+    { "name": ["--version"], "description": "Show version" },
+    { "name": ["-S"], "description": "Source directory", "args": [{"name": "dir", "template": "folders"}] },
+    { "name": ["-B"], "description": "Build directory", "args": [{"name": "dir"}] },
+    { "name": ["-D"], "description": "Define a CMake variable", "args": [{"name": "var=value"}] },
+    { "name": ["-G"], "description": "Build system generator", "args": [{"name": "generator", "suggestions": ["Unix Makefiles", "Ninja", "Xcode", "Visual Studio 17 2022", "Visual Studio 16 2019", "MSYS Makefiles", "MinGW Makefiles", "NMake Makefiles"]}] },
+    { "name": ["-T"], "description": "Toolset specification", "args": [{"name": "toolset"}] },
+    { "name": ["-A"], "description": "Platform architecture", "args": [{"name": "arch"}] },
+    { "name": ["-Wno-dev"], "description": "Suppress developer warnings" },
+    { "name": ["-Werror"], "description": "Treat warnings as errors" },
+    { "name": ["--fresh"], "description": "Fresh configure (clear cache)" },
+    { "name": ["--preset"], "description": "Use a configure preset", "args": [{"name": "name"}] },
+    { "name": ["--list-presets"], "description": "List available presets" },
+    { "name": ["-LA"], "description": "List cache variables with help text" },
+    { "name": ["-L"], "description": "List cache variables" },
+    { "name": ["--graphviz"], "description": "Generate graphviz dependency graph", "args": [{"name": "file"}] },
+    { "name": ["--system-information"], "description": "Show system info" },
+    { "name": ["--log-level"], "description": "Log level", "args": [{"name": "level", "suggestions": ["trace", "debug", "verbose", "status", "notice", "warning", "error"]}] },
+    { "name": ["--install-prefix"], "description": "Install prefix", "args": [{"name": "dir"}] },
+    { "name": ["--no-warn-unused-cli"], "description": "Don't warn about unused CLI vars" },
+    { "name": ["-U"], "description": "Unset a cache variable", "args": [{"name": "globbing"}] },
+    { "name": ["-E"], "description": "CMake command mode" },
+    { "name": ["--build"], "description": "Build a CMake project", "args": [{"name": "dir"}], "options": [
+      { "name": ["--target"], "description": "Build target", "args": [{"name": "target"}] },
+      { "name": ["-j"], "description": "Parallel jobs", "args": [{"name": "n"}] },
+      { "name": ["--config"], "description": "Build config", "args": [{"name": "config", "suggestions": ["Debug", "Release", "RelWithDebInfo", "MinSizeRel"]}] }
+    ]},
+    { "name": ["--install"], "description": "Install built project", "args": [{"name": "dir"}], "options": [
+      { "name": ["--config"], "description": "Install config", "args": [{"name": "config"}] },
+      { "name": ["--component"], "description": "Install component", "args": [{"name": "name"}] },
+      { "name": ["--prefix"], "description": "Install prefix", "args": [{"name": "dir"}] }
+    ]},
+    { "name": ["--open"], "description": "Open generated project", "args": [{"name": "dir"}] }
+  ],
+  "subcommands": [
+    {
+      "name": "configure",
+      "description": "Configure a CMake project"
+    },
+    {
+      "name": "build",
+      "description": "Build a CMake project"
+    },
+    {
+      "name": "install",
+      "description": "Install built targets"
+    },
+    {
+      "name": "open",
+      "description": "Open the generated project"
+    },
+    {
+      "name": "graphviz",
+      "description": "Generate dependency graph"
+    },
+    {
+      "name": "system-information",
+      "description": "Show system information"
+    },
+    {
+      "name": "help",
+      "description": "Show help for commands",
+      "args": [
+        { "name": "topic", "description": "Help topic", "isOptional": true }
+      ]
+    }
+  ]
+}

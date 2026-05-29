@@ -1,0 +1,38 @@
+{
+  "name": "node",
+  "description": "Node.js JavaScript runtime",
+  "options": [
+    { "name": ["-e", "--eval"], "description": "Evaluate JavaScript from string", "args": [{"name": "code"}] },
+    { "name": ["-p", "--print"], "description": "Evaluate and print result", "args": [{"name": "code"}] },
+    { "name": ["-c", "--check"], "description": "Syntax check without executing" },
+    { "name": ["-i", "--interactive"], "description": "Open REPL" },
+    { "name": ["-r", "--require"], "description": "Preload module", "args": [{"name": "module"}] },
+    { "name": ["--inspect"], "description": "Enable inspector", "args": [{"name": "host:port", "isOptional": true}] },
+    { "name": ["--inspect-brk"], "description": "Break at start of script", "args": [{"name": "host:port", "isOptional": true}] },
+    { "name": ["--experimental-modules"], "description": "Enable ES module support" },
+    { "name": ["--watch"], "description": "Watch for file changes and restart" },
+    { "name": ["--watch-path"], "description": "Watch specific path", "args": [{"name": "path"}] },
+    { "name": ["--env-file"], "description": "Load environment variables from file", "args": [{"name": "file", "template": "filepaths"}] },
+    { "name": ["--expose-gc"], "description": "Expose garbage collector" },
+    { "name": ["--max-old-space-size"], "description": "Max memory (MB)", "args": [{"name": "mb"}] },
+    { "name": ["--no-warnings"], "description": "Suppress warnings" },
+    { "name": ["--openssl-config"], "description": "OpenSSL config file", "args": [{"name": "path"}] },
+    { "name": ["--preserve-symlinks"], "description": "Preserve symlinks when resolving" },
+    { "name": ["--prof"], "description": "Generate V8 profiler output" },
+    { "name": ["--prof-process"], "description": "Process profiler output" },
+    { "name": ["--redirect-warnings"], "description": "Redirect warnings to file", "args": [{"name": "file"}] },
+    { "name": ["--stack-trace-limit"], "description": "Stack trace limit", "args": [{"name": "n"}] },
+    { "name": ["--title"], "description": "Process title", "args": [{"name": "title"}] },
+    { "name": ["--tls-cipher-list"], "description": "TLS cipher list", "args": [{"name": "list"}] },
+    { "name": ["--v8-pool-size"], "description": "V8 thread pool size", "args": [{"name": "n"}] },
+    { "name": ["-h", "--help"], "description": "Show help" },
+    { "name": ["-v", "--version"], "description": "Show version" }
+  ],
+  "args": [
+    { "name": "script", "description": "Script file to run", "isOptional": true, "template": "filepaths" },
+    { "name": "args", "description": "Script arguments", "isOptional": true, "isVariadic": true }
+  ],
+  "parserDirectives": {
+    "optionsMustPrecedeArguments": true
+  }
+}

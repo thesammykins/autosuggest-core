@@ -1,0 +1,232 @@
+{
+  "name": "dotnet",
+  "description": ".NET CLI — cross-platform .NET development toolchain",
+  "requiresSubcommand": true,
+  "options": [
+    { "name": ["-h", "--help"], "description": "Show help" },
+    { "name": ["--version"], "description": "Show version" },
+    { "name": ["--info"], "description": "Show .NET info" },
+    { "name": ["--list-sdks"], "description": "List installed SDKs" },
+    { "name": ["--list-runtimes"], "description": "List installed runtimes" },
+    { "name": ["--log-level"], "description": "Log level", "args": [{"name": "level", "suggestions": ["trace", "debug", "info", "warning", "error"]}] }
+  ],
+  "subcommands": [
+    {
+      "name": "new",
+      "description": "Create a new project or file",
+      "options": [
+        { "name": ["-t", "--template"], "description": "Template name", "args": [{"name": "template"}] },
+        { "name": ["-n", "--name"], "description": "Project name", "args": [{"name": "name"}] },
+        { "name": ["-o", "--output"], "description": "Output directory", "args": [{"name": "dir"}] },
+        { "name": ["--dry-run"], "description": "Show what would be created" },
+        { "name": ["--force"], "description": "Force content overwrite" },
+        { "name": ["-lang", "--language"], "description": "Project language", "args": [{"name": "lang", "suggestions": ["C#", "F#", "VB"]}] }
+      ],
+      "args": [
+        { "name": "template", "description": "Template short name", "isOptional": true }
+      ]
+    },
+    {
+      "name": "build",
+      "description": "Build a .NET project",
+      "options": [
+        { "name": ["-c", "--configuration"], "description": "Build configuration", "args": [{"name": "config", "suggestions": ["Debug", "Release"]}] },
+        { "name": ["-f", "--framework"], "description": "Target framework", "args": [{"name": "framework"}] },
+        { "name": ["-o", "--output"], "description": "Output directory", "args": [{"name": "dir"}] },
+        { "name": ["-r", "--runtime"], "description": "Target runtime", "args": [{"name": "runtime"}] },
+        { "name": ["--no-restore"], "description": "Skip restore" },
+        { "name": ["--no-self-contained"], "description": "Use shared runtime" },
+        { "name": ["--self-contained"], "description": "Self-contained deployment" },
+        { "name": ["--source"], "description": "NuGet source", "args": [{"name": "source"}] },
+        { "name": ["-v", "--verbosity"], "description": "Verbosity", "args": [{"name": "level", "suggestions": ["quiet", "minimal", "normal", "detailed", "diagnostic"]}] },
+        { "name": ["--interactive"], "description": "Allow interactive authentication" }
+      ],
+      "args": [
+        { "name": "project", "description": "Project file or directory", "isOptional": true, "template": "filepaths" }
+      ]
+    },
+    {
+      "name": "test",
+      "description": "Run unit tests",
+      "options": [
+        { "name": ["-c", "--configuration"], "description": "Build config", "args": [{"name": "config", "suggestions": ["Debug", "Release"]}] },
+        { "name": ["-f", "--framework"], "description": "Target framework", "args": [{"name": "framework"}] },
+        { "name": ["--filter"], "description": "Test filter", "args": [{"name": "filter"}] },
+        { "name": ["--no-build"], "description": "Skip build" },
+        { "name": ["-r", "--runtime"], "description": "Target runtime", "args": [{"name": "runtime"}] },
+        { "name": ["--collect"], "description": "Data collector", "args": [{"name": "name"}] },
+        { "name": ["--logger"], "description": "Test logger", "args": [{"name": "logger"}] },
+        { "name": ["-v", "--verbosity"], "description": "Verbosity", "args": [{"name": "level"}] }
+      ],
+      "args": [
+        { "name": "project", "description": "Test project", "isOptional": true, "template": "filepaths" }
+      ]
+    },
+    {
+      "name": "run",
+      "description": "Run a .NET project",
+      "options": [
+        { "name": ["-c", "--configuration"], "description": "Build config", "args": [{"name": "config", "suggestions": ["Debug", "Release"]}] },
+        { "name": ["-f", "--framework"], "description": "Target framework", "args": [{"name": "framework"}] },
+        { "name": ["-r", "--runtime"], "description": "Target runtime", "args": [{"name": "runtime"}] },
+        { "name": ["--no-build"], "description": "Skip build" },
+        { "name": ["-p", "--project"], "description": "Project to run", "args": [{"name": "path"}] },
+        { "name": ["--self-contained"], "description": "Self-contained" },
+        { "name": ["--no-self-contained"], "description": "Use shared runtime" },
+        { "name": ["-v", "--verbosity"], "description": "Verbosity", "args": [{"name": "level"}] }
+      ],
+      "args": [
+        { "name": "args", "description": "Arguments to pass", "isOptional": true, "isVariadic": true }
+      ]
+    },
+    {
+      "name": "publish",
+      "description": "Publish a .NET project for deployment",
+      "options": [
+        { "name": ["-c", "--configuration"], "description": "Build config", "args": [{"name": "config", "suggestions": ["Debug", "Release"]}] },
+        { "name": ["-f", "--framework"], "description": "Target framework", "args": [{"name": "framework"}] },
+        { "name": ["-o", "--output"], "description": "Output path", "args": [{"name": "dir"}] },
+        { "name": ["-r", "--runtime"], "description": "Target runtime", "args": [{"name": "runtime"}] },
+        { "name": ["--self-contained"], "description": "Self-contained" },
+        { "name": ["--no-self-contained"], "description": "Use shared runtime" },
+        { "name": ["--no-build"], "description": "Skip build" },
+        { "name": ["-v", "--verbosity"], "description": "Verbosity", "args": [{"name": "level"}] }
+      ],
+      "args": [
+        { "name": "project", "description": "Project to publish", "isOptional": true, "template": "filepaths" }
+      ]
+    },
+    {
+      "name": "restore",
+      "description": "Restore NuGet dependencies",
+      "options": [
+        { "name": ["-s", "--source"], "description": "NuGet source(s)", "args": [{"name": "source"}] },
+        { "name": ["--packages"], "description": "Package cache directory", "args": [{"name": "path"}] },
+        { "name": ["--no-cache"], "description": "Don't use packages cache" },
+        { "name": ["--interactive"], "description": "Auth prompt" },
+        { "name": ["-v", "--verbosity"], "description": "Verbosity", "args": [{"name": "level"}] }
+      ],
+      "args": [
+        { "name": "project", "description": "Project to restore", "isOptional": true, "template": "filepaths" }
+      ]
+    },
+    {
+      "name": "pack",
+      "description": "Create a NuGet package",
+      "options": [
+        { "name": ["-c", "--configuration"], "description": "Build config", "args": [{"name": "config"}] },
+        { "name": ["-o", "--output"], "description": "Output directory", "args": [{"name": "dir"}] },
+        { "name": ["--no-build"], "description": "Skip build" },
+        { "name": ["--include-source"], "description": "Include source in package" },
+        { "name": ["--include-symbols"], "description": "Include symbols" },
+        { "name": ["-v", "--verbosity"], "description": "Verbosity", "args": [{"name": "level"}] },
+        { "name": ["--interactive"], "description": "Auth prompt" }
+      ],
+      "args": [
+        { "name": "project", "description": "Project to pack", "isOptional": true, "template": "filepaths" }
+      ]
+    },
+    {
+      "name": "clean",
+      "description": "Clean build output",
+      "options": [
+        { "name": ["-c", "--configuration"], "description": "Build config", "args": [{"name": "config"}] },
+        { "name": ["-f", "--framework"], "description": "Target framework", "args": [{"name": "framework"}] },
+        { "name": ["-v", "--verbosity"], "description": "Verbosity", "args": [{"name": "level"}] }
+      ],
+      "args": [
+        { "name": "project", "description": "Project to clean", "isOptional": true, "template": "filepaths" }
+      ]
+    },
+    {
+      "name": "tool",
+      "description": "Manage .NET global tools",
+      "subcommands": [
+        { "name": "install", "description": "Install a tool", "args": [{"name": "package"}], "options": [
+          { "name": ["-g", "--global"], "description": "Install globally" },
+          { "name": ["--tool-path"], "description": "Install to path", "args": [{"name": "path"}] },
+          { "name": ["-v", "--verbosity"], "description": "Verbosity", "args": [{"name": "level"}] }
+        ]},
+        { "name": "uninstall", "description": "Uninstall a tool", "args": [{"name": "package"}] },
+        { "name": "list", "description": "List installed tools", "options": [
+          { "name": ["-g", "--global"], "description": "Show global tools" },
+          { "name": ["--tool-path"], "description": "Show tools at path", "args": [{"name": "path"}] }
+        ]},
+        { "name": "update", "description": "Update a tool", "args": [{"name": "package"}] }
+      ]
+    },
+    {
+      "name": "add",
+      "description": "Add a reference to a project",
+      "subcommands": [
+        { "name": "package", "description": "Add NuGet package", "args": [{"name": "name"}], "options": [
+          { "name": ["-v", "--version"], "description": "Package version", "args": [{"name": "version"}] },
+          { "name": ["-s", "--source"], "description": "NuGet source", "args": [{"name": "source"}] },
+          { "name": ["-n", "--no-restore"], "description": "Skip restore" }
+        ]},
+        { "name": "reference", "description": "Add project reference", "args": [{"name": "path", "template": "filepaths"}] }
+      ]
+    },
+    {
+      "name": "remove",
+      "description": "Remove a reference from a project",
+      "subcommands": [
+        { "name": "package", "description": "Remove NuGet package", "args": [{"name": "name"}] },
+        { "name": "reference", "description": "Remove project reference", "args": [{"name": "path"}] }
+      ]
+    },
+    {
+      "name": "list",
+      "description": "List references",
+      "subcommands": [
+        { "name": "package", "description": "List NuGet packages", "options": [
+          { "name": ["--vulnerable"], "description": "Show only vulnerable" },
+          { "name": ["--deprecated"], "description": "Show only deprecated" },
+          { "name": ["--outdated"], "description": "Show outdated" }
+        ]},
+        { "name": "reference", "description": "List project references" }
+      ]
+    },
+    {
+      "name": "nuget",
+      "description": "NuGet configuration",
+      "subcommands": [
+        { "name": "delete", "description": "Delete a package from server", "args": [{"name": "name"}, {"name": "version"}], "options": [
+          { "name": ["-s", "--source"], "description": "NuGet source", "args": [{"name": "source"}] },
+          { "name": ["--api-key"], "description": "API key", "args": [{"name": "key"}] },
+          { "name": ["--non-interactive"], "description": "Non-interactive" }
+        ]},
+        { "name": "push", "description": "Push a package to server", "args": [{"name": "package"}], "options": [
+          { "name": ["-s", "--source"], "description": "NuGet source", "args": [{"name": "source"}] },
+          { "name": ["--api-key"], "description": "API key", "args": [{"name": "key"}] },
+          { "name": ["--skip-duplicate"], "description": "Skip duplicates" },
+          { "name": ["--timeout"], "description": "Timeout", "args": [{"name": "seconds"}] }
+        ]},
+        { "name": "locals", "description": "NuGet locals management", "args": [{"name": "cache-type"}], "options": [
+          { "name": ["-c", "--clear"], "description": "Clear cache" },
+          { "name": ["-l", "--list"], "description": "List cache paths" }
+        ]}
+      ]
+    },
+    {
+      "name": "sln",
+      "description": "Manage .NET solution files",
+      "subcommands": [
+        { "name": "add", "description": "Add project to solution", "args": [{"name": "path", "template": "filepaths"}] },
+        { "name": "remove", "description": "Remove project from solution", "args": [{"name": "path", "template": "filepaths"}] },
+        { "name": "list", "description": "List projects in solution" }
+      ]
+    },
+    {
+      "name": "workload",
+      "description": "Manage .NET workloads",
+      "subcommands": [
+        { "name": "install", "description": "Install a workload", "args": [{"name": "workload-id"}] },
+        { "name": "uninstall", "description": "Uninstall a workload", "args": [{"name": "workload-id"}] },
+        { "name": "list", "description": "List installed workloads" },
+        { "name": "search", "description": "Search available workloads", "args": [{"name": "search-term", "isOptional": true}] },
+        { "name": "repair", "description": "Repair workload installations" }
+      ]
+    }
+  ]
+}

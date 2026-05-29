@@ -1,0 +1,31 @@
+{
+  "name": "codesign",
+  "description": "Sign and verify macOS code signatures (macOS)",
+  "options": [
+    { "name": ["-s", "--sign"], "description": "Sign with an identity", "args": [{"name": "identity"}] },
+    { "name": ["-d", "--display"], "description": "Display signature information" },
+    { "name": ["-v", "--verify"], "description": "Verify a signature" },
+    { "name": ["-f", "--force"], "description": "Replace any existing signature" },
+    { "name": ["-r", "--requirements"], "description": "Set code requirements", "args": [{"name": "req"}] },
+    { "name": ["-o", "--option"], "description": "Set signature options", "args": [{"name": "flags"}] },
+    { "name": ["-i", "--identifier"], "description": "Set bundle identifier", "args": [{"name": "id"}] },
+    { "name": ["-entitlements"], "description": "Embed entitlements from file", "args": [{"name": "path", "template": "filepaths"}] },
+    { "name": ["--deep"], "description": "Sign nested code" },
+    { "name": ["-R", "--check-requirement"], "description": "Check a requirement", "args": [{"name": "req"}] },
+    { "name": ["-D", "--detached"], "description": "Create detached signature", "args": [{"name": "path"}] },
+    { "name": ["-t", "--timestamp"], "description": "Use timestamp authority", "args": [{"name": "url"}] },
+    { "name": ["--prefix"], "description": "Designated requirement prefix", "args": [{"name": "prefix"}] },
+    { "name": ["-h", "--hosting"], "description": "Sign a hosting binary", "args": [{"name": "identity"}] },
+    { "name": ["-L", "--libraries"], "description": "Library signing mode" },
+    { "name": ["-X", "--resource-rules"], "description": "Use resource rules", "args": [{"name": "path"}] },
+    { "name": ["--generate-entitlement-der"], "description": "Generate DER entitlements" },
+    { "name": ["--keychain"], "description": "Specify keychain", "args": [{"name": "path"}] },
+    { "name": ["--strict"], "description": "Strict verification" },
+    { "name": ["-nv", "--no-verify"], "description": "Skip verification" },
+    { "name": ["-vv", "--verbose"], "description": "Verbose output" },
+    { "name": ["-vvv"], "description": "Very verbose" }
+  ],
+  "args": [
+    { "name": "path", "description": "File or bundle to sign", "isVariadic": true, "template": "filepaths" }
+  ]
+}

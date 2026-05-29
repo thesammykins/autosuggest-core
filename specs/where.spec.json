@@ -1,0 +1,15 @@
+{
+  "name": "where",
+  "description": "Locate files matching a search pattern (Windows, also Linux which)",
+  "options": [
+    { "name": ["/R"], "description": "Recursively search directories", "args": [{"name": "dir", "template": "folders"}] },
+    { "name": ["/Q"], "description": "Return only exit code (quiet)" },
+    { "name": ["/F"], "description": "Display results in file format" },
+    { "name": ["/T"], "description": "Display file size and date" },
+    { "name": ["/?"], "description": "Show help" }
+  ],
+  "args": [
+    { "name": "pattern", "description": "Search pattern (filename)" },
+    { "name": "dir", "description": "Directory to search", "isOptional": true, "template": "folders" }
+  ]
+}

@@ -5,7 +5,7 @@ This document maps the shipped data set to the coverage targets in
 "what does v1 actually cover". Counts are mechanical: one `*.spec.json` per
 command, one `*.rule.json` per correction rule (native rules included).
 
-- **Specs:** 82 (`specs/*.spec.json`)
+- **Specs:** 107 (`specs/*.spec.json`)
 - **Correction rules:** 15 (`rules/*.rule.json`; 2 native, 13 JSON)
 
 ## 1. Command specs by domain (PRODUCT.md §7 + 2026 additions)
@@ -17,17 +17,18 @@ command, one `*.rule.json` per correction rule (native rules included).
 | Process/system | `ps kill top killall env export which` (7) |
 | Network | `curl wget ssh scp ping` (5) |
 | Archives | `tar gzip gunzip zip unzip` (5) |
-| Dev/VCS | `git cargo npm docker make brew` plus `gh jq uv go swift` (11) |
+| Dev/VCS | `git cargo npm docker make brew gh jq uv go swift rustup rustc pip python3 node npx yarn dotnet cmake mvn` (20) |
 | Cloud/DevOps | `kubectl aws terraform` (3) |
-| macOS | `open diskutil xcrun defaults pbcopy mdfind` (6) |
-| Linux | `systemctl journalctl dpkg mount crontab` (5) |
+| **Windows** | `winget ipconfig reg robocopy taskkill shutdown where systeminfo netsh findstr diskpart` (11) |
+| **macOS** | `open diskutil xcrun defaults pbcopy mdfind xcodebuild codesign plutil lipo` (10) |
+| **Linux** | `systemctl journalctl dpkg mount crontab` (5) |
 | Package mgmt | `apt` (1) |
 | Editors/misc | `man echo date watch yes seq column ssh-keygen` (8) |
 
-Total: 82 specs. `git` (25+ subcommands), `swift` (6 subcommands with nested
-options), `systemctl` (25+ subcommands), `dpkg` (20+ subcommands), and
-`kubectl` (30+ subcommands) carry deep subcommand trees. All three major OS
-ecosystems (macOS, Linux, cross-platform) are covered.
+Total: 107 specs covering 11 OS/platform domains including Windows, macOS,
+and Linux ecosystems. Deep subcommand trees: `git` (25+), `swift` (6),
+`systemctl` (25+), `dpkg` (20+), `kubectl` (30+), `dotnet` (15+),
+`reg` (10+), `winget` (10+), `diskutil` (12+).
 
 ## 2. Completion mechanisms (SCHEMA.md §1) and their golden proof
 
@@ -121,7 +122,7 @@ a history window in the request. The history-store crate
 
 | Suite | File | Asserts |
 | --- | --- | --- |
-| Spec validation | `crates/core/tests/specs.rs` | all 82 specs parse + validate |
+| Spec validation | `crates/core/tests/specs.rs` | all 107 specs parse + validate |
 | Completion goldens | `crates/core/tests/golden_complete.rs` | 14 fixtures, exact ranked output |
 | Autosuggest goldens | `crates/core/tests/autosuggest.rs` | history suggestion fixtures |
 | Correction goldens | `crates/core/tests/golden_correct.rs` | 9 fixtures, exact ranked output |

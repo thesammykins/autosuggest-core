@@ -1,0 +1,20 @@
+{
+  "name": "ipconfig",
+  "description": "Display and manage IP network configuration (Windows)",
+  "options": [
+    { "name": ["/all"], "description": "Show full configuration for all adapters" },
+    { "name": ["/release"], "description": "Release the IP address", "args": [{"name": "adapter", "isOptional": true}] },
+    { "name": ["/renew"], "description": "Renew the IP address", "args": [{"name": "adapter", "isOptional": true}] },
+    { "name": ["/flushdns"], "description": "Flush the DNS resolver cache" },
+    { "name": ["/registerdns"], "description": "Refresh DHCP and re-register DNS" },
+    { "name": ["/displaydns"], "description": "Display the DNS resolver cache" },
+    { "name": ["/showclassid"], "description": "Show DHCP class ID", "args": [{"name": "adapter"}] },
+    { "name": ["/setclassid"], "description": "Set DHCP class ID", "args": [{"name": "adapter"}, {"name": "class-id"}] },
+    { "name": ["/renew6"], "description": "Renew IPv6 address", "args": [{"name": "adapter", "isOptional": true}] },
+    { "name": ["/release6"], "description": "Release IPv6 address", "args": [{"name": "adapter", "isOptional": true}] },
+    { "name": ["/help"], "description": "Show help" }
+  ],
+  "args": [
+    { "name": "adapter", "description": "Adapter name", "isOptional": true }
+  ]
+}

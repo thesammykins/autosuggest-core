@@ -1,0 +1,124 @@
+{
+  "name": "pip",
+  "description": "Python package installer and manager",
+  "requiresSubcommand": true,
+  "options": [
+    { "name": ["-h", "--help"], "description": "Show help" },
+    { "name": ["--version"], "description": "Show version" },
+    { "name": ["--timeout"], "description": "Connection timeout", "args": [{"name": "seconds"}] },
+    { "name": ["--proxy"], "description": "Proxy URL", "args": [{"name": "proxy"}] },
+    { "name": ["-q", "--quiet"], "description": "Less output" },
+    { "name": ["-v", "--verbose"], "description": "More output" },
+    { "name": ["--retries"], "description": "Retry count", "args": [{"name": "n"}] },
+    { "name": ["--trusted-host"], "description": "Trusted host", "args": [{"name": "host"}] },
+    { "name": ["--no-cache-dir"], "description": "Disable cache" },
+    { "name": ["-i", "--index-url"], "description": "Package index URL", "args": [{"name": "url"}] }
+  ],
+  "subcommands": [
+    {
+      "name": "install",
+      "description": "Install packages",
+      "args": [
+        { "name": "package", "description": "Package names", "isVariadic": true }
+      ],
+      "options": [
+        { "name": ["-r", "--requirement"], "description": "Install from requirements file", "args": [{"name": "file", "template": "filepaths"}] },
+        { "name": ["-e", "--editable"], "description": "Editable install", "args": [{"name": "path"}] },
+        { "name": ["-U", "--upgrade"], "description": "Upgrade packages" },
+        { "name": ["--user"], "description": "Install to user site-packages" },
+        { "name": ["--no-deps"], "description": "Skip dependency installation" },
+        { "name": ["--force-reinstall"], "description": "Force reinstall" },
+        { "name": ["--ignore-installed"], "description": "Ignore installed packages" },
+        { "name": ["--target"], "description": "Install to a target directory", "args": [{"name": "dir"}] },
+        { "name": ["--platform"], "description": "Platform compatibility filter", "args": [{"name": "platform"}] },
+        { "name": ["--python-version"], "description": "Python version", "args": [{"name": "version"}] },
+        { "name": ["--dry-run"], "description": "Don't actually install" },
+        { "name": ["--compile"], "description": "Compile Python files" }
+      ]
+    },
+    {
+      "name": "uninstall",
+      "description": "Uninstall packages",
+      "args": [
+        { "name": "package", "description": "Package names", "isVariadic": true }
+      ],
+      "options": [
+        { "name": ["-y", "--yes"], "description": "Don't ask for confirmation" },
+        { "name": ["--no-input"], "description": "Disable input" }
+      ]
+    },
+    {
+      "name": "list",
+      "description": "List installed packages",
+      "options": [
+        { "name": ["-o", "--outdated"], "description": "Show outdated packages" },
+        { "name": ["-u", "--uptodate"], "description": "Show up-to-date packages" },
+        { "name": ["--format"], "description": "Output format", "args": [{"name": "format", "suggestions": ["columns", "freeze", "json"]}] },
+        { "name": ["--not-required"], "description": "Packages not required by others" },
+        { "name": ["--user"], "description": "Only user packages" }
+      ]
+    },
+    {
+      "name": "show",
+      "description": "Show package details",
+      "args": [
+        { "name": "package", "description": "Package name" }
+      ],
+      "options": [
+        { "name": ["-f", "--files"], "description": "Show installed files" }
+      ]
+    },
+    {
+      "name": "freeze",
+      "description": "Output installed packages in requirements format",
+      "options": [
+        { "name": ["--all"], "description": "Include all packages (not just pip-managed)" },
+        { "name": ["--user"], "description": "Only user packages" },
+        { "name": ["--exclude-editable"], "description": "Exclude editable installs" },
+        { "name": ["--local"], "description": "Only local packages" },
+        { "name": ["--path"], "description": "Path to virtualenv", "args": [{"name": "path"}] }
+      ]
+    },
+    {
+      "name": "check",
+      "description": "Check installed packages for dependency conflicts"
+    },
+    {
+      "name": "search",
+      "description": "Search PyPI for packages",
+      "args": [
+        { "name": "query", "description": "Search query" }
+      ]
+    },
+    {
+      "name": "download",
+      "description": "Download packages (don't install)",
+      "args": [
+        { "name": "package", "description": "Package names", "isVariadic": true }
+      ],
+      "options": [
+        { "name": ["-d", "--dest"], "description": "Download destination", "args": [{"name": "dir"}] },
+        { "name": ["-r", "--requirement"], "description": "Download from requirements", "args": [{"name": "file"}] },
+        { "name": ["--platform"], "description": "Platform", "args": [{"name": "platform"}] },
+        { "name": ["--python-version"], "description": "Python version", "args": [{"name": "version"}] }
+      ]
+    },
+    {
+      "name": "cache",
+      "description": "Manage pip's cache",
+      "subcommands": [
+        { "name": "list", "description": "List cached packages" },
+        { "name": "info", "description": "Show cache info" },
+        { "name": "remove", "description": "Remove packages from cache", "args": [{"name": "pattern"}] },
+        { "name": "purge", "description": "Clear all cache" }
+      ]
+    },
+    {
+      "name": "completion",
+      "description": "Generate shell completion scripts",
+      "args": [
+        { "name": "shell", "description": "Shell type", "suggestions": ["bash", "zsh", "fish", "powershell"] }
+      ]
+    }
+  ]
+}

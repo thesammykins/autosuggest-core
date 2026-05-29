@@ -1,0 +1,90 @@
+{
+  "name": "diskpart",
+  "description": "Windows disk partitioning utility (Windows)",
+  "requiresSubcommand": true,
+  "subcommands": [
+    { "name": "list", "description": "List objects", "subcommands": [
+      { "name": "disk", "description": "List physical disks" },
+      { "name": "volume", "description": "List volumes" },
+      { "name": "partition", "description": "List partitions on selected disk" }
+    ]},
+    { "name": "select", "description": "Select an object", "subcommands": [
+      { "name": "disk", "description": "Select a disk by number", "args": [{"name": "n"}] },
+      { "name": "volume", "description": "Select a volume by number or letter", "args": [{"name": "n"}] },
+      { "name": "partition", "description": "Select a partition by number", "args": [{"name": "n"}] }
+    ]},
+    { "name": "clean", "description": "Remove all partitions from selected disk" },
+    { "name": "convert", "description": "Convert disk format", "subcommands": [
+      { "name": "gpt", "description": "Convert to GPT partition table" },
+      { "name": "mbr", "description": "Convert to MBR partition table" },
+      { "name": "basic", "description": "Convert to basic disk" },
+      { "name": "dynamic", "description": "Convert to dynamic disk" }
+    ]},
+    { "name": "create", "description": "Create an object", "subcommands": [
+      { "name": "partition", "description": "Create a partition", "subcommands": [
+        { "name": "primary", "description": "Create primary partition", "options": [
+          { "name": ["size"], "description": "Partition size (MB)", "args": [{"name": "n"}] },
+          { "name": ["offset"], "description": "Partition offset", "args": [{"name": "n"}] }
+        ]},
+        { "name": "extended", "description": "Create extended partition" },
+        { "name": "logical", "description": "Create logical drive" }
+      ]},
+      { "name": "volume", "description": "Create a volume", "subcommands": [
+        { "name": "simple", "description": "Create simple volume", "options": [
+          { "name": ["size"], "description": "Volume size (MB)", "args": [{"name": "n"}] },
+          { "name": ["disk"], "description": "Disk number", "args": [{"name": "n"}] }
+        ]}
+      ]}
+    ]},
+    { "name": "delete", "description": "Delete an object", "subcommands": [
+      { "name": "partition", "description": "Delete selected partition" },
+      { "name": "volume", "description": "Delete selected volume" },
+      { "name": "disk", "description": "Delete a missing disk" }
+    ]},
+    { "name": "format", "description": "Format a volume", "options": [
+      { "name": ["fs"], "description": "Filesystem type", "args": [{"name": "type", "suggestions": ["NTFS", "FAT32", "exFAT", "ReFS"]}] },
+      { "name": ["label"], "description": "Volume label", "args": [{"name": "name"}] },
+      { "name": ["quick"], "description": "Quick format" }
+    ]},
+    { "name": "assign", "description": "Assign a drive letter or mount point", "options": [
+      { "name": ["letter"], "description": "Drive letter", "args": [{"name": "letter"}] },
+      { "name": ["mount"], "description": "Mount point path", "args": [{"name": "path"}] }
+    ]},
+    { "name": "remove", "description": "Remove a drive letter or mount point", "options": [
+      { "name": ["letter"], "description": "Drive letter to remove", "args": [{"name": "letter"}] },
+      { "name": ["all"], "description": "Remove all drive letters" }
+    ]},
+    { "name": "extend", "description": "Extend a volume", "options": [
+      { "name": ["size"], "description": "Size to add (MB)", "args": [{"name": "n"}] }
+    ]},
+    { "name": "shrink", "description": "Shrink a volume", "options": [
+      { "name": ["desired"], "description": "Desired shrink amount (MB)", "args": [{"name": "n"}] },
+      { "name": ["minimum"], "description": "Minimum shrink amount", "args": [{"name": "n"}] }
+    ]},
+    { "name": "detail", "description": "Show details", "subcommands": [
+      { "name": "disk", "description": "Show selected disk details" },
+      { "name": "volume", "description": "Show selected volume details" },
+      { "name": "partition", "description": "Show selected partition details" }
+    ]},
+    { "name": "attributes", "description": "Manage attributes", "subcommands": [
+      { "name": "volume", "description": "Show volume attributes", "options": [
+        { "name": ["set"], "description": "Set attribute", "args": [{"name": "attr"}] },
+        { "name": ["clear"], "description": "Clear attribute", "args": [{"name": "attr"}] }
+      ]},
+      { "name": "disk", "description": "Show disk attributes", "options": [
+        { "name": ["set"], "description": "Set attribute", "args": [{"name": "attr"}] },
+        { "name": ["clear"], "description": "Clear attribute", "args": [{"name": "attr"}] }
+      ]}
+    ]},
+    { "name": "online", "description": "Set object online", "subcommands": [
+      { "name": "disk", "description": "Set disk online" },
+      { "name": "volume", "description": "Set volume online" }
+    ]},
+    { "name": "offline", "description": "Set object offline", "subcommands": [
+      { "name": "disk", "description": "Set disk offline" },
+      { "name": "volume", "description": "Set volume offline" }
+    ]},
+    { "name": "help", "description": "Show help", "args": [{"name": "command", "isOptional": true}] },
+    { "name": "exit", "description": "Exit diskpart" }
+  ]
+}

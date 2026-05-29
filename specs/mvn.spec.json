@@ -1,0 +1,49 @@
+{
+  "name": "mvn",
+  "description": "Apache Maven — Java project build and dependency management",
+  "options": [
+    { "name": ["-h", "--help"], "description": "Show help" },
+    { "name": ["-v", "--version"], "description": "Show version" },
+    { "name": ["-B", "--batch-mode"], "description": "Run in non-interactive batch mode" },
+    { "name": ["-X", "--debug"], "description": "Enable debug output" },
+    { "name": ["-q", "--quiet"], "description": "Quiet output" },
+    { "name": ["-o", "--offline"], "description": "Offline mode" },
+    { "name": ["-P", "--activate-profiles"], "description": "Activate build profiles", "args": [{"name": "profiles"}] },
+    { "name": ["-pl", "--projects"], "description": "Build specific projects", "args": [{"name": "list"}] },
+    { "name": ["-rf", "--resume-from"], "description": "Resume from a project", "args": [{"name": "project"}] },
+    { "name": ["-am", "--also-make"], "description": "Build dependencies too" },
+    { "name": ["-amd", "--also-make-dependents"], "description": "Build dependents too" },
+    { "name": ["-D"], "description": "Define a system property", "args": [{"name": "key=value"}] },
+    { "name": ["-U", "--update-snapshots"], "description": "Force update snapshots" },
+    { "name": ["-f", "--file"], "description": "Use alternate POM file", "args": [{"name": "path", "template": "filepaths"}] },
+    { "name": ["-s", "--settings"], "description": "Alternate settings file", "args": [{"name": "path", "template": "filepaths"}] },
+    { "name": ["-gs", "--global-settings"], "description": "Alternate global settings file", "args": [{"name": "path"}] },
+    { "name": ["-T"], "description": "Thread count for parallel build", "args": [{"name": "threads"}] },
+    { "name": ["--fail-at-end"], "description": "Fail build at the end" },
+    { "name": ["--fail-never"], "description": "Never fail the build" },
+    { "name": ["--no-transfer-progress"], "description": "Suppress download progress" },
+    { "name": ["--color"], "description": "Color output", "args": [{"name": "when", "suggestions": ["always", "auto", "never"]}] },
+    { "name": ["-N", "--non-recursive"], "description": "Don't recurse into subprojects" }
+  ],
+  "args": [
+    { "name": "goals", "description": "Build goals and phases", "isVariadic": true, "suggestions": [
+      {"name": ["clean"], "priority": 80, "description": "Clean build artifacts"},
+      {"name": ["compile"], "priority": 80, "description": "Compile source code"},
+      {"name": ["test"], "priority": 80, "description": "Run tests"},
+      {"name": ["package"], "priority": 80, "description": "Create package (jar/war)"},
+      {"name": ["verify"], "priority": 80, "description": "Verify package integrity"},
+      {"name": ["install"], "priority": 80, "description": "Install to local repository"},
+      {"name": ["deploy"], "priority": 80, "description": "Deploy to remote repository"},
+      {"name": ["site"], "priority": 70, "description": "Generate project site"},
+      {"name": ["test-compile"], "priority": 70, "description": "Compile test sources"},
+      {"name": ["integration-test"], "priority": 70, "description": "Run integration tests"},
+      {"name": ["dependency:tree"], "priority": 60, "description": "Show dependency tree"},
+      {"name": ["dependency:resolve"], "priority": 60, "description": "Resolve dependencies"},
+      {"name": ["dependency:copy-dependencies"], "priority": 60, "description": "Copy dependencies to output"},
+      {"name": ["versions:display-dependency-updates"], "priority": 50, "description": "Show dependency updates"},
+      {"name": ["versions:display-plugin-updates"], "priority": 50, "description": "Show plugin updates"},
+      {"name": ["help:describe"], "priority": 50, "description": "Describe a plugin goal"},
+      {"name": ["surefire:test"], "priority": 60, "description": "Run surefire tests with options"}
+    ]}
+  ]
+}

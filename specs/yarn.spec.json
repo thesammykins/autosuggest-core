@@ -1,0 +1,157 @@
+{
+  "name": "yarn",
+  "description": "Fast, reliable JavaScript package manager",
+  "requiresSubcommand": true,
+  "options": [
+    { "name": ["-h", "--help"], "description": "Show help" },
+    { "name": ["-v", "--version"], "description": "Show version" },
+    { "name": ["--cwd"], "description": "Working directory", "args": [{"name": "dir"}] },
+    { "name": ["--cache-folder"], "description": "Cache directory", "args": [{"name": "path"}] },
+    { "name": ["--frozen-lockfile"], "description": "Don't update lockfile" },
+    { "name": ["--prod", "--production"], "description": "Skip dev dependencies" },
+    { "name": ["--silent"], "description": "Suppress output" },
+    { "name": ["--non-interactive"], "description": "Non-interactive mode" },
+    { "name": ["--offline"], "description": "Offline mode" }
+  ],
+  "subcommands": [
+    {
+      "name": "install",
+      "description": "Install project dependencies",
+      "options": [
+        { "name": ["--frozen-lockfile"], "description": "Fail if lockfile needs update" },
+        { "name": ["--immutable"], "description": "Don't modify lockfile" }
+      ]
+    },
+    {
+      "name": "add",
+      "description": "Add a package dependency",
+      "args": [
+        { "name": "package", "description": "Package name(s)", "isVariadic": true }
+      ],
+      "options": [
+        { "name": ["-D", "--dev"], "description": "Dev dependency" },
+        { "name": ["-O", "--optional"], "description": "Optional dependency" },
+        { "name": ["-E", "--exact"], "description": "Exact version install" },
+        { "name": ["-W", "--ignore-workspace-root-check"], "description": "Allow install at workspace root" }
+      ]
+    },
+    {
+      "name": "remove",
+      "description": "Remove a package dependency",
+      "args": [
+        { "name": "package", "description": "Package name(s)", "isVariadic": true }
+      ]
+    },
+    {
+      "name": "upgrade",
+      "description": "Upgrade package dependencies",
+      "args": [
+        { "name": "package", "description": "Package name(s)", "isOptional": true, "isVariadic": true }
+      ],
+      "options": [
+        { "name": ["-L", "--latest"], "description": "Upgrade to latest" },
+        { "name": ["-S", "--scope"], "description": "Upgrade by scope", "args": [{"name": "scope"}] }
+      ]
+    },
+    {
+      "name": "run",
+      "description": "Run a script defined in package.json",
+      "args": [
+        { "name": "script", "description": "Script name" },
+        { "name": "args", "description": "Script arguments", "isOptional": true, "isVariadic": true }
+      ],
+      "options": [
+        { "name": ["-T", "--trace"], "description": "Trace script execution" }
+      ]
+    },
+    {
+      "name": "global",
+      "description": "Manage global packages",
+      "subcommands": [
+        { "name": "add", "description": "Install globally", "args": [{"name": "package", "isVariadic": true}] },
+        { "name": "remove", "description": "Remove globally", "args": [{"name": "package", "isVariadic": true}] },
+        { "name": "upgrade", "description": "Upgrade globally", "args": [{"name": "package", "isOptional": true, "isVariadic": true}] },
+        { "name": "list", "description": "List global packages" },
+        { "name": "bin", "description": "Show global bin directory" }
+      ]
+    },
+    {
+      "name": "workspace",
+      "description": "Run a command in a specific workspace",
+      "args": [
+        { "name": "name", "description": "Workspace name" },
+        { "name": "command", "description": "Command to run" }
+      ]
+    },
+    {
+      "name": "workspaces",
+      "description": "Workspace management",
+      "subcommands": [
+        { "name": "list", "description": "List workspaces" },
+        { "name": "info", "description": "Show workspace info" },
+        { "name": "run", "description": "Run command in all workspaces", "args": [{"name": "command"}] }
+      ]
+    },
+    {
+      "name": "init",
+      "description": "Initialize a new package",
+      "args": [
+        { "name": "name", "description": "Package name", "isOptional": true }
+      ]
+    },
+    {
+      "name": "publish",
+      "description": "Publish a package",
+      "options": [
+        { "name": ["--access"], "description": "Package access", "args": [{"name": "access", "suggestions": ["public", "restricted"]}] },
+        { "name": ["--tag"], "description": "Publish tag", "args": [{"name": "tag"}] },
+        { "name": ["--new-version"], "description": "Version to publish", "args": [{"name": "version"}] }
+      ]
+    },
+    {
+      "name": "link",
+      "description": "Link a local package",
+      "args": [
+        { "name": "package", "description": "Package name to link", "isOptional": true }
+      ]
+    },
+    {
+      "name": "unlink",
+      "description": "Unlink a local package",
+      "args": [
+        { "name": "package", "description": "Package name", "isOptional": true }
+      ]
+    },
+    {
+      "name": "info",
+      "description": "Show package info",
+      "args": [
+        { "name": "package", "description": "Package name" }
+      ]
+    },
+    {
+      "name": "outdated",
+      "description": "Show outdated packages"
+    },
+    {
+      "name": "audit",
+      "description": "Audit for security vulnerabilities"
+    },
+    {
+      "name": "why",
+      "description": "Why a package is installed",
+      "args": [
+        { "name": "package", "description": "Package name" }
+      ]
+    },
+    {
+      "name": "cache",
+      "description": "Cache management",
+      "subcommands": [
+        { "name": "clean", "description": "Clean cache" },
+        { "name": "list", "description": "List cached files" },
+        { "name": "dir", "description": "Show cache directory" }
+      ]
+    }
+  ]
+}

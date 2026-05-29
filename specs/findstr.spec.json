@@ -1,0 +1,29 @@
+{
+  "name": "findstr",
+  "description": "Search for strings in files (Windows grep)",
+  "options": [
+    { "name": ["/R"], "description": "Use regular expressions" },
+    { "name": ["/S"], "description": "Recursive search in subdirectories" },
+    { "name": ["/I"], "description": "Case-insensitive search" },
+    { "name": ["/C"], "description": "Use literal search string", "args": [{"name": "text"}] },
+    { "name": ["/N"], "description": "Display line numbers" },
+    { "name": ["/M"], "description": "Print only filenames if file contains a match" },
+    { "name": ["/O"], "description": "Print character offset before each line" },
+    { "name": ["/P"], "description": "Skip files with non-printable characters" },
+    { "name": ["/OFFLINE"], "description": "Process offline files" },
+    { "name": ["/A"], "description": "Specify color attributes", "args": [{"name": "attr"}] },
+    { "name": ["/F"], "description": "Read file list from a file", "args": [{"name": "file", "template": "filepaths"}] },
+    { "name": ["/D"], "description": "Semicolon-delimited directories to search", "args": [{"name": "dirs"}] },
+    { "name": ["/G"], "description": "Get search strings from a file", "args": [{"name": "file", "template": "filepaths"}] },
+    { "name": ["/B"], "description": "Match pattern at beginning of line" },
+    { "name": ["/E"], "description": "Match pattern at end of line" },
+    { "name": ["/L"], "description": "Literal search (no regex, default)" },
+    { "name": ["/V"], "description": "Print lines NOT containing a match" },
+    { "name": ["/X"], "description": "Print lines matching exactly" },
+    { "name": ["/?", "--help"], "description": "Show help" }
+  ],
+  "args": [
+    { "name": "string", "description": "Text to search for" },
+    { "name": "files", "description": "File(s) to search", "isOptional": true, "isVariadic": true, "template": "filepaths" }
+  ]
+}

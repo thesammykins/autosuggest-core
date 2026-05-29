@@ -1,0 +1,140 @@
+{
+  "name": "rustup",
+  "description": "Rust toolchain installer and manager",
+  "requiresSubcommand": true,
+  "options": [
+    { "name": ["-h", "--help"], "description": "Show help" },
+    { "name": ["-v", "--verbose"], "description": "Verbose output" },
+    { "name": ["--version"], "description": "Show version" }
+  ],
+  "subcommands": [
+    {
+      "name": "show",
+      "description": "Show installed toolchains and active toolchain"
+    },
+    {
+      "name": "install",
+      "description": "Install a specific Rust toolchain",
+      "args": [
+        { "name": "toolchain", "description": "Toolchain name (e.g. stable, nightly, 1.80.0)" }
+      ],
+      "options": [
+        { "name": ["--profile"], "description": "Installation profile", "args": [{"name": "profile", "suggestions": ["minimal", "default", "complete"]}] },
+        { "name": ["--component"], "description": "Additional component", "args": [{"name": "component"}] },
+        { "name": ["--target"], "description": "Additional target", "args": [{"name": "target"}] }
+      ]
+    },
+    {
+      "name": "update",
+      "description": "Update toolchains and rustup itself",
+      "args": [
+        { "name": "toolchain", "description": "Toolchain to update", "isOptional": true }
+      ],
+      "options": [
+        { "name": ["--no-self-update"], "description": "Don't update rustup itself" }
+      ]
+    },
+    {
+      "name": "default",
+      "description": "Set the default toolchain",
+      "args": [
+        { "name": "toolchain", "description": "Toolchain to set as default" }
+      ]
+    },
+    {
+      "name": "toolchain",
+      "description": "Manage Rust toolchains",
+      "subcommands": [
+        { "name": "list", "description": "List installed toolchains" },
+        { "name": "install", "description": "Install a toolchain", "args": [{"name": "toolchain"}] },
+        { "name": "uninstall", "description": "Uninstall a toolchain", "args": [{"name": "toolchain"}] },
+        { "name": "link", "description": "Link a custom toolchain", "args": [{"name": "name"}, {"name": "path"}] }
+      ]
+    },
+    {
+      "name": "target",
+      "description": "Manage Rust compilation targets",
+      "subcommands": [
+        { "name": "list", "description": "List available targets", "options": [
+          { "name": ["--installed"], "description": "Show only installed targets" }
+        ]},
+        { "name": "add", "description": "Add a compilation target", "args": [{"name": "target"}] },
+        { "name": "remove", "description": "Remove a compilation target", "args": [{"name": "target"}] }
+      ]
+    },
+    {
+      "name": "component",
+      "description": "Manage Rust components",
+      "subcommands": [
+        { "name": "list", "description": "List available components", "options": [
+          { "name": ["--installed"], "description": "Show only installed components" },
+          { "name": ["--toolchain"], "description": "Toolchain to inspect", "args": [{"name": "name"}] }
+        ]},
+        { "name": "add", "description": "Add a component", "args": [{"name": "component"}], "options": [
+          { "name": ["--toolchain"], "description": "Target toolchain", "args": [{"name": "name"}] }
+        ]},
+        { "name": "remove", "description": "Remove a component", "args": [{"name": "component"}], "options": [
+          { "name": ["--toolchain"], "description": "Target toolchain", "args": [{"name": "name"}] }
+        ]}
+      ]
+    },
+    {
+      "name": "override",
+      "description": "Manage toolchain overrides",
+      "subcommands": [
+        { "name": "list", "description": "List directory overrides" },
+        { "name": "set", "description": "Set a directory override", "args": [{"name": "toolchain"}], "options": [
+          { "name": ["--path"], "description": "Directory path", "args": [{"name": "dir"}] }
+        ]},
+        { "name": "unset", "description": "Remove a directory override", "options": [
+          { "name": ["--path"], "description": "Directory path", "args": [{"name": "dir"}] },
+          { "name": ["--nonexistent"], "description": "Remove all overrides for nonexistent dirs" }
+        ]}
+      ]
+    },
+    {
+      "name": "completions",
+      "description": "Generate shell completion scripts",
+      "args": [
+        { "name": "shell", "description": "Shell type", "suggestions": ["bash", "zsh", "fish", "powershell"] }
+      ],
+      "options": [
+        { "name": ["--command"], "description": "Generate completions for a command (cargo, rustup)", "args": [{"name": "command", "suggestions": ["cargo", "rustup"]}] }
+      ]
+    },
+    {
+      "name": "self",
+      "description": "Manage rustup installation",
+      "subcommands": [
+        { "name": "update", "description": "Update rustup itself" },
+        { "name": "uninstall", "description": "Uninstall rustup" },
+        { "name": "upgrade-data", "description": "Upgrade rustup data format" }
+      ]
+    },
+    {
+      "name": "doc",
+      "description": "Open Rust documentation",
+      "options": [
+        { "name": ["--book"], "description": "The Rust Programming Language book" },
+        { "name": ["--std"], "description": "Standard library API reference" },
+        { "name": ["--reference"], "description": "The Rust Reference" },
+        { "name": ["--cargo"], "description": "The Cargo Book" },
+        { "name": ["--rustdoc"], "description": "The rustdoc book" },
+        { "name": ["--rustc"], "description": "The rustc book" },
+        { "name": ["--edition-guide"], "description": "The Edition Guide" },
+        { "name": ["--nomicon"], "description": "The Rustonomicon" },
+        { "name": ["--unstable-book"], "description": "The Unstable Book" }
+      ],
+      "args": [
+        { "name": "topic", "description": "Documentation topic", "isOptional": true }
+      ]
+    },
+    {
+      "name": "which",
+      "description": "Show the path to the active toolchain binary",
+      "args": [
+        { "name": "command", "description": "Command to locate", "suggestions": ["cargo", "rustc", "rustdoc", "rustfmt", "clippy-driver"] }
+      ]
+    }
+  ]
+}

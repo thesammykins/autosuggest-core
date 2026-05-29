@@ -1,0 +1,23 @@
+{
+  "name": "shutdown",
+  "description": "Shut down, restart, or log off the system (Windows/Linux)",
+  "options": [
+    { "name": ["/s"], "description": "Shut down the computer" },
+    { "name": ["/r"], "description": "Restart the computer" },
+    { "name": ["/l"], "description": "Log off the current user" },
+    { "name": ["/h"], "description": "Hibernate the computer" },
+    { "name": ["/hybrid"], "description": "Hybrid shutdown (fast startup)" },
+    { "name": ["/fw"], "description": "Boot to firmware UI" },
+    { "name": ["/p"], "description": "Shut down with no warning or timeout" },
+    { "name": ["/a"], "description": "Abort a pending shutdown" },
+    { "name": ["/t"], "description": "Time until shutdown (seconds)", "args": [{"name": "seconds"}] },
+    { "name": ["/c"], "description": "Comment for the shutdown", "args": [{"name": "comment"}] },
+    { "name": ["/d"], "description": "Reason code", "args": [{"name": "reason"}] },
+    { "name": ["/f"], "description": "Force close applications" },
+    { "name": ["/m"], "description": "Remote target computer", "args": [{"name": "computer"}] },
+    { "name": ["/e"], "description": "Document reason for shutdown" },
+    { "name": ["/o"], "description": "Go to advanced boot options" },
+    { "name": ["/i"], "description": "Display the remote shutdown GUI" },
+    { "name": ["/?"], "description": "Show help" }
+  ]
+}

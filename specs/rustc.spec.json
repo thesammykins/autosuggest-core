@@ -1,0 +1,37 @@
+{
+  "name": "rustc",
+  "description": "Rust programming language compiler",
+  "options": [
+    { "name": ["-o", "--out-dir"], "description": "Output directory for compiled artifacts", "args": [{"name": "dir"}] },
+    { "name": ["--crate-type"], "description": "Crate type to build", "args": [{"name": "type", "suggestions": ["bin", "lib", "rlib", "dylib", "cdylib", "staticlib", "proc-macro"]}] },
+    { "name": ["--crate-name"], "description": "Crate name", "args": [{"name": "name"}] },
+    { "name": ["--edition"], "description": "Rust edition", "args": [{"name": "edition", "suggestions": ["2015", "2018", "2021", "2024"]}] },
+    { "name": ["-g", "--debuginfo"], "description": "Include debug information" },
+    { "name": ["-O", "--optimize"], "description": "Optimize the output" },
+    { "name": ["-C", "--codegen"], "description": "Codegen options", "args": [{"name": "opt=val"}] },
+    { "name": ["-L", "--library-path"], "description": "Library search path", "args": [{"name": "path"}] },
+    { "name": ["-l", "--extern"], "description": "Link to an external crate", "args": [{"name": "name"}] },
+    { "name": ["--target"], "description": "Target triple", "args": [{"name": "triple"}] },
+    { "name": ["--emit"], "description": "Emit specified output types", "args": [{"name": "types"}] },
+    { "name": ["--print"], "description": "Print compiler info", "args": [{"name": "info"}] },
+    { "name": ["-Z"], "description": "Unstable compiler flags", "args": [{"name": "flag"}] },
+    { "name": ["--cfg"], "description": "Configuration flag", "args": [{"name": "spec"}] },
+    { "name": ["--check-cfg"], "description": "Expected configuration flags", "args": [{"name": "spec"}] },
+    { "name": ["--error-format"], "description": "Error output format", "args": [{"name": "format", "suggestions": ["human", "json", "short"]}] },
+    { "name": ["--cap-lints"], "description": "Cap lint level", "args": [{"name": "level", "suggestions": ["allow", "warn", "deny", "forbid"]}] },
+    { "name": ["--color"], "description": "Color output", "args": [{"name": "when", "suggestions": ["auto", "always", "never"]}] },
+    { "name": ["-A"], "description": "Allow lint", "args": [{"name": "lint"}] },
+    { "name": ["-W"], "description": "Warn about lint", "args": [{"name": "lint"}] },
+    { "name": ["-D"], "description": "Deny lint", "args": [{"name": "lint"}] },
+    { "name": ["-F"], "description": "Forbid lint", "args": [{"name": "lint"}] },
+    { "name": ["-v", "--version"], "description": "Show version" },
+    { "name": ["-h", "--help"], "description": "Show help" },
+    { "name": ["--explain"], "description": "Explain an error code", "args": [{"name": "code"}] },
+    { "name": ["--remap-path-prefix"], "description": "Remap source path prefix", "args": [{"name": "from=to"}] },
+    { "name": ["-Ztime-passes"], "description": "Show compilation pass timing" },
+    { "name": ["-Zself-profile"], "description": "Enable self-profiling" }
+  ],
+  "args": [
+    { "name": "file", "description": "Rust source file", "template": "filepaths" }
+  ]
+}

@@ -1,0 +1,35 @@
+{
+  "name": ["python3", "python"],
+  "description": "Python programming language interpreter",
+  "options": [
+    { "name": ["-V", "--version"], "description": "Show Python version" },
+    { "name": ["-c"], "description": "Execute a Python command string", "args": [{"name": "command"}] },
+    { "name": ["-m"], "description": "Run library module as a script", "args": [{"name": "module"}] },
+    { "name": ["-i"], "description": "Interactive mode after script execution" },
+    { "name": ["-B"], "description": "Don't write .pyc files" },
+    { "name": ["-b"], "description": "Issue warnings about str/bytes comparison" },
+    { "name": ["-d"], "description": "Debug output from parser" },
+    { "name": ["-E"], "description": "Ignore PYTHON* environment variables" },
+    { "name": ["-h"], "description": "Show help" },
+    { "name": ["-I"], "description": "Isolated mode" },
+    { "name": ["-O"], "description": "Basic optimizations" },
+    { "name": ["-OO"], "description": "More optimizations (strip docstrings)" },
+    { "name": ["-P"], "description": "Safe path mode" },
+    { "name": ["-q"], "description": "Don't show copyright/version in interactive mode" },
+    { "name": ["-s"], "description": "Don't add user site directory" },
+    { "name": ["-S"], "description": "Don't import site module on startup" },
+    { "name": ["-u"], "description": "Unbuffered stdout/stderr" },
+    { "name": ["-v"], "description": "Verbose (trace import statements)" },
+    { "name": ["-W"], "description": "Warning control", "args": [{"name": "arg"}] },
+    { "name": ["-x"], "description": "Skip first line of source" },
+    { "name": ["-X"], "description": "Implementation-specific option", "args": [{"name": "opt"}] },
+    { "name": ["--check-hash-based-pycs"], "description": "Hash-based .pyc validation", "args": [{"name": "mode", "suggestions": ["default", "always", "never"]}] }
+  ],
+  "args": [
+    { "name": "script", "description": "Script file to run", "isOptional": true, "template": "filepaths" },
+    { "name": "args", "description": "Script arguments", "isOptional": true, "isVariadic": true }
+  ],
+  "parserDirectives": {
+    "optionsMustPrecedeArguments": true
+  }
+}

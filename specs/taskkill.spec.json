@@ -1,0 +1,15 @@
+{
+  "name": "taskkill",
+  "description": "Terminate processes by PID or name (Windows)",
+  "options": [
+    { "name": ["/PID"], "description": "Process ID to terminate", "args": [{"name": "pid"}] },
+    { "name": ["/IM"], "description": "Image name to terminate", "args": [{"name": "name"}] },
+    { "name": ["/F"], "description": "Forcefully terminate" },
+    { "name": ["/T"], "description": "Terminate child processes" },
+    { "name": ["/FI"], "description": "Filter processes by criteria", "args": [{"name": "filter"}] },
+    { "name": ["/S"], "description": "Remote system", "args": [{"name": "hostname"}] },
+    { "name": ["/U"], "description": "User account", "args": [{"name": "domain\\user"}] },
+    { "name": ["/P"], "description": "Password", "args": [{"name": "password"}] },
+    { "name": ["/?"], "description": "Show help" }
+  ]
+}

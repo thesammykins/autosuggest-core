@@ -1,0 +1,71 @@
+{
+  "name": "lipo",
+  "description": "Create and inspect universal (multi-architecture) Mach-O binaries (macOS)",
+  "requiresSubcommand": true,
+  "subcommands": [
+    {
+      "name": "create",
+      "description": "Create a universal binary from multiple arch-specific files",
+      "args": [
+        { "name": "files", "description": "Input binary files", "isVariadic": true, "template": "filepaths" }
+      ],
+      "options": [
+        { "name": ["-output"], "description": "Output file", "args": [{"name": "path"}] },
+        { "name": ["-arch"], "description": "Specify architecture for input", "args": [{"name": "arch"}, {"name": "file"}] }
+      ]
+    },
+    {
+      "name": "extract",
+      "description": "Extract a specific architecture from a universal binary",
+      "args": [
+        { "name": "file", "description": "Universal binary", "template": "filepaths" }
+      ],
+      "options": [
+        { "name": ["-arch"], "description": "Architecture to extract", "args": [{"name": "arch", "suggestions": ["arm64", "x86_64", "armv7", "i386"]}] },
+        { "name": ["-output"], "description": "Output file", "args": [{"name": "path"}] }
+      ]
+    },
+    {
+      "name": "info",
+      "description": "Display architectures in a binary",
+      "args": [
+        { "name": "file", "description": "Binary file", "template": "filepaths" }
+      ],
+      "options": [
+        { "name": ["-detailed"], "description": "Show detailed info" }
+      ]
+    },
+    {
+      "name": "thin",
+      "description": "Thin a universal binary to a single architecture",
+      "args": [
+        { "name": "file", "description": "Universal binary", "template": "filepaths" }
+      ],
+      "options": [
+        { "name": ["-arch"], "description": "Target architecture", "args": [{"name": "arch", "suggestions": ["arm64", "x86_64"]}] },
+        { "name": ["-output"], "description": "Output file", "args": [{"name": "path"}] }
+      ]
+    },
+    {
+      "name": "remove",
+      "description": "Remove an architecture from a universal binary",
+      "args": [
+        { "name": "file", "description": "Universal binary", "template": "filepaths" }
+      ],
+      "options": [
+        { "name": ["-arch"], "description": "Architecture to remove", "args": [{"name": "arch"}] },
+        { "name": ["-output"], "description": "Output file", "args": [{"name": "path"}] }
+      ]
+    },
+    {
+      "name": "verify",
+      "description": "Verify a binary is a valid universal binary",
+      "args": [
+        { "name": "file", "description": "Binary to verify", "template": "filepaths" }
+      ],
+      "options": [
+        { "name": ["-arch"], "description": "Check for a specific architecture", "args": [{"name": "arch"}] }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,106 @@
+{
+  "name": "plutil",
+  "description": "Convert and manipulate property list files (macOS)",
+  "requiresSubcommand": true,
+  "options": [
+    { "name": ["-h", "--help"], "description": "Show help" },
+    { "name": ["--version"], "description": "Show version" }
+  ],
+  "subcommands": [
+    {
+      "name": "convert",
+      "description": "Convert plist format",
+      "args": [
+        { "name": "file", "description": "File to convert", "template": "filepaths" }
+      ],
+      "options": [
+        { "name": ["-o", "--output"], "description": "Output file", "args": [{"name": "path"}] },
+        { "name": ["-f", "--format"], "description": "Output format", "args": [{"name": "format", "suggestions": ["xml1", "binary1", "json", "swift", "objc"]}] },
+        { "name": ["-e", "--extension"], "description": "File extension for output", "args": [{"name": "ext"}] }
+      ]
+    },
+    {
+      "name": "merge",
+      "description": "Merge plists",
+      "args": [
+        { "name": "files", "description": "Files to merge", "isVariadic": true, "template": "filepaths" }
+      ],
+      "options": [
+        { "name": ["-o", "--output"], "description": "Output file", "args": [{"name": "path"}] },
+        { "name": ["-s", "--sort"], "description": "Sort keys" }
+      ]
+    },
+    {
+      "name": "lint",
+      "description": "Check plist file for syntax errors",
+      "args": [
+        { "name": "file", "description": "File to lint", "template": "filepaths" }
+      ],
+      "options": [
+        { "name": ["-s", "--silent"], "description": "Only report errors" }
+      ]
+    },
+    {
+      "name": "publish",
+      "description": "Publish a plist (deprecated)",
+      "args": [
+        { "name": "file", "description": "File to publish", "template": "filepaths" }
+      ]
+    },
+    {
+      "name": "create",
+      "description": "Create a plist from key-value pairs",
+      "args": [
+        { "name": "file", "description": "Output file", "template": "filepaths" }
+      ],
+      "options": [
+        { "name": ["-r", "--root"], "description": "Root type", "args": [{"name": "type", "suggestions": ["dict", "array"]}] }
+      ]
+    },
+    {
+      "name": "insert",
+      "description": "Insert a value into a plist",
+      "args": [
+        { "name": "file", "description": "Plist file", "template": "filepaths" },
+        { "name": "keypath", "description": "Key path" },
+        { "name": "value", "description": "Value to insert", "isOptional": true }
+      ],
+      "options": [
+        { "name": ["-t", "--type"], "description": "Value type", "args": [{"name": "type", "suggestions": ["string", "bool", "int", "float", "dict", "array", "data", "date"]}] },
+        { "name": ["-j", "--json"], "description": "Parse value as JSON" }
+      ]
+    },
+    {
+      "name": "replace",
+      "description": "Replace a value in a plist",
+      "args": [
+        { "name": "file", "description": "Plist file", "template": "filepaths" },
+        { "name": "keypath", "description": "Key path" },
+        { "name": "value", "description": "New value", "isOptional": true }
+      ],
+      "options": [
+        { "name": ["-t", "--type"], "description": "Value type", "args": [{"name": "type", "suggestions": ["string", "bool", "int", "float", "dict", "array", "data", "date"]}] },
+        { "name": ["-j", "--json"], "description": "Parse value as JSON" }
+      ]
+    },
+    {
+      "name": "remove",
+      "description": "Remove a value from a plist",
+      "args": [
+        { "name": "file", "description": "Plist file", "template": "filepaths" },
+        { "name": "keypath", "description": "Key path to remove" }
+      ]
+    },
+    {
+      "name": "extract",
+      "description": "Extract a value from a plist",
+      "args": [
+        { "name": "file", "description": "Plist file", "template": "filepaths" },
+        { "name": "keypath", "description": "Key path to extract" }
+      ],
+      "options": [
+        { "name": ["-r", "--raw"], "description": "Raw output without quotes" }
+      ]
+    }
+  ]
+}

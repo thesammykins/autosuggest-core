@@ -1,0 +1,22 @@
+{
+  "name": "npx",
+  "description": "Execute npm packages from the registry without installing them",
+  "options": [
+    { "name": ["-p", "--package"], "description": "Specify package to install", "args": [{"name": "package"}] },
+    { "name": ["-c", "--call"], "description": "Execute a command string", "args": [{"name": "script"}] },
+    { "name": ["-y", "--yes"], "description": "Skip confirmation prompt" },
+    { "name": ["-q", "--quiet"], "description": "Suppress output" },
+    { "name": ["--no-install"], "description": "Only run locally installed packages" },
+    { "name": ["--cache"], "description": "Cache directory", "args": [{"name": "path"}] },
+    { "name": ["--prefix"], "description": "Prefix directory", "args": [{"name": "path"}] },
+    { "name": ["--ignore-existing"], "description": "Ignore locally installed packages" },
+    { "name": ["--shell"], "description": "Shell to use", "args": [{"name": "shell"}] },
+    { "name": ["--node-arg"], "description": "Node.js argument", "args": [{"name": "arg"}] },
+    { "name": ["-h", "--help"], "description": "Show help" },
+    { "name": ["-v", "--version"], "description": "Show version" }
+  ],
+  "args": [
+    { "name": "command", "description": "Package binary to run" },
+    { "name": "args", "description": "Arguments to pass", "isOptional": true, "isVariadic": true }
+  ]
+}

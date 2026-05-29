@@ -1,0 +1,108 @@
+{
+  "name": "netsh",
+  "description": "Network command shell for Windows (Windows)",
+  "requiresSubcommand": true,
+  "subcommands": [
+    {
+      "name": "advfirewall",
+      "description": "Advanced Windows Firewall management",
+      "subcommands": [
+        { "name": "show", "description": "Show firewall state", "subcommands": [
+          { "name": "allprofiles", "description": "Show all profiles state" },
+          { "name": "currentprofile", "description": "Show current profile state" },
+          { "name": "domainprofile", "description": "Show domain profile" },
+          { "name": "privateprofile", "description": "Show private profile" },
+          { "name": "publicprofile", "description": "Show public profile" }
+        ]},
+        { "name": "set", "description": "Set firewall profile", "subcommands": [
+          { "name": "allprofiles", "description": "Set all profiles", "args": [{"name": "setting"}, {"name": "value"}] },
+          { "name": "currentprofile", "description": "Set current profile", "args": [{"name": "setting"}, {"name": "value"}] }
+        ]}
+      ]
+    },
+    {
+      "name": "interface",
+      "description": "Network interface configuration",
+      "subcommands": [
+        { "name": "ip", "description": "IP configuration", "subcommands": [
+          { "name": "show", "description": "Show IP config", "subcommands": [
+            { "name": "config", "description": "Show IP configuration" },
+            { "name": "addresses", "description": "Show IP addresses" },
+            { "name": "dns", "description": "Show DNS servers" }
+          ]},
+          { "name": "set", "description": "Set IP config", "subcommands": [
+            { "name": "address", "description": "Set IP address", "options": [
+              { "name": ["name"], "description": "Interface name", "args": [{"name": "name"}] },
+              { "name": ["source"], "description": "Address source", "args": [{"name": "source", "suggestions": ["static", "dhcp"]}] },
+              { "name": ["addr"], "description": "Static IP address", "args": [{"name": "ip"}] },
+              { "name": ["mask"], "description": "Subnet mask", "args": [{"name": "mask"}] },
+              { "name": ["gateway"], "description": "Default gateway", "args": [{"name": "ip"}] }
+            ]},
+            { "name": "dns", "description": "Set DNS server", "options": [
+              { "name": ["name"], "description": "Interface name", "args": [{"name": "name"}] },
+              { "name": ["source"], "description": "DNS source", "args": [{"name": "source", "suggestions": ["static", "dhcp"]}] },
+              { "name": ["addr"], "description": "DNS server address", "args": [{"name": "ip"}] },
+              { "name": ["register"], "description": "DNS registration", "args": [{"name": "mode", "suggestions": ["none", "primary", "both"]}] }
+            ]}
+          ]}
+        ]},
+        { "name": "show", "description": "Show interface info", "subcommands": [
+          { "name": "interface", "description": "Show interfaces" }
+        ]}
+      ]
+    },
+    {
+      "name": "wlan",
+      "description": "Wireless LAN configuration",
+      "subcommands": [
+        { "name": "show", "description": "Show WLAN info", "subcommands": [
+          { "name": "profiles", "description": "Show wireless profiles" },
+          { "name": "interfaces", "description": "Show wireless interfaces" },
+          { "name": "drivers", "description": "Show wireless drivers" }
+        ]},
+        { "name": "connect", "description": "Connect to a wireless network", "args": [{"name": "name"}], "options": [
+          { "name": ["interface"], "description": "Interface name", "args": [{"name": "name"}] }
+        ]},
+        { "name": "disconnect", "description": "Disconnect from wireless", "options": [
+          { "name": ["interface"], "description": "Interface name", "args": [{"name": "name"}] }
+        ]},
+        { "name": "delete", "description": "Delete a wireless profile", "args": [{"name": "name"}], "options": [
+          { "name": ["interface"], "description": "Interface name", "args": [{"name": "name"}] }
+        ]}
+      ]
+    },
+    {
+      "name": "firewall",
+      "description": "Windows Firewall (legacy)",
+      "subcommands": [
+        { "name": "show", "description": "Show firewall config", "subcommands": [
+          { "name": "state", "description": "Show firewall state" },
+          { "name": "config", "description": "Show firewall config" }
+        ]},
+        { "name": "set", "description": "Set firewall config", "subcommands": [
+          { "name": "opmode", "description": "Set operation mode", "args": [{"name": "mode"}] }
+        ]},
+        { "name": "add", "description": "Add firewall rule", "subcommands": [
+          { "name": "allowedprogram", "description": "Add program to allowed list", "args": [{"name": "path"}], "options": [
+            { "name": ["name"], "description": "Rule name", "args": [{"name": "name"}] }
+          ]}
+        ]}
+      ]
+    },
+    {
+      "name": "winhttp",
+      "description": "Windows HTTP configuration",
+      "subcommands": [
+        { "name": "show", "description": "Show WinHTTP config", "subcommands": [
+          { "name": "proxy", "description": "Show proxy settings" }
+        ]},
+        { "name": "set", "description": "Set WinHTTP config", "subcommands": [
+          { "name": "proxy", "description": "Set proxy", "args": [{"name": "proxy"}] }
+        ]},
+        { "name": "reset", "description": "Reset WinHTTP settings", "subcommands": [
+          { "name": "proxy", "description": "Reset proxy settings" }
+        ]}
+      ]
+    }
+  ]
+}

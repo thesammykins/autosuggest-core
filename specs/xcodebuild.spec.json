@@ -1,0 +1,84 @@
+{
+  "name": "xcodebuild",
+  "description": "Build Xcode projects from the command line (macOS)",
+  "requiresSubcommand": true,
+  "options": [
+    { "name": ["-project"], "description": "Build the specified Xcode project", "args": [{"name": "path", "template": "filepaths"}] },
+    { "name": ["-workspace"], "description": "Build the specified workspace", "args": [{"name": "path", "template": "filepaths"}] },
+    { "name": ["-scheme"], "description": "Build the specified scheme", "args": [{"name": "scheme"}] },
+    { "name": ["-target"], "description": "Build the specified target", "args": [{"name": "target"}] },
+    { "name": ["-sdk"], "description": "Use the specified SDK", "args": [{"name": "sdk", "suggestions": ["macosx", "iphoneos", "iphonesimulator", "appletvos", "watchos", "xros", "xrsimulator"]}] },
+    { "name": ["-destination"], "description": "Use the specified destination", "args": [{"name": "destination"}] },
+    { "name": ["-configuration"], "description": "Build configuration", "args": [{"name": "config", "suggestions": ["Debug", "Release"]}] },
+    { "name": ["-arch"], "description": "Architecture to build", "args": [{"name": "arch", "suggestions": ["arm64", "x86_64"]}] },
+    { "name": ["-derivedDataPath"], "description": "Derived data directory", "args": [{"name": "path"}] },
+    { "name": ["-archivePath"], "description": "Archive output path", "args": [{"name": "path"}] },
+    { "name": ["-exportPath"], "description": "Export destination path", "args": [{"name": "path"}] },
+    { "name": ["-exportOptionsPlist"], "description": "Export options plist", "args": [{"name": "path", "template": "filepaths"}] },
+    { "name": ["-allowProvisioningUpdates"], "description": "Allow automatic provisioning" },
+    { "name": ["-allowProvisioningDeviceRegistration"], "description": "Allow device registration" },
+    { "name": ["-showBuildSettings"], "description": "Display build settings" },
+    { "name": ["-list"], "description": "List projects/schemes/targets" },
+    { "name": ["-resultBundlePath"], "description": "Result bundle output path", "args": [{"name": "path"}] },
+    { "name": ["-enableCodeCoverage"], "description": "Enable code coverage" },
+    { "name": ["-testPlan"], "description": "Run specified test plan", "args": [{"name": "name"}] },
+    { "name": ["-only-testing"], "description": "Run specific test", "args": [{"name": "identifier"}] },
+    { "name": ["-skip-testing"], "description": "Skip specific test", "args": [{"name": "identifier"}] },
+    { "name": ["-parallel-testing-enabled"], "description": "Enable parallel testing" },
+    { "name": ["-parallel-testing-worker-count"], "description": "Parallel test worker count", "args": [{"name": "n"}] },
+    { "name": ["-xcconfig"], "description": "Use xcconfig file", "args": [{"name": "path", "template": "filepaths"}] },
+    { "name": ["-quiet"], "description": "Suppress output" },
+    { "name": ["-verbose"], "description": "Verbose output" },
+    { "name": ["-version"], "description": "Show version" },
+    { "name": ["-help"], "description": "Show help" },
+    { "name": ["-dry-run"], "description": "Validate but don't run" },
+    { "name": ["-UseModernBuildSystem"], "description": "Use the modern build system" },
+    { "name": ["-UseLegacyBuildSystem"], "description": "Use the legacy build system" },
+    { "name": ["-clonedSourcePackagesDirPath"], "description": "Cloned package cache path", "args": [{"name": "path"}] }
+  ],
+  "subcommands": [
+    {
+      "name": "build",
+      "description": "Build the target in the build root"
+    },
+    {
+      "name": "test",
+      "description": "Test the scheme in the build root",
+      "options": [
+        { "name": ["-testLanguage"], "description": "Test language", "args": [{"name": "lang"}] },
+        { "name": ["-testRegion"], "description": "Test region", "args": [{"name": "region"}] }
+      ]
+    },
+    {
+      "name": "archive",
+      "description": "Archive a scheme",
+      "options": [
+        { "name": ["-archivePath"], "description": "Archive path", "args": [{"name": "path"}] }
+      ]
+    },
+    {
+      "name": "exportArchive",
+      "description": "Export an archive",
+      "options": [
+        { "name": ["-exportPath"], "description": "Destination path", "args": [{"name": "path"}] },
+        { "name": ["-exportOptionsPlist"], "description": "Options plist", "args": [{"name": "path"}] }
+      ]
+    },
+    {
+      "name": "clean",
+      "description": "Remove built products"
+    },
+    {
+      "name": "showBuildSettings",
+      "description": "Display build settings"
+    },
+    {
+      "name": "build-for-testing",
+      "description": "Build for testing"
+    },
+    {
+      "name": "test-without-building",
+      "description": "Run tests without building"
+    }
+  ]
+}
