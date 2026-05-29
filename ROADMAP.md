@@ -28,7 +28,7 @@ M0 (serial, blocks all)
 
 ## Milestones
 
-### M0 — Skeleton & contracts  `feat/m0-skeleton`  — STATUS: pending
+### M0 — Skeleton & contracts  `feat/m0-skeleton`  — STATUS: ✅ merged (77c6305)
 Cargo workspace; `types` + `protocol` crates implementing every model in
 `SCHEMA.md §1–4`; serde round-trip tests; golden-test harness; `GeneratorRunner`
 trait stub; ~5 seed specs (`ls`, `cd`, `mkdir`, `echo`, `git` minimal) that
@@ -36,18 +36,18 @@ trait stub; ~5 seed specs (`ls`, `cd`, `mkdir`, `echo`, `git` minimal) that
 **Exit:** `cargo test` green; all schema models (de)serialize; harness loads
 fixtures; clippy clean.
 
-### M1 — As-you-type completion  `feat/m1-completer`  — STATUS: blocked(M0)
+### M1 — As-you-type completion  `feat/m1-completer`  — STATUS: in progress
 `tokenize`, `parse` (parse-state machine + parser directives), `complete`,
 `rank` (prefix + fuzzy, priority+recency); `filepaths`/`folders` templates.
 **Exit:** golden tests for `ls cd mkdir cp mv rm cat grep git` pass;
 completion `<5 ms` bench; clippy clean.
 
-### M2 — History autosuggestion  `feat/m2-history`  — STATUS: blocked(M0)
+### M2 — History autosuggestion  `feat/m2-history`  — STATUS: in progress
 Stateless `history_autosuggest(prefix, window)`; dedupe; optional cwd/exit
 weighting.
 **Exit:** golden tests on a recorded history fixture pass; clippy clean.
 
-### M3 — Failed-command correction  `feat/m3-corrector`  — STATUS: blocked(M0)
+### M3 — Failed-command correction  `feat/m3-corrector`  — STATUS: in progress
 Rule engine + JSON rule loader + native predicates (`no_command`,
 `subcommand_typo`, `mkdir -p`, `sudo`, `cd` typo, `-r` fixes).
 **Exit:** correction table incl. `mkdir`/`sl`→`ls`/`git comit`/`sudo` passes;
@@ -73,3 +73,5 @@ Expand to the full `PRODUCT.md §7` coverage (~45–55 specs + rule set); finali
 | Date | Milestone | Event | Result |
 |------|-----------|-------|--------|
 | (init) | — | Spec docs authored & committed | baseline |
+| (init) | M0 | Subagent built workspace/types/protocol/harness/seed specs; orchestrator audited (schema+fmt+clippy+test) | ✅ merged 77c6305 |
+| (init) | M1/M2/M3 | Worktrees created, subagents dispatched in parallel (cap 3) | in progress |
