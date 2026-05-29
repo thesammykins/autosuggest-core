@@ -1,0 +1,22 @@
+[package]
+name = "autosuggest-daemon"
+version = "0.0.0"
+description = "Stdio JSON-lines daemon adapter for autosuggest-core (TECH.md §4)."
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+
+[lib]
+name = "autosuggest_daemon"
+path = "src/lib.rs"
+
+[[bin]]
+name = "autosuggest-daemon"
+path = "src/main.rs"
+
+[dependencies]
+serde = { workspace = true }
+serde_json = { workspace = true }
+autosuggest-core = { path = "../core" }
+autosuggest-protocol = { path = "../protocol" }
