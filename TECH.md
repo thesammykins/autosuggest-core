@@ -10,7 +10,7 @@
 - Build: `cargo`. Tests: `cargo test` + golden fixtures. Benches: `criterion`.
 - Lint gate: `cargo fmt --check` + `cargo clippy -D warnings`.
 - Dependencies kept minimal: `serde`/`serde_json` (data), `rusqlite` (optional
-  history feature, behind a cargo feature flag), `libc`/`cbindgen` (FFI adapter).
+  history store, behind daemon `--history-db`), `libc`/`cbindgen` (FFI adapter).
   No async runtime in core. No network crates anywhere.
 
 ## 2. Workspace layout
@@ -31,13 +31,14 @@ autosuggest-core/
 │   ├── protocol/             # serde models for the stdio JSON protocol (versioned)
 │   ├── daemon/               # bin: stdio JSON-lines server
 │   ├── ffi/                  # cdylib: C ABI + cbindgen-generated header
-│   └── history-store/        # optional SQLite store (feature = "sqlite-store")
+│   └── history-store/        # optional SQLite store (behind daemon --history-db)
 ├── specs/                    # authored *.spec.json dataset
 ├── rules/                    # authored *.rule.json correction rules
 ├── tests/                    # integration + golden tests
 │   └── fixtures/             # golden inputs/outputs per command
-├── benches/                  # criterion latency benches
 └── docs/                     # SCHEMA.md, INTEGRATING.md, etc. (or repo root)
+
+Benches live inside individual crates (`crates/core/benches/`, `crates/data/benches/`).
 ```
 
 `core` MUST NOT perform file or network I/O directly. Generator execution is

@@ -72,7 +72,7 @@ allow-list enforced; clippy/fmt clean; 126 tests (105 core + 21 data).
 **Exit:** ✅ end-to-end stdio + C ABI demos for all 3 ops; no panics cross FFI;
 malformed input handled; clippy/fmt clean.
 
-### M6 — Dataset growth + docs  `feat/m6-dataset`  — STATUS: in progress (unblocked: M1,M3,M4 merged)
+### M6 — Dataset growth + docs  `feat/m6-dataset`  — STATUS: ✅ merged (378b989)
 Expand to the full `PRODUCT.md §7` coverage (~45–55 specs + rule set); finalize
 `INTEGRATING.md` recipe (reconcile FFI API shape — M5 shipped the simple
 JSON-in/out pair vs the handle-based Path B in the doc); add the carried-over
@@ -98,3 +98,5 @@ complete & consistent with shipped adapters.
 | (init) | M5 | Daemon+FFI adapters; audited (OnceLock engine, unsafe confined to ffi, stdio+ffi e2e) | ✅ merged d8df85b |
 | (init) | — | Merged tree verified: fmt/clippy clean, 156 tests green | ✅ |
 | (init) | M6 | Final milestone: dataset growth, correct/ goldens, daemon generator wiring, docs finalize | dispatching |
+| (init) | M6 | 56 specs/13 rules (original), correct/ goldens + harness, daemon generators (graceful degrade), COVERAGE.md + INTEGRATING reconciled | ✅ merged 378b989 |
+| (init) | — | **ALL MILESTONES (M0–M6) MERGED.** Merged tree: fmt/clippy clean, 158 tests green | ✅ complete |

@@ -1,7 +1,7 @@
 # PRODUCT.md — `autosuggest-core`
 
 > A lightweight, embeddable terminal completion & correction engine.
-> Status: **spec-approved, implementation starting**. Owner: orchestrator.
+> Status: **v1 complete** (Milestones M0–M6 merged). History persistence added in v1.1.
 
 ## 1. Vision
 
