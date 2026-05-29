@@ -1,0 +1,16 @@
+[package]
+name = "autosuggest-protocol"
+version = "0.0.0"
+description = "Serde models for the autosuggest-core stdio JSON-lines protocol (schema v1)."
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+
+[lib]
+name = "autosuggest_protocol"
+path = "src/lib.rs"
+
+[dependencies]
+serde = { workspace = true }
+serde_json = { workspace = true }
