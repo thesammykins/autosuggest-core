@@ -36,29 +36,31 @@ trait stub; ~5 seed specs (`ls`, `cd`, `mkdir`, `echo`, `git` minimal) that
 **Exit:** `cargo test` green; all schema models (de)serialize; harness loads
 fixtures; clippy clean.
 
-### M1 — As-you-type completion  `feat/m1-completer`  — STATUS: in progress
+### M1 — As-you-type completion  `feat/m1-completer`  — STATUS: ✅ merged (5bf5075)
 `tokenize`, `parse` (parse-state machine + parser directives), `complete`,
 `rank` (prefix + fuzzy, priority+recency); `filepaths`/`folders` templates.
 **Exit:** golden tests for `ls cd mkdir cp mv rm cat grep git` pass;
 completion `<5 ms` bench; clippy clean.
 
-### M2 — History autosuggestion  `feat/m2-history`  — STATUS: in progress
+### M2 — History autosuggestion  `feat/m2-history`  — STATUS: ✅ merged (cae41d0)
 Stateless `history_autosuggest(prefix, window)`; dedupe; optional cwd/exit
 weighting.
 **Exit:** golden tests on a recorded history fixture pass; clippy clean.
 
-### M3 — Failed-command correction  `feat/m3-corrector`  — STATUS: in progress
+### M3 — Failed-command correction  `feat/m3-corrector`  — STATUS: ✅ merged (3577940)
 Rule engine + JSON rule loader + native predicates (`no_command`,
 `subcommand_typo`, `mkdir -p`, `sudo`, `cd` typo, `-r` fixes).
 **Exit:** correction table incl. `mkdir`/`sl`→`ls`/`git comit`/`sudo` passes;
 clippy clean.
+**Carry-over (→ M6):** add `tests/fixtures/correct/` golden pairs for parity
+with M1/M2 (M3 shipped a case-table; DoD met, goldens deferred).
 
-### M4 — Generators + caching  `feat/m4-generators`  — STATUS: blocked(M1)
+### M4 — Generators + caching  `feat/m4-generators`  — STATUS: in progress
 `data` crate sandboxed generator runner (allow-list, timeout, TTL cache);
 generator-backed specs (`git checkout <branch>`, `git add <file>`).
 **Exit:** dynamic suggestions correct; `<15 ms` warm bench; allow-list enforced.
 
-### M5 — Adapters: daemon + C ABI  `feat/m5-adapters`  — STATUS: blocked(M1,M2,M3)
+### M5 — Adapters: daemon + C ABI  `feat/m5-adapters`  — STATUS: in progress
 `daemon` (stdio JSON lines per `SCHEMA.md §4`); `ffi` cdylib + cbindgen header
 (`TECH.md §4.2`); reference mock-host demo exercising all three ops.
 **Exit:** end-to-end demo runs over stdio AND via C ABI; no panics cross FFI.
@@ -75,3 +77,8 @@ Expand to the full `PRODUCT.md §7` coverage (~45–55 specs + rule set); finali
 | (init) | — | Spec docs authored & committed | baseline |
 | (init) | M0 | Subagent built workspace/types/protocol/harness/seed specs; orchestrator audited (schema+fmt+clippy+test) | ✅ merged 77c6305 |
 | (init) | M1/M2/M3 | Worktrees created, subagents dispatched in parallel (cap 3) | in progress |
+| (init) | M1 | Completion engine; audited (fmt/clippy/80 tests, bench <5ms, original specs) | ✅ merged 5bf5075 |
+| (init) | M2 | History autosuggester; audited (fmt/clippy/44 tests, 6 goldens) | ✅ merged cae41d0 |
+| (init) | M3 | Correction engine; audited (fmt/clippy/59 tests, case table) | ✅ merged 3577940 |
+| (init) | — | Merged tree verified: fmt/clippy clean, 123 tests green | ✅ |
+| (init) | M4/M5 | Worktrees created, subagents dispatched (M6 held: needs M1+M3 only, runs after) | in progress |
