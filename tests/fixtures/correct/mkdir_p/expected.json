@@ -1,0 +1,7 @@
+[
+  {
+    "desc": "Create missing parent directories with -p",
+    "insert": "mkdir -p foo/bar",
+    "score": 0.9
+  }
+]

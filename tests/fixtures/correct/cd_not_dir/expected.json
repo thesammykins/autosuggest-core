@@ -1,0 +1,7 @@
+[
+  {
+    "desc": "cd to a file: change to its parent directory instead",
+    "insert": "cd project",
+    "score": 0.65
+  }
+]

@@ -1,0 +1,7 @@
+[
+  {
+    "desc": "Add --cask when the requested formula is actually a cask",
+    "insert": "brew install --cask visual-studio-code",
+    "score": 0.65
+  }
+]

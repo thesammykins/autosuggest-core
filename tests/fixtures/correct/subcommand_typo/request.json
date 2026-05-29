@@ -1,0 +1,1 @@
+{ "v": 1, "op": "correct", "id": 21, "script": "git stauts", "stderr": "git: 'stauts' is not a git command. See 'git --help'.", "exitCode": 1 }

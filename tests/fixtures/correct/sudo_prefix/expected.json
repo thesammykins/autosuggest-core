@@ -1,0 +1,7 @@
+[
+  {
+    "desc": "Re-run with sudo when permission is denied",
+    "insert": "sudo cat /etc/master.passwd",
+    "score": 0.8
+  }
+]

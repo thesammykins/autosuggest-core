@@ -1,0 +1,1 @@
+{ "v": 1, "op": "correct", "id": 26, "script": "brew install visual-studio-code", "stderr": "Error: visual-studio-code is a cask, not a formula. Try: brew install --cask visual-studio-code", "exitCode": 1 }

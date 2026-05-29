@@ -1,0 +1,38 @@
+[
+  {
+    "insert": "HUP",
+    "score": 0.475
+  },
+  {
+    "insert": "INT",
+    "score": 0.475
+  },
+  {
+    "insert": "CONT",
+    "score": 0.475
+  },
+  {
+    "insert": "KILL",
+    "score": 0.475
+  },
+  {
+    "insert": "QUIT",
+    "score": 0.475
+  },
+  {
+    "insert": "STOP",
+    "score": 0.475
+  },
+  {
+    "insert": "TERM",
+    "score": 0.475
+  },
+  {
+    "insert": "USR1",
+    "score": 0.475
+  },
+  {
+    "insert": "USR2",
+    "score": 0.475
+  }
+]

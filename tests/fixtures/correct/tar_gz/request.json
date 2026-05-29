@@ -1,0 +1,1 @@
+{ "v": 1, "op": "correct", "id": 25, "script": "tar -xf archive.tgz", "stderr": "tar: This does not look like a tar archive\ntar: Skipping to next header", "exitCode": 1 }

@@ -1,0 +1,8 @@
+[
+  {
+    "desc": "Colorize the output",
+    "display": "--color",
+    "insert": "--color=",
+    "score": 0.475
+  }
+]

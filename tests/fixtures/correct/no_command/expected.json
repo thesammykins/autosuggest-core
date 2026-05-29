@@ -1,0 +1,17 @@
+[
+  {
+    "desc": "Suggest a known command when the base command is not found",
+    "insert": "git status",
+    "score": 0.3
+  },
+  {
+    "desc": "Suggest a known command when the base command is not found",
+    "insert": "go status",
+    "score": 0.3
+  },
+  {
+    "desc": "Suggest a known command when the base command is not found",
+    "insert": "gpg status",
+    "score": 0.3
+  }
+]

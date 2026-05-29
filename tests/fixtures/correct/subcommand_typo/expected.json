@@ -1,0 +1,7 @@
+[
+  {
+    "desc": "Fix a mistyped subcommand using the command's spec",
+    "insert": "git status",
+    "score": 0.6
+  }
+]

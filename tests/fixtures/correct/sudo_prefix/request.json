@@ -1,0 +1,1 @@
+{ "v": 1, "op": "correct", "id": 23, "script": "cat /etc/master.passwd", "stderr": "cat: /etc/master.passwd: Permission denied", "exitCode": 1 }
