@@ -6,6 +6,7 @@ members = [
     "crates/data",
     "crates/daemon",
     "crates/ffi",
+    "crates/history-store",
 ]
 
 [workspace.package]

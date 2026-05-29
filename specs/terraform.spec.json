@@ -1,0 +1,244 @@
+{
+  "name": "terraform",
+  "description": "HashiCorp Infrastructure as Code tool",
+  "requiresSubcommand": true,
+  "options": [
+    { "name": ["-h", "--help"], "description": "Show help and exit" },
+    { "name": ["--version"], "description": "Show version and exit" },
+    { "name": ["-chdir"], "description": "Change working directory before execution", "args": [{"name": "dir"}] },
+    { "name": ["--state"], "description": "State file path", "args": [{"name": "path", "template": "filepaths"}] },
+    { "name": ["--state-out"], "description": "Output state path", "args": [{"name": "path"}] },
+    { "name": ["-no-color"], "description": "Disable color output" },
+    { "name": ["-json"], "description": "JSON output format" },
+    { "name": ["-auto-approve"], "description": "Skip interactive approval" },
+    { "name": ["--lock"], "description": "Lock the state file", "args": [{"name": "bool"}] },
+    { "name": ["--lock-timeout"], "description": "Lock timeout duration", "args": [{"name": "duration"}] },
+    { "name": ["--parallelism"], "description": "Parallel operation count", "args": [{"name": "n"}] }
+  ],
+  "subcommands": [
+    {
+      "name": "init",
+      "description": "Initialize a Terraform working directory",
+      "options": [
+        { "name": ["-backend"], "description": "Configure backend", "args": [{"name": "bool"}] },
+        { "name": ["-backend-config"], "description": "Backend configuration", "args": [{"name": "config"}] },
+        { "name": ["-upgrade"], "description": "Upgrade modules and providers" },
+        { "name": ["-plugin-dir"], "description": "Plugin directory", "args": [{"name": "dir"}] },
+        { "name": ["-reconfigure"], "description": "Reconfigure backend" },
+        { "name": ["-migrate-state"], "description": "Migrate existing state" },
+        { "name": ["-lockfile"], "description": "Lockfile mode", "args": [{"name": "mode", "suggestions": ["readonly", "off"]}] },
+        { "name": ["-input"], "description": "Ask for input", "args": [{"name": "bool"}] }
+      ]
+    },
+    {
+      "name": "plan",
+      "description": "Generate and show an execution plan",
+      "options": [
+        { "name": ["-out"], "description": "Plan output file", "args": [{"name": "path"}] },
+        { "name": ["-destroy"], "description": "Plan a destroy operation" },
+        { "name": ["-refresh-only"], "description": "Refresh state only" },
+        { "name": ["-target"], "description": "Resource target address", "args": [{"name": "address"}] },
+        { "name": ["-var"], "description": "Input variable (key=value)", "args": [{"name": "kv"}] },
+        { "name": ["-var-file"], "description": "Variable file", "args": [{"name": "file", "template": "filepaths"}] },
+        { "name": ["-compact-warnings"], "description": "Compact warning output" },
+        { "name": ["-detailed-exitcode"], "description": "Return detailed exit codes" },
+        { "name": ["-generate-config-out"], "description": "Generate config for imported resources", "args": [{"name": "path"}] }
+      ]
+    },
+    {
+      "name": "apply",
+      "description": "Apply changes to infrastructure",
+      "options": [
+        { "name": ["-auto-approve"], "description": "Skip interactive approval" },
+        { "name": ["-target"], "description": "Resource target address", "args": [{"name": "address"}] },
+        { "name": ["-var"], "description": "Input variable (key=value)", "args": [{"name": "kv"}] },
+        { "name": ["-var-file"], "description": "Variable file", "args": [{"name": "file", "template": "filepaths"}] },
+        { "name": ["-parallelism"], "description": "Parallelism limit", "args": [{"name": "n"}] },
+        { "name": ["-refresh"], "description": "Update state before apply", "args": [{"name": "bool"}] },
+        { "name": ["-replace"], "description": "Force resource replacement", "args": [{"name": "address"}] },
+        { "name": ["-compact-warnings"], "description": "Compact warning output" },
+        { "name": ["-lock"], "description": "Lock state", "args": [{"name": "bool"}] }
+      ],
+      "args": [
+        { "name": "plan-file", "description": "Pre-generated plan file", "isOptional": true, "template": "filepaths" }
+      ]
+    },
+    {
+      "name": "destroy",
+      "description": "Destroy previously-created infrastructure",
+      "options": [
+        { "name": ["-auto-approve"], "description": "Skip interactive approval" },
+        { "name": ["-target"], "description": "Resource target address", "args": [{"name": "address"}] },
+        { "name": ["-var"], "description": "Input variable (key=value)", "args": [{"name": "kv"}] },
+        { "name": ["-var-file"], "description": "Variable file", "args": [{"name": "file", "template": "filepaths"}] },
+        { "name": ["-parallelism"], "description": "Parallelism limit", "args": [{"name": "n"}] },
+        { "name": ["-refresh"], "description": "Update state before destroy", "args": [{"name": "bool"}] },
+        { "name": ["-lock"], "description": "Lock state", "args": [{"name": "bool"}] }
+      ]
+    },
+    {
+      "name": "validate",
+      "description": "Validate the configuration files",
+      "options": [
+        { "name": ["-json"], "description": "JSON output" },
+        { "name": ["-no-color"], "description": "Disable color" }
+      ]
+    },
+    {
+      "name": "fmt",
+      "description": "Format Terraform configuration files",
+      "options": [
+        { "name": ["-recursive"], "description": "Process directories recursively" },
+        { "name": ["-list"], "description": "List files that differ", "args": [{"name": "bool"}] },
+        { "name": ["-write"], "description": "Write results to files", "args": [{"name": "bool"}] },
+        { "name": ["-diff"], "description": "Show diffs", "args": [{"name": "bool"}] },
+        { "name": ["-check"], "description": "Check formatting, exit non-zero if changes needed" }
+      ],
+      "args": [
+        { "name": "dir", "description": "Directory to format", "isOptional": true, "template": "folders" }
+      ]
+    },
+    {
+      "name": "workspace",
+      "description": "Manage Terraform workspaces",
+      "subcommands": [
+        { "name": "new", "description": "Create a new workspace", "args": [{"name": "name"}], "options": [
+          { "name": ["-lock"], "description": "Lock state", "args": [{"name": "bool"}] },
+          { "name": ["-lock-timeout"], "description": "Lock timeout", "args": [{"name": "duration"}] }
+        ]},
+        { "name": "show", "description": "Show the current workspace name"},
+        { "name": "list", "description": "List workspaces"},
+        { "name": "select", "description": "Select a workspace", "args": [{"name": "name"}]},
+        { "name": "delete", "description": "Delete a workspace", "args": [{"name": "name"}], "options": [
+          { "name": ["-lock"], "description": "Lock state", "args": [{"name": "bool"}] },
+          { "name": ["-force"], "description": "Force deletion even if non-empty" }
+        ]}
+      ]
+    },
+    {
+      "name": "state",
+      "description": "Manage Terraform state",
+      "subcommands": [
+        { "name": "list", "description": "List resources in state", "args": [{"name": "address", "isOptional": true}], "options": [
+          { "name": ["-id"], "description": "Resource ID", "args": [{"name": "id"}] }
+        ]},
+        { "name": "show", "description": "Show a resource in state", "args": [{"name": "address", "isOptional": true}]},
+        { "name": "mv", "description": "Move an item in state", "args": [{"name": "source"}, {"name": "destination"}]},
+        { "name": "rm", "description": "Remove an item from state", "args": [{"name": "address", "isVariadic": true}], "options": [
+          { "name": ["-dry-run"], "description": "Show what would be removed" },
+          { "name": ["-backup"], "description": "Backup path", "args": [{"name": "path"}] },
+          { "name": ["-lock"], "description": "Lock state", "args": [{"name": "bool"}] }
+        ]},
+        { "name": "pull", "description": "Pull current state to stdout"},
+        { "name": "push", "description": "Push state to state storage"},
+        { "name": "replace-provider", "description": "Replace a provider in state", "args": [{"name": "old-provider"}, {"name": "new-provider"}]}
+      ]
+    },
+    {
+      "name": "output",
+      "description": "Show output values from state",
+      "args": [
+        { "name": "name", "description": "Output name", "isOptional": true }
+      ],
+      "options": [
+        { "name": ["-json"], "description": "JSON output" },
+        { "name": ["-raw"], "description": "Raw string output" },
+        { "name": ["-no-color"], "description": "Disable color" }
+      ]
+    },
+    {
+      "name": "import",
+      "description": "Import existing infrastructure into Terraform state",
+      "args": [
+        { "name": "address", "description": "Terraform resource address" },
+        { "name": "id", "description": "Resource ID to import" }
+      ],
+      "options": [
+        { "name": ["-var"], "description": "Input variable (key=value)", "args": [{"name": "kv"}] },
+        { "name": ["-var-file"], "description": "Variable file", "args": [{"name": "file", "template": "filepaths"}] },
+        { "name": ["-config"], "description": "Configuration directory", "args": [{"name": "dir"}] },
+        { "name": ["-generate-config-out"], "description": "Generate configuration file path", "args": [{"name": "path"}] },
+        { "name": ["-lock"], "description": "Lock state", "args": [{"name": "bool"}] }
+      ]
+    },
+    {
+      "name": "taint",
+      "description": "Mark a resource for recreation",
+      "args": [
+        { "name": "address", "description": "Resource address" }
+      ],
+      "options": [
+        { "name": ["-lock"], "description": "Lock state", "args": [{"name": "bool"}] },
+        { "name": ["-allow-missing"], "description": "Succeed even if resource is missing" }
+      ]
+    },
+    {
+      "name": "untaint",
+      "description": "Remove taint from a resource",
+      "args": [
+        { "name": "address", "description": "Resource address" }
+      ],
+      "options": [
+        { "name": ["-lock"], "description": "Lock state", "args": [{"name": "bool"}] },
+        { "name": ["-allow-missing"], "description": "Succeed even if resource is missing" }
+      ]
+    },
+    {
+      "name": "refresh",
+      "description": "Update state to match remote resources",
+      "options": [
+        { "name": ["-target"], "description": "Resource target address", "args": [{"name": "address"}] },
+        { "name": ["-var"], "description": "Input variable (key=value)", "args": [{"name": "kv"}] },
+        { "name": ["-var-file"], "description": "Variable file", "args": [{"name": "file", "template": "filepaths"}] },
+        { "name": ["-lock"], "description": "Lock state", "args": [{"name": "bool"}] }
+      ]
+    },
+    {
+      "name": "graph",
+      "description": "Generate a graph of dependencies in DOT format",
+      "options": [
+        { "name": ["-plan"], "description": "Render graph from a plan file", "args": [{"name": "path"}] },
+        { "name": ["-draw-cycles"], "description": "Highlight cycles" },
+        { "name": ["-type"], "description": "Graph type", "args": [{"name": "type", "suggestions": ["plan", "plan-dynamic", "apply", "validate", "input", "operation"]}] }
+      ]
+    },
+    {
+      "name": "providers",
+      "description": "Show required providers",
+      "subcommands": [
+        { "name": "schema", "description": "Show provider schemas", "options": [
+          { "name": ["-json"], "description": "JSON output" }
+        ]},
+        { "name": "mirror", "description": "Mirror provider to directory", "args": [{"name": "dir"}]},
+        { "name": "lock", "description": "Write provider dependency lockfile"}
+      ]
+    },
+    {
+      "name": "force-unlock",
+      "description": "Force unlock the state",
+      "args": [
+        { "name": "lock-id", "description": "Lock ID to release" }
+      ]
+    },
+    {
+      "name": "test",
+      "description": "Run Terraform test suites",
+      "options": [
+        { "name": ["-filter"], "description": "Test file filter", "args": [{"name": "glob"}] },
+        { "name": ["-json"], "description": "JSON output" },
+        { "name": ["-no-color"], "description": "Disable color" },
+        { "name": ["-verbose"], "description": "Verbose output" }
+      ],
+      "args": [
+        { "name": "dir", "description": "Test directory", "isOptional": true, "template": "folders" }
+      ]
+    },
+    {
+      "name": "version",
+      "description": "Show Terraform version",
+      "options": [
+        { "name": ["-json"], "description": "JSON output" }
+      ]
+    }
+  ]
+}

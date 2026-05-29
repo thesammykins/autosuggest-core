@@ -1,0 +1,7 @@
+[
+  {
+    "desc": "Use docker compose instead of the deprecated docker-compose",
+    "insert": "docker compose up -d",
+    "score": 0.75
+  }
+]

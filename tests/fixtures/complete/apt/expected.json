@@ -1,0 +1,170 @@
+[
+  {
+    "desc": "Download only, do not install or unpack",
+    "insert": "-d",
+    "score": 0.475
+  },
+  {
+    "desc": "Fix broken dependencies",
+    "insert": "-f",
+    "score": 0.475
+  },
+  {
+    "desc": "Show help and exit",
+    "insert": "-h",
+    "score": 0.475
+  },
+  {
+    "desc": "Quiet mode, suppress progress output",
+    "insert": "-q",
+    "score": 0.475
+  },
+  {
+    "desc": "Simulate actions without actually changing the system",
+    "insert": "-s",
+    "score": 0.475
+  },
+  {
+    "desc": "Show program version",
+    "insert": "-v",
+    "score": 0.475
+  },
+  {
+    "desc": "Assume yes to all prompts",
+    "insert": "-y",
+    "score": 0.475
+  },
+  {
+    "display": "hold",
+    "desc": "Mark a package as held back (prevent upgrades)",
+    "insert": "hold ",
+    "score": 0.475
+  },
+  {
+    "display": "list",
+    "desc": "List packages based on filter criteria",
+    "insert": "list ",
+    "score": 0.475
+  },
+  {
+    "display": "show",
+    "desc": "Display detailed information about packages",
+    "insert": "show ",
+    "score": 0.475
+  },
+  {
+    "display": "clean",
+    "desc": "Clear the local package cache",
+    "insert": "clean ",
+    "score": 0.475
+  },
+  {
+    "display": "purge",
+    "desc": "Remove packages including configuration files",
+    "insert": "purge ",
+    "score": 0.475
+  },
+  {
+    "display": "remove",
+    "desc": "Remove installed packages",
+    "insert": "remove ",
+    "score": 0.475
+  },
+  {
+    "display": "search",
+    "desc": "Search for packages by keyword",
+    "insert": "search ",
+    "score": 0.475
+  },
+  {
+    "display": "unhold",
+    "desc": "Remove a hold on a package (allow upgrades)",
+    "insert": "unhold ",
+    "score": 0.475
+  },
+  {
+    "display": "update",
+    "desc": "Update the package index from sources",
+    "insert": "update ",
+    "score": 0.475
+  },
+  {
+    "display": "depends",
+    "desc": "Show package dependencies",
+    "insert": "depends ",
+    "score": 0.475
+  },
+  {
+    "display": "install",
+    "desc": "Install or upgrade packages",
+    "insert": "install ",
+    "score": 0.475
+  },
+  {
+    "display": "upgrade",
+    "desc": "Upgrade all upgradable packages",
+    "insert": "upgrade ",
+    "score": 0.475
+  },
+  {
+    "display": "rdepends",
+    "desc": "Show reverse dependencies (packages that depend on this one)",
+    "insert": "rdepends ",
+    "score": 0.475
+  },
+  {
+    "display": "autoclean",
+    "desc": "Remove obsolete packages from the local cache",
+    "insert": "autoclean ",
+    "score": 0.475
+  },
+  {
+    "display": "satisfies",
+    "desc": "Check if dependencies are satisfied",
+    "insert": "satisfies ",
+    "score": 0.475
+  },
+  {
+    "desc": "Reinstall packages",
+    "insert": "--reinstall",
+    "score": 0.475
+  },
+  {
+    "display": "autoremove",
+    "desc": "Remove automatically installed unused dependencies",
+    "insert": "autoremove ",
+    "score": 0.475
+  },
+  {
+    "desc": "Do not upgrade packages when installing",
+    "insert": "--no-upgrade",
+    "score": 0.475
+  },
+  {
+    "display": "edit-sources",
+    "desc": "Edit the sources.list file",
+    "insert": "edit-sources ",
+    "score": 0.475
+  },
+  {
+    "display": "full-upgrade",
+    "desc": "Upgrade with intelligent dependency handling and removal",
+    "insert": "full-upgrade ",
+    "score": 0.475
+  },
+  {
+    "desc": "Only upgrade, do not install new packages",
+    "insert": "--only-upgrade",
+    "score": 0.475
+  },
+  {
+    "desc": "Ignore authentication",
+    "insert": "--allow-unauthenticated",
+    "score": 0.475
+  },
+  {
+    "desc": "Do not install recommended packages",
+    "insert": "--no-install-recommends",
+    "score": 0.475
+  }
+]

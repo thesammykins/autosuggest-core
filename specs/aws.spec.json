@@ -1,0 +1,442 @@
+{
+  "name": "aws",
+  "description": "Amazon Web Services command-line interface",
+  "requiresSubcommand": true,
+  "options": [
+    { "name": ["--profile"], "description": "Named profile to use", "args": [{"name": "name"}] },
+    { "name": ["--region"], "description": "AWS region to use", "args": [{"name": "region"}] },
+    { "name": ["--output"], "description": "Output format", "args": [{"name": "format", "suggestions": ["json", "text", "table", "yaml", "yaml-stream"]}] },
+    { "name": ["--endpoint-url"], "description": "Custom service endpoint", "args": [{"name": "url"}] },
+    { "name": ["--no-verify-ssl"], "description": "Disable SSL verification" },
+    { "name": ["--no-paginate"], "description": "Disable pagination" },
+    { "name": ["--debug"], "description": "Enable debug output" },
+    { "name": ["--color"], "description": "Color output", "args": [{"name": "when", "suggestions": ["auto", "on", "off"]}] },
+    { "name": ["--cli-connect-timeout"], "description": "Socket connect timeout", "args": [{"name": "seconds"}] },
+    { "name": ["--cli-read-timeout"], "description": "Socket read timeout", "args": [{"name": "seconds"}] },
+    { "name": ["--version"], "description": "Show version and exit" },
+    { "name": ["--help"], "description": "Show help and exit" }
+  ],
+  "subcommands": [
+    {
+      "name": "s3",
+      "description": "Amazon Simple Storage Service",
+      "subcommands": [
+        { "name": "ls", "description": "List S3 buckets or objects", "args": [{"name": "target", "isOptional": true}], "options": [
+          { "name": ["--human-readable"], "description": "Display sizes in human-readable format" },
+          { "name": ["--summarize"], "description": "Show total size and count" },
+          { "name": ["--recursive"], "description": "Recursive listing" },
+          { "name": ["--page-size"], "description": "Page size for results", "args": [{"name": "size"}] }
+        ]},
+        { "name": "cp", "description": "Copy objects between buckets or local paths", "args": [{"name": "source"}, {"name": "destination"}], "options": [
+          { "name": ["--recursive"], "description": "Recursive copy" },
+          { "name": ["--acl"], "description": "Canned ACL", "args": [{"name": "acl"}] },
+          { "name": ["--no-follow-symlinks"], "description": "Don't follow symlinks" },
+          { "name": ["--exclude"], "description": "Exclude patterns", "args": [{"name": "pattern"}] },
+          { "name": ["--include"], "description": "Include patterns", "args": [{"name": "pattern"}] },
+          { "name": ["--dryrun"], "description": "Show what would be copied" },
+          { "name": ["--source-region"], "description": "Source bucket region", "args": [{"name": "region"}] },
+          { "name": ["--grants"], "description": "Grant permissions", "args": [{"name": "grant"}] },
+          { "name": ["--sse"], "description": "Server-side encryption", "args": [{"name": "algorithm"}] }
+        ]},
+        { "name": "mv", "description": "Move objects between buckets or local paths", "args": [{"name": "source"}, {"name": "destination"}], "options": [
+          { "name": ["--recursive"], "description": "Recursive move" },
+          { "name": ["--acl"], "description": "Canned ACL", "args": [{"name": "acl"}] },
+          { "name": ["--exclude"], "description": "Exclude patterns", "args": [{"name": "pattern"}] },
+          { "name": ["--include"], "description": "Include patterns", "args": [{"name": "pattern"}] },
+          { "name": ["--dryrun"], "description": "Show what would be moved" }
+        ]},
+        { "name": "rm", "description": "Remove objects", "args": [{"name": "target"}], "options": [
+          { "name": ["--recursive"], "description": "Recursive removal" },
+          { "name": ["--exclude"], "description": "Exclude patterns", "args": [{"name": "pattern"}] },
+          { "name": ["--include"], "description": "Include patterns", "args": [{"name": "pattern"}] },
+          { "name": ["--dryrun"], "description": "Show what would be removed" }
+        ]},
+        { "name": "mb", "description": "Create an S3 bucket", "args": [{"name": "bucket"}], "options": [
+          { "name": ["--region"], "description": "Bucket region", "args": [{"name": "region"}] }
+        ]},
+        { "name": "rb", "description": "Remove an S3 bucket", "args": [{"name": "bucket"}], "options": [
+          { "name": ["--force"], "description": "Force removal" }
+        ]},
+        { "name": "sync", "description": "Sync directories to/from S3", "args": [{"name": "source"}, {"name": "destination"}], "options": [
+          { "name": ["--delete"], "description": "Delete files not in source" },
+          { "name": ["--exact-timestamps"], "description": "Use exact timestamps" },
+          { "name": ["--exclude"], "description": "Exclude patterns", "args": [{"name": "pattern"}] },
+          { "name": ["--include"], "description": "Include patterns", "args": [{"name": "pattern"}] },
+          { "name": ["--dryrun"], "description": "Show what would be synced" },
+          { "name": ["--acl"], "description": "Canned ACL", "args": [{"name": "acl"}] },
+          { "name": ["--grants"], "description": "Grant permissions", "args": [{"name": "grant"}] }
+        ]},
+        { "name": "presign", "description": "Generate pre-signed URLs", "args": [{"name": "target"}], "options": [
+          { "name": ["--expires-in"], "description": "Expiration in seconds", "args": [{"name": "seconds"}] }
+        ]},
+        { "name": "website", "description": "Configure website hosting", "args": [{"name": "bucket"}], "options": [
+          { "name": ["--index-document"], "description": "Index document", "args": [{"name": "file"}] },
+          { "name": ["--error-document"], "description": "Error document", "args": [{"name": "file"}] }
+        ]}
+      ]
+    },
+    {
+      "name": "ec2",
+      "description": "Amazon Elastic Compute Cloud",
+      "subcommands": [
+        { "name": "describe-instances", "description": "Describe EC2 instances", "options": [
+          { "name": ["--instance-ids"], "description": "Instance IDs", "args": [{"name": "ids"}] },
+          { "name": ["--filters"], "description": "Resource filters", "args": [{"name": "filters"}] },
+          { "name": ["--max-results"], "description": "Max results", "args": [{"name": "n"}] },
+          { "name": ["--next-token"], "description": "Pagination token", "args": [{"name": "token"}] }
+        ]},
+        { "name": "run-instances", "description": "Launch EC2 instances", "options": [
+          { "name": ["--image-id"], "description": "AMI ID", "args": [{"name": "ami"}] },
+          { "name": ["--instance-type"], "description": "Instance type", "args": [{"name": "type"}] },
+          { "name": ["--key-name"], "description": "Key pair name", "args": [{"name": "key"}] },
+          { "name": ["--subnet-id"], "description": "Subnet ID", "args": [{"name": "id"}] },
+          { "name": ["--security-group-ids"], "description": "Security groups", "args": [{"name": "ids"}] },
+          { "name": ["--user-data"], "description": "User data script", "args": [{"name": "data"}] },
+          { "name": ["--count"], "description": "Number of instances", "args": [{"name": "n"}] },
+          { "name": ["--block-device-mappings"], "description": "Block device config", "args": [{"name": "mappings"}] },
+          { "name": ["--tag-specifications"], "description": "Tags to apply", "args": [{"name": "tags"}] },
+          { "name": ["--dry-run"], "description": "Simulate the operation" }
+        ]},
+        { "name": "start-instances", "description": "Start EC2 instances", "args": [{"name": "instance-ids", "isVariadic": true}]},
+        { "name": "stop-instances", "description": "Stop EC2 instances", "args": [{"name": "instance-ids", "isVariadic": true}]},
+        { "name": "terminate-instances", "description": "Terminate EC2 instances", "args": [{"name": "instance-ids", "isVariadic": true}]},
+        { "name": "reboot-instances", "description": "Reboot EC2 instances", "args": [{"name": "instance-ids", "isVariadic": true}]},
+        { "name": "describe-volumes", "description": "Describe EBS volumes", "options": [
+          { "name": ["--volume-ids"], "description": "Volume IDs", "args": [{"name": "ids"}] },
+          { "name": ["--filters"], "description": "Resource filters", "args": [{"name": "filters"}] }
+        ]},
+        { "name": "describe-security-groups", "description": "Describe security groups", "options": [
+          { "name": ["--group-ids"], "description": "Security group IDs", "args": [{"name": "ids"}] },
+          { "name": ["--filters"], "description": "Resource filters", "args": [{"name": "filters"}] }
+        ]},
+        { "name": "authorize-security-group-ingress", "description": "Add inbound rules", "args": [{"name": "group-id"}], "options": [
+          { "name": ["--protocol"], "description": "IP protocol", "args": [{"name": "protocol"}] },
+          { "name": ["--port"], "description": "Port range", "args": [{"name": "port"}] },
+          { "name": ["--cidr"], "description": "CIDR range", "args": [{"name": "cidr"}] },
+          { "name": ["--source-group"], "description": "Source security group", "args": [{"name": "group-id"}] }
+        ]},
+        { "name": "create-security-group", "description": "Create a security group", "options": [
+          { "name": ["--group-name"], "description": "Group name", "args": [{"name": "name"}] },
+          { "name": ["--description"], "description": "Description", "args": [{"name": "text"}] },
+          { "name": ["--vpc-id"], "description": "VPC ID", "args": [{"name": "id"}] }
+        ]},
+        { "name": "delete-security-group", "description": "Delete a security group", "args": [{"name": "group-id"}]},
+        { "name": "create-key-pair", "description": "Create a key pair", "args": [{"name": "key-name"}], "options": [
+          { "name": ["--key-type"], "description": "Key type", "args": [{"name": "type", "suggestions": ["rsa", "ed25519"]}] },
+          { "name": ["--key-format"], "description": "Output format", "args": [{"name": "format", "suggestions": ["pem", "ppk"]}] }
+        ]},
+        { "name": "import-key-pair", "description": "Import a public key", "args": [{"name": "key-name"}, {"name": "public-key"}], "options": [
+          { "name": ["--key-type"], "description": "Key type", "args": [{"name": "type", "suggestions": ["rsa", "ed25519"]}] }
+        ]},
+        { "name": "describe-images", "description": "Describe AMIs", "options": [
+          { "name": ["--image-ids"], "description": "AMI IDs", "args": [{"name": "ids"}] },
+          { "name": ["--owners"], "description": "Owners", "args": [{"name": "owners"}] },
+          { "name": ["--filters"], "description": "Resource filters", "args": [{"name": "filters"}] }
+        ]},
+        { "name": "allocate-address", "description": "Allocate an Elastic IP", "options": [
+          { "name": ["--domain"], "description": "Domain (vpc/standard)", "args": [{"name": "domain", "suggestions": ["vpc", "standard"]}] }
+        ]},
+        { "name": "release-address", "description": "Release an Elastic IP", "args": [{"name": "allocation-id"}]},
+        { "name": "associate-address", "description": "Associate an Elastic IP", "options": [
+          { "name": ["--instance-id"], "description": "Instance ID", "args": [{"name": "id"}] },
+          { "name": ["--allocation-id"], "description": "Allocation ID", "args": [{"name": "id"}] },
+          { "name": ["--network-interface-id"], "description": "Network interface ID", "args": [{"name": "id"}] }
+        ]},
+        { "name": "disassociate-address", "description": "Disassociate an Elastic IP", "args": [{"name": "association-id"}]},
+        { "name": "create-snapshot", "description": "Create an EBS snapshot", "options": [
+          { "name": ["--volume-id"], "description": "Volume ID", "args": [{"name": "id"}] },
+          { "name": ["--description"], "description": "Snapshot description", "args": [{"name": "text"}] },
+          { "name": ["--tag-specifications"], "description": "Tags to apply", "args": [{"name": "tags"}] }
+        ]},
+        { "name": "describe-snapshots", "description": "Describe EBS snapshots", "options": [
+          { "name": ["--snapshot-ids"], "description": "Snapshot IDs", "args": [{"name": "ids"}] },
+          { "name": ["--filters"], "description": "Filters", "args": [{"name": "filters"}] }
+        ]},
+        { "name": "create-volume", "description": "Create an EBS volume", "options": [
+          { "name": ["--availability-zone"], "description": "AZ", "args": [{"name": "az"}] },
+          { "name": ["--size"], "description": "Size in GiB", "args": [{"name": "gib"}] },
+          { "name": ["--volume-type"], "description": "Volume type", "args": [{"name": "type", "suggestions": ["gp3", "gp2", "io1", "io2", "st1", "sc1", "standard"]}] },
+          { "name": ["--snapshot-id"], "description": "Snapshot ID", "args": [{"name": "id"}] }
+        ]},
+        { "name": "create-tags", "description": "Create tags for resources", "args": [{"name": "resources", "isVariadic": true}], "options": [
+          { "name": ["--tags"], "description": "Tags (Key=Value)", "args": [{"name": "tags"}] }
+        ]},
+        { "name": "delete-tags", "description": "Delete tags from resources", "args": [{"name": "resources", "isVariadic": true}], "options": [
+          { "name": ["--tags"], "description": "Tags to delete", "args": [{"name": "tags"}] }
+        ]}
+      ]
+    },
+    {
+      "name": "ecs",
+      "description": "Amazon Elastic Container Service",
+      "subcommands": [
+        { "name": "list-clusters", "description": "List ECS clusters"},
+        { "name": "describe-clusters", "description": "Describe ECS clusters", "args": [{"name": "clusters", "isVariadic": true}]},
+        { "name": "list-services", "description": "List services in a cluster", "args": [{"name": "cluster"}], "options": [
+          { "name": ["--launch-type"], "description": "Launch type", "args": [{"name": "type", "suggestions": ["EC2", "FARGATE"]}] }
+        ]},
+        { "name": "describe-services", "description": "Describe ECS services", "args": [{"name": "cluster"}, {"name": "services", "isVariadic": true}]},
+        { "name": "list-task-definitions", "description": "List task definitions", "options": [
+          { "name": ["--family-prefix"], "description": "Family prefix", "args": [{"name": "prefix"}] },
+          { "name": ["--sort"], "description": "Sort order", "args": [{"name": "order", "suggestions": ["ASC", "DESC"]}] }
+        ]},
+        { "name": "describe-task-definition", "description": "Describe a task definition", "args": [{"name": "task-definition"}]},
+        { "name": "register-task-definition", "description": "Register a new task definition", "options": [
+          { "name": ["--family"], "description": "Family name", "args": [{"name": "name"}] },
+          { "name": ["--container-definitions"], "description": "Container definitions JSON", "args": [{"name": "json"}] },
+          { "name": ["--task-role-arn"], "description": "IAM role ARN", "args": [{"name": "arn"}] },
+          { "name": ["--execution-role-arn"], "description": "Execution role ARN", "args": [{"name": "arn"}] },
+          { "name": ["--network-mode"], "description": "Network mode", "args": [{"name": "mode", "suggestions": ["awsvpc", "bridge", "host", "none"]}] },
+          { "name": ["--cpu"], "description": "CPU units", "args": [{"name": "cpu"}] },
+          { "name": ["--memory"], "description": "Memory MiB", "args": [{"name": "memory"}] },
+          { "name": ["--runtime-platform"], "description": "Runtime platform", "args": [{"name": "platform"}] }
+        ]},
+        { "name": "list-tasks", "description": "List tasks in a cluster", "args": [{"name": "cluster", "isOptional": true}], "options": [
+          { "name": ["--service-name"], "description": "Service name", "args": [{"name": "name"}] },
+          { "name": ["--desired-status"], "description": "Status filter", "args": [{"name": "status", "suggestions": ["RUNNING", "PENDING", "STOPPED"]}] },
+          { "name": ["--launch-type"], "description": "Launch type", "args": [{"name": "type", "suggestions": ["EC2", "FARGATE"]}] }
+        ]},
+        { "name": "describe-tasks", "description": "Describe tasks", "args": [{"name": "cluster"}, {"name": "tasks", "isVariadic": true}]},
+        { "name": "run-task", "description": "Run a task", "args": [{"name": "cluster"}, {"name": "task-definition"}], "options": [
+          { "name": ["--launch-type"], "description": "Launch type", "args": [{"name": "type", "suggestions": ["EC2", "FARGATE"]}] },
+          { "name": ["--network-configuration"], "description": "Network config", "args": [{"name": "config"}] },
+          { "name": ["--overrides"], "description": "Container overrides", "args": [{"name": "json"}] },
+          { "name": ["--group"], "description": "Task group", "args": [{"name": "name"}] },
+          { "name": ["--count"], "description": "Number of tasks", "args": [{"name": "n"}] }
+        ]},
+        { "name": "stop-task", "description": "Stop a task", "args": [{"name": "cluster"}, {"name": "task-id"}]},
+        { "name": "update-service", "description": "Update a service", "args": [{"name": "cluster"}, {"name": "service"}], "options": [
+          { "name": ["--task-definition"], "description": "New task definition", "args": [{"name": "arn"}] },
+          { "name": ["--desired-count"], "description": "Desired task count", "args": [{"name": "n"}] },
+          { "name": ["--force-new-deployment"], "description": "Force redeployment" }
+        ]},
+        { "name": "create-service", "description": "Create a new ECS service", "args": [{"name": "cluster"}, {"name": "service-name"}], "options": [
+          { "name": ["--task-definition"], "description": "Task definition", "args": [{"name": "arn"}] },
+          { "name": ["--desired-count"], "description": "Desired task count", "args": [{"name": "n"}] },
+          { "name": ["--launch-type"], "description": "Launch type", "args": [{"name": "type", "suggestions": ["EC2", "FARGATE"]}] },
+          { "name": ["--network-configuration"], "description": "Network config", "args": [{"name": "config"}] },
+          { "name": ["--platform-version"], "description": "Platform version", "args": [{"name": "version"}] }
+        ]},
+        { "name": "delete-service", "description": "Delete an ECS service", "args": [{"name": "cluster"}, {"name": "service"}], "options": [
+          { "name": ["--force"], "description": "Force deletion" }
+        ]}
+      ]
+    },
+    {
+      "name": "lambda",
+      "description": "AWS Lambda serverless compute",
+      "subcommands": [
+        { "name": "list-functions", "description": "List Lambda functions", "options": [
+          { "name": ["--master-region"], "description": "Region filter", "args": [{"name": "region"}] }
+        ]},
+        { "name": "get-function", "description": "Get function details", "args": [{"name": "function-name"}], "options": [
+          { "name": ["--qualifier"], "description": "Version or alias", "args": [{"name": "qualifier"}] }
+        ]},
+        { "name": "create-function", "description": "Create a Lambda function", "args": [{"name": "function-name"}], "options": [
+          { "name": ["--runtime"], "description": "Runtime", "args": [{"name": "runtime", "suggestions": ["python3.13", "python3.12", "nodejs22.x", "nodejs20.x", "java21", "go1.x", "dotnet8", "provided.al2023"]}] },
+          { "name": ["--role"], "description": "IAM role ARN", "args": [{"name": "arn"}] },
+          { "name": ["--handler"], "description": "Function handler", "args": [{"name": "handler"}] },
+          { "name": ["--zip-file"], "description": "Deployment zip file", "args": [{"name": "file", "template": "filepaths"}] },
+          { "name": ["--image-uri"], "description": "Container image URI", "args": [{"name": "uri"}] },
+          { "name": ["--timeout"], "description": "Timeout (seconds)", "args": [{"name": "seconds"}] },
+          { "name": ["--memory-size"], "description": "Memory in MB", "args": [{"name": "mb"}] },
+          { "name": ["--environment"], "description": "Environment variables", "args": [{"name": "vars"}] },
+          { "name": ["--architectures"], "description": "Architecture", "args": [{"name": "arch", "suggestions": ["x86_64", "arm64"]}] },
+          { "name": ["--tracing-config"], "description": "Tracing mode", "args": [{"name": "mode", "suggestions": ["Active", "PassThrough"]}] },
+          { "name": ["--layers"], "description": "Lambda layers", "args": [{"name": "arns"}] }
+        ]},
+        { "name": "update-function-code", "description": "Update function code", "args": [{"name": "function-name"}], "options": [
+          { "name": ["--zip-file"], "description": "Deployment zip", "args": [{"name": "file", "template": "filepaths"}] },
+          { "name": ["--image-uri"], "description": "Container image URI", "args": [{"name": "uri"}] },
+          { "name": ["--publish"], "description": "Publish a new version" },
+          { "name": ["--dry-run"], "description": "Validate only" }
+        ]},
+        { "name": "update-function-configuration", "description": "Update function config", "args": [{"name": "function-name"}], "options": [
+          { "name": ["--timeout"], "description": "Timeout", "args": [{"name": "seconds"}] },
+          { "name": ["--memory-size"], "description": "Memory", "args": [{"name": "mb"}] },
+          { "name": ["--environment"], "description": "Environment vars", "args": [{"name": "vars"}] },
+          { "name": ["--handler"], "description": "Handler", "args": [{"name": "handler"}] },
+          { "name": ["--runtime"], "description": "Runtime", "args": [{"name": "runtime"}] },
+          { "name": ["--layers"], "description": "Layers", "args": [{"name": "arns"}] }
+        ]},
+        { "name": "delete-function", "description": "Delete a Lambda function", "args": [{"name": "function-name"}]},
+        { "name": "invoke", "description": "Invoke a Lambda function", "args": [{"name": "function-name"}], "options": [
+          { "name": ["--invocation-type"], "description": "Invocation type", "args": [{"name": "type", "suggestions": ["Event", "RequestResponse", "DryRun"]}] },
+          { "name": ["--payload"], "description": "JSON payload", "args": [{"name": "json"}] },
+          { "name": ["--log-type"], "description": "Log type", "args": [{"name": "type", "suggestions": ["None", "Tail"]}] }
+        ]},
+        { "name": "list-versions-by-function", "description": "List function versions", "args": [{"name": "function-name"}]},
+        { "name": "publish-version", "description": "Publish a new version", "args": [{"name": "function-name"}], "options": [
+          { "name": ["--description"], "description": "Version description", "args": [{"name": "text"}] }
+        ]},
+        { "name": "add-permission", "description": "Add permission for another service", "args": [{"name": "function-name"}], "options": [
+          { "name": ["--statement-id"], "description": "Statement ID", "args": [{"name": "id"}] },
+          { "name": ["--action"], "description": "Lambda action", "args": [{"name": "action"}] },
+          { "name": ["--principal"], "description": "Principal", "args": [{"name": "service"}] },
+          { "name": ["--source-arn"], "description": "Source ARN", "args": [{"name": "arn"}] }
+        ]},
+        { "name": "remove-permission", "description": "Remove a permission", "args": [{"name": "function-name"}], "options": [
+          { "name": ["--statement-id"], "description": "Statement ID to remove", "args": [{"name": "id"}] }
+        ]}
+      ]
+    },
+    {
+      "name": "iam",
+      "description": "AWS Identity and Access Management",
+      "subcommands": [
+        { "name": "list-users", "description": "List IAM users"},
+        { "name": "create-user", "description": "Create an IAM user", "args": [{"name": "user-name"}]},
+        { "name": "delete-user", "description": "Delete an IAM user", "args": [{"name": "user-name"}]},
+        { "name": "get-user", "description": "Get IAM user details", "args": [{"name": "user-name", "isOptional": true}]},
+        { "name": "list-roles", "description": "List IAM roles"},
+        { "name": "create-role", "description": "Create an IAM role", "args": [{"name": "role-name"}], "options": [
+          { "name": ["--assume-role-policy-document"], "description": "Trust policy JSON", "args": [{"name": "json"}] },
+          { "name": ["--description"], "description": "Role description", "args": [{"name": "text"}] },
+          { "name": ["--tags"], "description": "Tags", "args": [{"name": "tags"}] }
+        ]},
+        { "name": "delete-role", "description": "Delete an IAM role", "args": [{"name": "role-name"}]},
+        { "name": "attach-role-policy", "description": "Attach a policy to a role", "args": [{"name": "role-name"}, {"name": "policy-arn"}]},
+        { "name": "detach-role-policy", "description": "Detach a policy from a role", "args": [{"name": "role-name"}, {"name": "policy-arn"}]},
+        { "name": "list-policies", "description": "List IAM policies", "options": [
+          { "name": ["--scope"], "description": "Scope", "args": [{"name": "scope", "suggestions": ["All", "AWS", "Local"]}] }
+        ]},
+        { "name": "create-policy", "description": "Create an IAM policy", "args": [{"name": "policy-name"}], "options": [
+          { "name": ["--policy-document"], "description": "Policy JSON", "args": [{"name": "json"}] },
+          { "name": ["--description"], "description": "Description", "args": [{"name": "text"}] }
+        ]},
+        { "name": "delete-policy", "description": "Delete an IAM policy", "args": [{"name": "policy-arn"}]},
+        { "name": "create-access-key", "description": "Create an access key for a user", "args": [{"name": "user-name", "isOptional": true}]},
+        { "name": "list-access-keys", "description": "List access keys", "args": [{"name": "user-name", "isOptional": true}]},
+        { "name": "delete-access-key", "description": "Delete an access key", "args": [{"name": "user-name"}], "options": [
+          { "name": ["--access-key-id"], "description": "Access key ID", "args": [{"name": "key-id"}] }
+        ]}
+      ]
+    },
+    {
+      "name": "cloudformation",
+      "description": "AWS CloudFormation infrastructure as code",
+      "subcommands": [
+        { "name": "deploy", "description": "Deploy a CloudFormation stack", "options": [
+          { "name": ["--stack-name"], "description": "Stack name", "args": [{"name": "name"}] },
+          { "name": ["--template-file"], "description": "Template file path", "args": [{"name": "file", "template": "filepaths"}] },
+          { "name": ["--template-url"], "description": "Template URL", "args": [{"name": "url"}] },
+          { "name": ["--parameters"], "description": "Parameter list", "args": [{"name": "params"}] },
+          { "name": ["--parameter-overrides"], "description": "Override parameters", "args": [{"name": "overrides"}] },
+          { "name": ["--capabilities"], "description": "Capabilities", "args": [{"name": "caps"}] },
+          { "name": ["--tags"], "description": "Tags", "args": [{"name": "tags"}] },
+          { "name": ["--role-arn"], "description": "IAM role ARN", "args": [{"name": "arn"}] },
+          { "name": ["--no-fail-on-empty-changeset"], "description": "Don't fail on empty changeset" },
+          { "name": ["--force-upload"], "description": "Force upload artifacts" },
+          { "name": ["--no-execute-changeset"], "description": "Create changeset but don't execute" },
+          { "name": ["--on-failure"], "description": "On failure action", "args": [{"name": "action", "suggestions": ["DO_NOTHING", "ROLLBACK", "DELETE"]}] }
+        ]},
+        { "name": "create-stack", "description": "Create a CloudFormation stack", "options": [
+          { "name": ["--stack-name"], "description": "Stack name", "args": [{"name": "name"}] },
+          { "name": ["--template-body"], "description": "Template body", "args": [{"name": "json"}] },
+          { "name": ["--template-url"], "description": "Template URL", "args": [{"name": "url"}] },
+          { "name": ["--parameters"], "description": "Parameters", "args": [{"name": "params"}] },
+          { "name": ["--capabilities"], "description": "Capabilities", "args": [{"name": "caps"}] },
+          { "name": ["--tags"], "description": "Tags", "args": [{"name": "tags"}] },
+          { "name": ["--role-arn"], "description": "IAM role ARN", "args": [{"name": "arn"}] },
+          { "name": ["--enable-termination-protection"], "description": "Enable termination protection" }
+        ]},
+        { "name": "update-stack", "description": "Update a CloudFormation stack", "options": [
+          { "name": ["--stack-name"], "description": "Stack name", "args": [{"name": "name"}] },
+          { "name": ["--template-body"], "description": "Template body", "args": [{"name": "json"}] },
+          { "name": ["--template-url"], "description": "Template URL", "args": [{"name": "url"}] },
+          { "name": ["--parameters"], "description": "Parameters", "args": [{"name": "params"}] },
+          { "name": ["--capabilities"], "description": "Capabilities", "args": [{"name": "caps"}] },
+          { "name": ["--tags"], "description": "Tags", "args": [{"name": "tags"}] },
+          { "name": ["--role-arn"], "description": "IAM role ARN", "args": [{"name": "arn"}] }
+        ]},
+        { "name": "delete-stack", "description": "Delete a CloudFormation stack", "args": [{"name": "stack-name"}]},
+        { "name": "describe-stacks", "description": "Describe CloudFormation stacks", "args": [{"name": "stack-name", "isOptional": true}]},
+        { "name": "describe-stack-events", "description": "Describe stack events", "args": [{"name": "stack-name"}]},
+        { "name": "list-stacks", "description": "List CloudFormation stacks", "options": [
+          { "name": ["--stack-status-filter"], "description": "Status filter", "args": [{"name": "status"}] }
+        ]},
+        { "name": "list-stack-resources", "description": "List stack resources", "args": [{"name": "stack-name"}]},
+        { "name": "describe-change-set", "description": "Describe a change set", "args": [{"name": "change-set-name"}, {"name": "stack-name"}]},
+        { "name": "execute-change-set", "description": "Execute a change set", "args": [{"name": "change-set-name"}, {"name": "stack-name"}]}
+      ]
+    },
+    {
+      "name": "logs",
+      "description": "Amazon CloudWatch Logs",
+      "subcommands": [
+        { "name": "describe-log-groups", "description": "List log groups", "options": [
+          { "name": ["--log-group-name-prefix"], "description": "Prefix filter", "args": [{"name": "prefix"}] },
+          { "name": ["--limit"], "description": "Max results", "args": [{"name": "n"}] }
+        ]},
+        { "name": "describe-log-streams", "description": "List log streams", "args": [{"name": "log-group-name"}], "options": [
+          { "name": ["--order-by"], "description": "Order", "args": [{"name": "order", "suggestions": ["LogStreamName", "LastEventTime"]}] },
+          { "name": ["--limit"], "description": "Max results", "args": [{"name": "n"}] },
+          { "name": ["--log-stream-name-prefix"], "description": "Stream prefix", "args": [{"name": "prefix"}] }
+        ]},
+        { "name": "get-log-events", "description": "Get log events from a stream", "args": [{"name": "log-group-name"}, {"name": "log-stream-name"}], "options": [
+          { "name": ["--start-time"], "description": "Start time (ms)", "args": [{"name": "time"}] },
+          { "name": ["--end-time"], "description": "End time (ms)", "args": [{"name": "time"}] },
+          { "name": ["--limit"], "description": "Max results", "args": [{"name": "n"}] }
+        ]},
+        { "name": "filter-log-events", "description": "Filter log events", "args": [{"name": "log-group-name"}], "options": [
+          { "name": ["--filter-pattern"], "description": "Filter pattern", "args": [{"name": "pattern"}] },
+          { "name": ["--start-time"], "description": "Start time (ms)", "args": [{"name": "time"}] },
+          { "name": ["--end-time"], "description": "End time (ms)", "args": [{"name": "time"}] },
+          { "name": ["--limit"], "description": "Max results", "args": [{"name": "n"}] },
+          { "name": ["--log-stream-names"], "description": "Log stream names", "args": [{"name": "names"}] }
+        ]},
+        { "name": "create-log-group", "description": "Create a log group", "args": [{"name": "log-group-name"}], "options": [
+          { "name": ["--tags"], "description": "Tags", "args": [{"name": "tags"}] },
+          { "name": ["--kms-key-id"], "description": "KMS key ARN", "args": [{"name": "arn"}] }
+        ]},
+        { "name": "delete-log-group", "description": "Delete a log group", "args": [{"name": "log-group-name"}]},
+        { "name": "put-log-events", "description": "Write log events", "args": [{"name": "log-group-name"}, {"name": "log-stream-name"}], "options": [
+          { "name": ["--log-events"], "description": "Log events", "args": [{"name": "events"}] },
+          { "name": ["--sequence-token"], "description": "Sequence token", "args": [{"name": "token"}] }
+        ]},
+        { "name": "create-export-task", "description": "Export logs to S3", "args": [{"name": "log-group-name"}], "options": [
+          { "name": ["--from"], "description": "Start time (ms)", "args": [{"name": "time"}] },
+          { "name": ["--to"], "description": "End time (ms)", "args": [{"name": "time"}] },
+          { "name": ["--destination"], "description": "S3 bucket", "args": [{"name": "bucket"}] },
+          { "name": ["--destination-prefix"], "description": "S3 prefix", "args": [{"name": "prefix"}] }
+        ]}
+      ]
+    },
+    {
+      "name": "sts",
+      "description": "AWS Security Token Service",
+      "subcommands": [
+        { "name": "get-caller-identity", "description": "Get caller identity details"},
+        { "name": "assume-role", "description": "Assume an IAM role", "args": [{"name": "role-arn"}], "options": [
+          { "name": ["--role-session-name"], "description": "Session name", "args": [{"name": "name"}] },
+          { "name": ["--duration-seconds"], "description": "Session duration", "args": [{"name": "seconds"}] },
+          { "name": ["--policy-arns"], "description": "Policy ARNs", "args": [{"name": "arns"}] },
+          { "name": ["--tags"], "description": "Session tags", "args": [{"name": "tags"}] },
+          { "name": ["--external-id"], "description": "External ID", "args": [{"name": "id"}] },
+          { "name": ["--serial-number"], "description": "MFA serial", "args": [{"name": "arn"}] },
+          { "name": ["--token-code"], "description": "MFA token", "args": [{"name": "code"}] }
+        ]},
+        { "name": "get-session-token", "description": "Get a session token for AWS access", "options": [
+          { "name": ["--duration-seconds"], "description": "Duration", "args": [{"name": "seconds"}] },
+          { "name": ["--serial-number"], "description": "MFA serial", "args": [{"name": "arn"}] },
+          { "name": ["--token-code"], "description": "MFA token", "args": [{"name": "code"}] }
+        ]},
+        { "name": "decode-authorization-message", "description": "Decode authorization message", "args": [{"name": "encoded-message"}]}
+      ]
+    },
+    {
+      "name": "configure",
+      "description": "Configure AWS CLI settings",
+      "args": [
+        { "name": "setting", "description": "Setting name (e.g. aws_access_key_id)", "isOptional": true },
+        { "name": "value", "description": "Setting value", "isOptional": true }
+      ],
+      "subcommands": [
+        { "name": "list", "description": "List configuration profiles" },
+        { "name": "get", "description": "Get a configuration value", "args": [{"name": "key"}] },
+        { "name": "set", "description": "Set a configuration value", "args": [{"name": "key"}, {"name": "value"}] },
+        { "name": "add-model", "description": "Add a custom service model", "args": [{"name": "file", "template": "filepaths"}] }
+      ]
+    }
+  ]
+}

@@ -495,6 +495,8 @@ mod tests {
             include_str!("../../../../rules/brew_cask.rule.json"),
             include_str!("../../../../rules/subcommand_typo.rule.json"),
             include_str!("../../../../rules/no_command.rule.json"),
+            include_str!("../../../../rules/pip_install_typo.rule.json"),
+            include_str!("../../../../rules/docker_compose_deprecated.rule.json"),
         ];
         sources
             .iter()
@@ -617,6 +619,22 @@ mod tests {
                 exit: 1,
                 expect_top: "brew install --cask firefox",
                 expect_rule: "brew_cask",
+            },
+            Case {
+                name: "pip install typo",
+                script: "pip intall flask",
+                stderr: "ERROR: unknown command \"intall\"",
+                exit: 1,
+                expect_top: "pip install flask",
+                expect_rule: "pip_install_typo",
+            },
+            Case {
+                name: "docker-compose deprecated",
+                script: "docker-compose up -d",
+                stderr: "docker-compose: command not found",
+                exit: 127,
+                expect_top: "docker compose up -d",
+                expect_rule: "docker_compose_deprecated",
             },
         ];
         let rules = shipped_rules();

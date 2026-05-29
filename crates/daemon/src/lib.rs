@@ -63,6 +63,9 @@ pub struct Engine {
     /// allow-listed, timeout-bounded, and cached; a generator that fails
     /// contributes nothing, so completion degrades to the static spec.
     runner: Box<dyn GeneratorRunner + Send + Sync>,
+    /// Optional SQLite-backed history store for autosuggestion.
+    #[cfg(feature = "sqlite-store")]
+    history_store: Option<autosuggest_history_store::HistoryStore>,
 }
 
 impl Engine {
@@ -98,7 +101,19 @@ impl Engine {
             rules,
             resolver,
             runner,
+            #[cfg(feature = "sqlite-store")]
+            history_store: None,
         }
+    }
+
+    /// Attach a SQLite-backed history store to this engine.
+    ///
+    /// When set, the engine can supply history-autosuggestions from the store
+    /// when the host does not provide a history window in the request.
+    #[cfg(feature = "sqlite-store")]
+    pub fn with_history_store(mut self, store: autosuggest_history_store::HistoryStore) -> Self {
+        self.history_store = Some(store);
+        self
     }
 
     /// Load specs from `specs_dir` and rules from `rules_dir`, using the real
@@ -107,14 +122,39 @@ impl Engine {
     /// Both directories are scanned for their respective `*.spec.json` /
     /// `*.rule.json` files. A missing directory yields an empty set rather than
     /// an error, so a host can run completion-only or correction-only.
+    ///
+    /// If `history_db` is provided and the `sqlite-store` feature is enabled,
+    /// an optional history store is attached to the engine.
     pub fn load(specs_dir: &Path, rules_dir: &Path) -> Result<Self, LoadError> {
+        Self::load_with_history(specs_dir, rules_dir, None)
+    }
+
+    /// Like [`Engine::load`] but with an optional SQLite history database path.
+    ///
+    /// When `sqlite-store` is disabled, the `history_db` argument is ignored.
+    pub fn load_with_history(
+        specs_dir: &Path,
+        rules_dir: &Path,
+        #[allow(unused_variables)] history_db: Option<&Path>,
+    ) -> Result<Self, LoadError> {
         let specs = load::load_specs(specs_dir)?;
         let rules = load::load_rules(rules_dir)?;
-        Ok(Self::new(
-            specs,
-            rules,
-            Box::new(PathCommandResolver::from_env()),
-        ))
+        #[cfg_attr(not(feature = "sqlite-store"), allow(unused_mut))]
+        let mut engine = Self::new(specs, rules, Box::new(PathCommandResolver::from_env()));
+
+        #[cfg(feature = "sqlite-store")]
+        if let Some(path) = history_db {
+            match autosuggest_history_store::HistoryStore::open(path) {
+                Ok(store) => {
+                    engine = engine.with_history_store(store);
+                }
+                Err(err) => {
+                    eprintln!("warning: failed to open history db {path:?}: {err}");
+                }
+            }
+        }
+
+        Ok(engine)
     }
 
     /// Handle one newline-free request line, returning the JSON response line.
@@ -177,10 +217,24 @@ impl Engine {
         let cwd = req.cwd.as_deref();
         let suggestion = match &req.history {
             Some(window) => history::autosuggest(&req.prefix, window, cwd),
-            // No history window provided: nothing to continue from.
-            None => None,
+            // No history window provided: fall back to the SQLite store if available.
+            None => self.autosuggest_from_store(&req.prefix, cwd),
         };
         Response::suggestion(req.id, suggestion)
+    }
+
+    /// Query the optional SQLite history store for autosuggestion.
+    #[allow(unused_variables)]
+    fn autosuggest_from_store(&self, prefix: &str, cwd: Option<&str>) -> Option<String> {
+        #[cfg(feature = "sqlite-store")]
+        {
+            if let Some(ref store) = self.history_store {
+                if let Ok(window) = store.recent(prefix, 50, cwd) {
+                    return history::autosuggest(prefix, &window, cwd);
+                }
+            }
+        }
+        None
     }
 
     /// `correct`: ranked corrections for a failed command.

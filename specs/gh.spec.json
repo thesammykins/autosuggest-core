@@ -1,0 +1,384 @@
+{
+  "name": "gh",
+  "description": "GitHub CLI — manage GitHub from the command line",
+  "requiresSubcommand": true,
+  "options": [
+    { "name": ["--help"], "description": "Show help and exit" },
+    { "name": ["--version"], "description": "Show version" },
+    { "name": ["-R", "--repo"], "description": "Select another repository using the [HOST/]OWNER/REPO format", "args": [{"name": "repository"}] },
+    { "name": ["--host"], "description": "GitHub Enterprise hostname", "args": [{"name": "hostname"}] }
+  ],
+  "subcommands": [
+    {
+      "name": "auth",
+      "description": "Authenticate with GitHub",
+      "subcommands": [
+        { "name": "login", "description": "Log into GitHub" },
+        { "name": "logout", "description": "Log out of GitHub" },
+        { "name": "refresh", "description": "Refresh stored authentication credentials" },
+        { "name": "status", "description": "View authentication status" }
+      ]
+    },
+    {
+      "name": "browse",
+      "description": "Open a repository, issue, or pull request in the browser",
+      "args": [
+        { "name": "target", "description": "Issue/PR number, branch, or commit SHA", "isOptional": true }
+      ],
+      "options": [
+        { "name": ["-b", "--branch"], "description": "Select a branch", "args": [{"name": "branch"}] },
+        { "name": ["-n", "--no-browser"], "description": "Print destination URL instead of opening" },
+        { "name": ["-r", "--repo"], "description": "Browse another repository" }
+      ]
+    },
+    {
+      "name": "gist",
+      "description": "Manage GitHub gists",
+      "subcommands": [
+        { "name": "create", "description": "Create a new gist", "args": [{"name": "file", "isVariadic": true}], "options": [
+          { "name": ["-d", "--desc"], "description": "Description for the gist", "args": [{"name": "description"}] },
+          { "name": ["-p", "--public"], "description": "Create a public gist" }
+        ]},
+        { "name": "delete", "description": "Delete a gist", "args": [{"name": "gist-id"}] },
+        { "name": "edit", "description": "Edit a gist", "args": [{"name": "gist-id"}] },
+        { "name": "list", "description": "List gists", "options": [
+          { "name": ["-L", "--limit"], "description": "Maximum number of gists to list", "args": [{"name": "n"}] },
+          { "name": ["--public"], "description": "Show only public gists" }
+        ]},
+        { "name": "view", "description": "View a gist", "args": [{"name": "gist-id"}] }
+      ]
+    },
+    {
+      "name": "issue",
+      "description": "Manage GitHub issues",
+      "subcommands": [
+        { "name": "create", "description": "Create an issue", "options": [
+          { "name": ["-t", "--title"], "description": "Issue title", "args": [{"name": "title"}] },
+          { "name": ["-b", "--body"], "description": "Issue body", "args": [{"name": "body"}] },
+          { "name": ["-a", "--assignee"], "description": "Assign people", "args": [{"name": "login"}] },
+          { "name": ["-l", "--label"], "description": "Add labels", "args": [{"name": "name"}] },
+          { "name": ["-p", "--project"], "description": "Add to project", "args": [{"name": "name"}] },
+          { "name": ["-m", "--milestone"], "description": "Add to milestone", "args": [{"name": "milestone"}] }
+        ]},
+        { "name": "close", "description": "Close an issue", "args": [{"name": "issue-number"}] },
+        { "name": "delete", "description": "Delete an issue", "args": [{"name": "issue-number"}] },
+        { "name": "edit", "description": "Edit an issue", "args": [{"name": "issue-number"}] },
+        { "name": "list", "description": "List issues", "options": [
+          { "name": ["-a", "--assignee"], "description": "Filter by assignee", "args": [{"name": "login"}] },
+          { "name": ["-l", "--label"], "description": "Filter by labels", "args": [{"name": "labels"}] },
+          { "name": ["-s", "--state"], "description": "Filter by state (open/closed/all)", "args": [{"name": "state", "suggestions": ["open", "closed", "all"]}] },
+          { "name": ["-L", "--limit"], "description": "Maximum results", "args": [{"name": "n"}] }
+        ]},
+        { "name": "reopen", "description": "Reopen an issue", "args": [{"name": "issue-number"}] },
+        { "name": "view", "description": "View an issue", "args": [{"name": "issue-number", "isOptional": true}], "options": [
+          { "name": ["-c", "--comments"], "description": "Show comments" }
+        ]}
+      ]
+    },
+    {
+      "name": "pr",
+      "description": "Manage GitHub pull requests",
+      "subcommands": [
+        { "name": "checkout", "description": "Check out a pull request locally", "args": [{"name": "pr-number"}], "options": [
+          { "name": ["-b", "--branch"], "description": "Local branch name to check out", "args": [{"name": "name"}] }
+        ]},
+        { "name": "checks", "description": "View CI checks for a PR", "args": [{"name": "pr-number", "isOptional": true}] },
+        { "name": "close", "description": "Close a pull request", "args": [{"name": "pr-number"}] },
+        { "name": "comment", "description": "Add a comment to a PR", "args": [{"name": "pr-number", "isOptional": true}], "options": [
+          { "name": ["-b", "--body"], "description": "Comment body", "args": [{"name": "body"}] }
+        ]},
+        { "name": "create", "description": "Create a pull request", "options": [
+          { "name": ["-t", "--title"], "description": "PR title", "args": [{"name": "title"}] },
+          { "name": ["-b", "--body"], "description": "PR body", "args": [{"name": "body"}] },
+          { "name": ["-a", "--assignee"], "description": "Assign people", "args": [{"name": "login"}] },
+          { "name": ["-l", "--label"], "description": "Add labels", "args": [{"name": "name"}] },
+          { "name": ["-B", "--base"], "description": "Base branch", "args": [{"name": "branch"}] },
+          { "name": ["-H", "--head"], "description": "Head branch", "args": [{"name": "branch"}] },
+          { "name": ["-d", "--draft"], "description": "Create as draft" },
+          { "name": ["-r", "--reviewer"], "description": "Request reviewers", "args": [{"name": "people"}] },
+          { "name": ["-p", "--project"], "description": "Add to project board", "args": [{"name": "name"}] },
+          { "name": ["-f", "--fill"], "description": "Use commit info for title and body" }
+        ]},
+        { "name": "diff", "description": "View changes in a PR", "args": [{"name": "pr-number", "isOptional": true}] },
+        { "name": "edit", "description": "Edit a pull request", "args": [{"name": "pr-number"}] },
+        { "name": "list", "description": "List pull requests", "options": [
+          { "name": ["-a", "--assignee"], "description": "Filter by assignee", "args": [{"name": "login"}] },
+          { "name": ["-l", "--label"], "description": "Filter by labels", "args": [{"name": "labels"}] },
+          { "name": ["-s", "--state"], "description": "Filter by state (open/closed/merged/all)", "args": [{"name": "state", "suggestions": ["open", "closed", "merged", "all"]}] },
+          { "name": ["-B", "--base"], "description": "Filter by base branch", "args": [{"name": "branch"}] },
+          { "name": ["-H", "--head"], "description": "Filter by head branch", "args": [{"name": "branch"}] },
+          { "name": ["-L", "--limit"], "description": "Maximum results", "args": [{"name": "n"}] },
+          { "name": ["--author"], "description": "Filter by author", "args": [{"name": "login"}] },
+          { "name": ["--search"], "description": "Search with query", "args": [{"name": "keywords"}] }
+        ]},
+        { "name": "merge", "description": "Merge a pull request", "args": [{"name": "pr-number", "isOptional": true}], "options": [
+          { "name": ["--merge"], "description": "Merge with a merge commit" },
+          { "name": ["--squash"], "description": "Squash into one commit" },
+          { "name": ["--rebase"], "description": "Rebase commits" },
+          { "name": ["-d", "--delete-branch"], "description": "Delete branch after merge" },
+          { "name": ["-t", "--subject"], "description": "Commit subject", "args": [{"name": "text"}] },
+          { "name": ["-b", "--body"], "description": "Commit body text", "args": [{"name": "text"}] }
+        ]},
+        { "name": "ready", "description": "Mark a pull request as ready for review", "args": [{"name": "pr-number", "isOptional": true}] },
+        { "name": "reopen", "description": "Reopen a closed PR", "args": [{"name": "pr-number"}] },
+        { "name": "review", "description": "Review a pull request", "subcommands": [
+          { "name": "approve", "description": "Approve a PR", "args": [{"name": "pr-number", "isOptional": true}] },
+          { "name": "request", "description": "Request a review", "args": [{"name": "pr-number"}], "options": [
+            { "name": ["-r", "--reviewer"], "description": "Reviewer to request", "args": [{"name": "login"}] }
+          ]}
+        ]},
+        { "name": "status", "description": "Show the current PR status" },
+        { "name": "view", "description": "View a pull request", "args": [{"name": "pr-number", "isOptional": true}], "options": [
+          { "name": ["-c", "--comments"], "description": "Show comments" }
+        ]}
+      ]
+    },
+    {
+      "name": "release",
+      "description": "Manage GitHub releases",
+      "subcommands": [
+        { "name": "create", "description": "Create a new release", "args": [{"name": "tag"}], "options": [
+          { "name": ["-t", "--title"], "description": "Release title", "args": [{"name": "title"}] },
+          { "name": ["-n", "--notes"], "description": "Release notes", "args": [{"name": "notes"}] },
+          { "name": ["-p", "--prerelease"], "description": "Mark as prerelease" },
+          { "name": ["-d", "--draft"], "description": "Save as draft" },
+          { "name": ["-R", "--repo"], "description": "Another repository" }
+        ]},
+        { "name": "delete", "description": "Delete a release", "args": [{"name": "tag"}] },
+        { "name": "download", "description": "Download release assets", "args": [{"name": "tag"}], "options": [
+          { "name": ["-p", "--pattern"], "description": "Download assets matching pattern", "args": [{"name": "glob"}] },
+          { "name": ["-D", "--dir"], "description": "Output directory", "args": [{"name": "dir"}] }
+        ]},
+        { "name": "list", "description": "List releases", "options": [
+          { "name": ["-L", "--limit"], "description": "Maximum results", "args": [{"name": "n"}] }
+        ]},
+        { "name": "upload", "description": "Upload release assets", "args": [{"name": "tag"}, {"name": "file", "isVariadic": true}], "options": [
+          { "name": ["--clobber"], "description": "Overwrite existing assets" }
+        ]},
+        { "name": "view", "description": "View a release", "args": [{"name": "tag", "isOptional": true}], "options": [
+          { "name": ["-w", "--web"], "description": "Open in browser" }
+        ]}
+      ]
+    },
+    {
+      "name": "repo",
+      "description": "Manage GitHub repositories",
+      "subcommands": [
+        { "name": "clone", "description": "Clone a repository locally", "args": [{"name": "repository"}], "options": [
+          { "name": ["--"], "description": "Pass remaining args to git clone", "args": [{"name": "git-args", "isVariadic": true}] }
+        ]},
+        { "name": "create", "description": "Create a new repository", "options": [
+          { "name": ["-p", "--private"], "description": "Create as private" },
+          { "name": ["-d", "--description"], "description": "Repository description", "args": [{"name": "text"}] },
+          { "name": ["--template"], "description": "Template repository", "args": [{"name": "repo"}] },
+          { "name": ["--clone"], "description": "Clone to local directory" },
+          { "name": ["-t", "--team"], "description": "Team slug for ownership", "args": [{"name": "slug"}] }
+        ]},
+        { "name": "delete", "description": "Delete a repository", "args": [{"name": "repository"}] },
+        { "name": "edit", "description": "Edit repository settings", "args": [{"name": "repository"}], "options": [
+          { "name": ["--default-branch"], "description": "Default branch name", "args": [{"name": "name"}] },
+          { "name": ["-d", "--description"], "description": "Repository description", "args": [{"name": "text"}] },
+          { "name": ["--enable-issues"], "description": "Enable issues" },
+          { "name": ["--enable-wiki"], "description": "Enable wiki" }
+        ]},
+        { "name": "fork", "description": "Fork a repository", "args": [{"name": "repository", "isOptional": true}], "options": [
+          { "name": ["--clone"], "description": "Clone the fork locally" },
+          { "name": ["--remote-name"], "description": "Remote name", "args": [{"name": "name"}] }
+        ]},
+        { "name": "list", "description": "List repositories", "options": [
+          { "name": ["-L", "--limit"], "description": "Maximum results", "args": [{"name": "n"}] },
+          { "name": ["--public"], "description": "Show only public repos" },
+          { "name": ["--private"], "description": "Show only private repos" },
+          { "name": ["--archived"], "description": "Include archived repos" }
+        ]},
+        { "name": "rename", "description": "Rename a repository", "args": [{"name": "repository"}, {"name": "new-name"}] },
+        { "name": "view", "description": "View a repository", "args": [{"name": "repository", "isOptional": true}], "options": [
+          { "name": ["-w", "--web"], "description": "Open in browser" }
+        ]}
+      ]
+    },
+    {
+      "name": "run",
+      "description": "View and manage GitHub Actions workflow runs",
+      "subcommands": [
+        { "name": "list", "description": "List workflow runs", "options": [
+          { "name": ["-w", "--workflow"], "description": "Filter by workflow filename", "args": [{"name": "name"}] },
+          { "name": ["-b", "--branch"], "description": "Filter by branch", "args": [{"name": "branch"}] },
+          { "name": ["-s", "--status"], "description": "Filter by status", "args": [{"name": "status", "suggestions": ["queued", "in_progress", "completed", "action_required", "cancelled", "failure", "neutral", "skipped", "stale", "success", "timed_out"]}] },
+          { "name": ["-L", "--limit"], "description": "Maximum results", "args": [{"name": "n"}] }
+        ]},
+        { "name": "view", "description": "View a workflow run", "args": [{"name": "run-id"}], "options": [
+          { "name": ["-v", "--verbose"], "description": "Show job steps" },
+          { "name": ["--attempt"], "description": "Which attempt to view", "args": [{"name": "n"}] },
+          { "name": ["-w", "--web"], "description": "Open in browser" }
+        ]},
+        { "name": "rerun", "description": "Rerun a failed workflow run", "args": [{"name": "run-id"}], "options": [
+          { "name": ["--failed"], "description": "Rerun only failed jobs" }
+        ]},
+        { "name": "cancel", "description": "Cancel a workflow run", "args": [{"name": "run-id"}] },
+        { "name": "watch", "description": "Watch a workflow run", "args": [{"name": "run-id"}] }
+      ]
+    },
+    {
+      "name": "search",
+      "description": "Search GitHub for repositories, issues, or code",
+      "subcommands": [
+        { "name": "issues", "description": "Search for issues", "args": [{"name": "query"}], "options": [
+          { "name": ["-L", "--limit"], "description": "Maximum results", "args": [{"name": "n"}] }
+        ]},
+        { "name": "prs", "description": "Search for pull requests", "args": [{"name": "query"}], "options": [
+          { "name": ["-L", "--limit"], "description": "Maximum results", "args": [{"name": "n"}] }
+        ]},
+        { "name": "repos", "description": "Search for repositories", "args": [{"name": "query"}], "options": [
+          { "name": ["-L", "--limit"], "description": "Maximum results", "args": [{"name": "n"}] }
+        ]},
+        { "name": "commits", "description": "Search for commits", "args": [{"name": "query"}], "options": [
+          { "name": ["-L", "--limit"], "description": "Maximum results", "args": [{"name": "n"}] }
+        ]},
+        { "name": "code", "description": "Search for code", "args": [{"name": "query"}], "options": [
+          { "name": ["-L", "--limit"], "description": "Maximum results", "args": [{"name": "n"}] }
+        ]}
+      ]
+    },
+    {
+      "name": "secret",
+      "description": "Manage GitHub secrets",
+      "subcommands": [
+        { "name": "list", "description": "List secrets", "options": [
+          { "name": ["--org"], "description": "Organization name", "args": [{"name": "org"}] }
+        ]},
+        { "name": "set", "description": "Set a secret", "args": [{"name": "name"}], "options": [
+          { "name": ["-b", "--body"], "description": "Secret value", "args": [{"name": "value"}] },
+          { "name": ["--org"], "description": "Organization name", "args": [{"name": "org"}] },
+          { "name": ["-r", "--repos"], "description": "Repo access for org secrets", "args": [{"name": "repos"}] }
+        ]},
+        { "name": "delete", "description": "Delete a secret", "args": [{"name": "name"}] }
+      ]
+    },
+    {
+      "name": "workflow",
+      "description": "View and manage GitHub Actions workflows",
+      "subcommands": [
+        { "name": "disable", "description": "Disable a workflow", "args": [{"name": "workflow-id"}] },
+        { "name": "enable", "description": "Enable a workflow", "args": [{"name": "workflow-id"}] },
+        { "name": "list", "description": "List workflows", "options": [
+          { "name": ["-L", "--limit"], "description": "Maximum results", "args": [{"name": "n"}] }
+        ]},
+        { "name": "run", "description": "Trigger a workflow run", "args": [{"name": "workflow-id"}], "options": [
+          { "name": ["-r", "--ref"], "description": "Branch or tag to run on", "args": [{"name": "ref"}] },
+          { "name": ["-f", "--field"], "description": "Input field in key=value format", "args": [{"name": "key=value"}] }
+        ]},
+        { "name": "view", "description": "View a workflow", "args": [{"name": "workflow-id", "isOptional": true}], "options": [
+          { "name": ["-w", "--web"], "description": "Open in browser" }
+        ]}
+      ]
+    },
+    {
+      "name": "label",
+      "description": "Manage GitHub labels",
+      "subcommands": [
+        { "name": "clone", "description": "Clone labels from another repo", "args": [{"name": "source-repo"}], "options": [
+          { "name": ["--force"], "description": "Overwrite existing labels" }
+        ]},
+        { "name": "create", "description": "Create a label", "args": [{"name": "name"}], "options": [
+          { "name": ["-c", "--color"], "description": "Label color (hex)", "args": [{"name": "color"}] },
+          { "name": ["-d", "--description"], "description": "Label description", "args": [{"name": "text"}] }
+        ]},
+        { "name": "delete", "description": "Delete a label", "args": [{"name": "name"}] },
+        { "name": "list", "description": "List labels in a repository", "options": [
+          { "name": ["-L", "--limit"], "description": "Maximum results", "args": [{"name": "n"}] }
+        ]}
+      ]
+    },
+    {
+      "name": "project",
+      "description": "Manage GitHub projects (beta)",
+      "subcommands": [
+        { "name": "close", "description": "Close a project", "args": [{"name": "project-id"}] },
+        { "name": "delete", "description": "Delete a project", "args": [{"name": "project-id"}] },
+        { "name": "edit", "description": "Edit a project", "args": [{"name": "project-id"}], "options": [
+          { "name": ["--title"], "description": "Project title", "args": [{"name": "title"}] },
+          { "name": ["--description"], "description": "Project description", "args": [{"name": "text"}] }
+        ]},
+        { "name": "list", "description": "List projects", "options": [
+          { "name": ["-L", "--limit"], "description": "Maximum results", "args": [{"name": "n"}] },
+          { "name": ["--org"], "description": "Organization name", "args": [{"name": "org"}] },
+          { "name": ["-u", "--user"], "description": "Username for user projects", "args": [{"name": "login"}] }
+        ]},
+        { "name": "view", "description": "View a project", "args": [{"name": "project-id"}], "options": [
+          { "name": ["-w", "--web"], "description": "Open in browser" }
+        ]}
+      ]
+    },
+    {
+      "name": "extension",
+      "description": "Manage GitHub CLI extensions",
+      "subcommands": [
+        { "name": "browse", "description": "Browse available extensions" },
+        { "name": "create", "description": "Create a new extension", "args": [{"name": "name"}], "options": [
+          { "name": ["--precompiled"], "description": "Extension uses precompiled Go binaries" }
+        ]},
+        { "name": "exec", "description": "Execute an extension", "args": [{"name": "name"}, {"name": "args", "isVariadic": true, "isOptional": true}] },
+        { "name": "install", "description": "Install a GitHub CLI extension from a repository", "args": [{"name": "repository"}] },
+        { "name": "list", "description": "List installed extensions" },
+        { "name": "remove", "description": "Remove an installed extension", "args": [{"name": "name"}] },
+        { "name": "upgrade", "description": "Upgrade installed extensions" }
+      ]
+    },
+    {
+      "name": "api",
+      "description": "Make an authenticated GitHub API request",
+      "args": [
+        { "name": "endpoint", "description": "API endpoint (e.g. /repos/owner/repo)" }
+      ],
+      "options": [
+        { "name": ["-X", "--method"], "description": "HTTP method", "args": [{"name": "method", "suggestions": ["GET", "POST", "PATCH", "PUT", "DELETE"]}] },
+        { "name": ["-H", "--header"], "description": "Custom HTTP header", "args": [{"name": "header"}] },
+        { "name": ["-f", "--field"], "description": "Key-value field", "args": [{"name": "key=value"}] },
+        { "name": ["-q", "--jq"], "description": "Query to filter JSON output", "args": [{"name": "query"}] },
+        { "name": ["--paginate"], "description": "Auto-paginate results" },
+        { "name": ["--preview"], "description": "Enable preview API", "args": [{"name": "name"}] },
+        { "name": ["-i", "--include"], "description": "Include response headers" }
+      ]
+    },
+    {
+      "name": "config",
+      "description": "Manage GitHub CLI configuration",
+      "subcommands": [
+        { "name": "get", "description": "Get a configuration value", "args": [{"name": "key"}] },
+        { "name": "set", "description": "Set a configuration value", "args": [{"name": "key"}, {"name": "value"}] },
+        { "name": "list", "description": "List all configuration values" }
+      ]
+    },
+    {
+      "name": "status",
+      "description": "Show the current status of issues, PRs, and notifications"
+    },
+    {
+      "name": "codespace",
+      "description": "Manage GitHub Codespaces",
+      "subcommands": [
+        { "name": "create", "description": "Create a codespace", "options": [
+          { "name": ["-b", "--branch"], "description": "Repository branch", "args": [{"name": "branch"}] },
+          { "name": ["-m", "--machine"], "description": "Hardware specs", "args": [{"name": "name"}] },
+          { "name": ["--default"], "description": "Create codespace for the default branch" }
+        ]},
+        { "name": "delete", "description": "Delete codespaces", "args": [{"name": "codespace-name", "isOptional": true}], "options": [
+          { "name": ["--all"], "description": "Delete all" },
+          { "name": ["--repo"], "description": "Delete codespaces for a repo", "args": [{"name": "repository"}] }
+        ]},
+        { "name": "list", "description": "List codespaces", "options": [
+          { "name": ["-L", "--limit"], "description": "Maximum results", "args": [{"name": "n"}] }
+        ]},
+        { "name": "logs", "description": "Access codespace logs", "args": [{"name": "codespace-name", "isOptional": true}] },
+        { "name": "ports", "description": "Manage forwarded ports", "subcommands": [
+          { "name": "visibility", "description": "Set port visibility", "args": [{"name": "port"}, {"name": "visibility", "suggestions": ["public", "private"]}] },
+          { "name": "forward", "description": "Forward a port", "args": [{"name": "port"}] }
+        ]},
+        { "name": "ssh", "description": "SSH into a codespace", "args": [{"name": "codespace-name", "isOptional": true}] },
+        { "name": "stop", "description": "Stop a codespace", "args": [{"name": "codespace-name", "isOptional": true}] },
+        { "name": "view", "description": "View details of a codespace", "args": [{"name": "codespace-name", "isOptional": true}] }
+      ]
+    }
+  ]
+}

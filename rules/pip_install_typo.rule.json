@@ -1,0 +1,9 @@
+{
+  "id": "pip_install_typo",
+  "description": "Correct mistyped pip subcommands",
+  "priority": 60,
+  "match": {
+    "scriptStartsWith": "pip intall"
+  },
+  "rewrite": { "regexReplace": { "pattern": "^pip intall(\\b|$)", "with": "pip install" } }
+}

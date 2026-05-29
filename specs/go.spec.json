@@ -1,0 +1,216 @@
+{
+  "name": "go",
+  "description": "Go programming language toolchain",
+  "requiresSubcommand": true,
+  "options": [
+    { "name": ["-h", "--help"], "description": "Show help and exit" },
+    { "name": ["--version"], "description": "Show Go version" }
+  ],
+  "subcommands": [
+    {
+      "name": "build",
+      "description": "Compile packages and dependencies",
+      "options": [
+        { "name": ["-o"], "description": "Output file path", "args": [{"name": "file"}] },
+        { "name": ["-a"], "description": "Force rebuilding of all packages" },
+        { "name": ["-x"], "description": "Print executed commands" },
+        { "name": ["-v"], "description": "Print the names of packages as they are compiled" },
+        { "name": ["-race"], "description": "Enable data race detection" },
+        { "name": ["-tags"], "description": "Build tags", "args": [{"name": "tags"}] },
+        { "name": ["-ldflags"], "description": "Linker flags", "args": [{"name": "flags"}] },
+        { "name": ["-gcflags"], "description": "Compiler flags", "args": [{"name": "flags"}] },
+        { "name": ["-mod"], "description": "Module download mode", "args": [{"name": "mode", "suggestions": ["mod", "vendor", "readonly"]}] },
+        { "name": ["-C"], "description": "Change to directory before running", "args": [{"name": "dir"}] }
+      ],
+      "args": [
+        { "name": "packages", "description": "Packages to build", "isOptional": true, "isVariadic": true }
+      ]
+    },
+    {
+      "name": "run",
+      "description": "Compile and run a Go program",
+      "options": [
+        { "name": ["-x"], "description": "Print executed commands" },
+        { "name": ["-v"], "description": "Print package names" },
+        { "name": ["-race"], "description": "Enable data race detection" },
+        { "name": ["-tags"], "description": "Build tags", "args": [{"name": "tags"}] },
+        { "name": ["-C"], "description": "Change to directory before running", "args": [{"name": "dir"}] }
+      ],
+      "args": [
+        { "name": "package", "description": "Package or file to run", "isOptional": true },
+        { "name": "args", "description": "Arguments to pass to the program", "isOptional": true, "isVariadic": true }
+      ]
+    },
+    {
+      "name": "test",
+      "description": "Test packages",
+      "options": [
+        { "name": ["-v"], "description": "Verbose output" },
+        { "name": ["-x"], "description": "Print executed commands" },
+        { "name": ["-race"], "description": "Enable data race detection" },
+        { "name": ["-cover"], "description": "Enable coverage analysis" },
+        { "name": ["-coverprofile"], "description": "Write coverage profile to file", "args": [{"name": "file"}] },
+        { "name": ["-bench"], "description": "Run benchmarks matching regex", "args": [{"name": "regex"}] },
+        { "name": ["-benchtime"], "description": "Benchmark duration", "args": [{"name": "duration"}] },
+        { "name": ["-count"], "description": "Run each test n times", "args": [{"name": "n"}] },
+        { "name": ["-run"], "description": "Run only tests matching regex", "args": [{"name": "regex"}] },
+        { "name": ["-failfast"], "description": "Stop testing after first failure" },
+        { "name": ["-tags"], "description": "Build tags", "args": [{"name": "tags"}] },
+        { "name": ["-timeout"], "description": "Test timeout", "args": [{"name": "duration"}] },
+        { "name": ["-C"], "description": "Change to directory before running", "args": [{"name": "dir"}] },
+        { "name": ["-shuffle"], "description": "Shuffle test execution order", "args": [{"name": "mode", "suggestions": ["on", "off", "N"]}] },
+        { "name": ["-json"], "description": "Output in JSON format" }
+      ],
+      "args": [
+        { "name": "packages", "description": "Packages to test", "isOptional": true, "isVariadic": true }
+      ]
+    },
+    {
+      "name": "mod",
+      "description": "Module maintenance",
+      "subcommands": [
+        { "name": "init", "description": "Initialize a new module", "args": [{"name": "module-path"}] },
+        { "name": "tidy", "description": "Add missing and remove unused modules" },
+        { "name": "download", "description": "Download module dependencies" },
+        { "name": "vendor", "description": "Create a vendor directory" },
+        { "name": "verify", "description": "Verify dependencies have expected content" },
+        { "name": "why", "description": "Explain why packages depend on a module", "args": [{"name": "packages", "isVariadic": true}] },
+        { "name": "edit", "description": "Edit go.mod programmatically", "args": [{"name": "edits", "isVariadic": true}] },
+        { "name": "graph", "description": "Print the module dependency graph" }
+      ]
+    },
+    {
+      "name": "get",
+      "description": "Add dependencies and update go.mod",
+      "options": [
+        { "name": ["-u"], "description": "Update modules" },
+        { "name": ["-t"], "description": "Consider modules needed for tests" },
+        { "name": ["-x"], "description": "Print executed commands" },
+        { "name": ["-d"], "description": "Download only, no building" },
+        { "name": ["-fix"], "description": "Fix packages after updating" },
+        { "name": ["-v"], "description": "Verbose output" }
+      ],
+      "args": [
+        { "name": "packages", "description": "Packages to get", "isVariadic": true }
+      ]
+    },
+    {
+      "name": "install",
+      "description": "Compile and install packages",
+      "options": [
+        { "name": ["-x"], "description": "Print executed commands" },
+        { "name": ["-v"], "description": "Verbose output" },
+        { "name": ["-tags"], "description": "Build tags", "args": [{"name": "tags"}] },
+        { "name": ["-race"], "description": "Enable race detection" }
+      ],
+      "args": [
+        { "name": "packages", "description": "Packages to install", "isOptional": true, "isVariadic": true }
+      ]
+    },
+    {
+      "name": "fmt",
+      "description": "Format Go source code",
+      "options": [
+        { "name": ["-x"], "description": "Print executed commands" },
+        { "name": ["-n"], "description": "Print commands that would be executed" },
+        { "name": ["-l"], "description": "List files that differ from gofmt" },
+        { "name": ["-w"], "description": "Write results to files" },
+        { "name": ["-d"], "description": "Show diffs instead of rewriting" },
+        { "name": ["-s"], "description": "Simplify code" },
+        { "name": ["-e"], "description": "Report all errors" }
+      ],
+      "args": [
+        { "name": "files", "description": "Files or directories to format", "isOptional": true, "isVariadic": true, "template": "filepaths" }
+      ]
+    },
+    {
+      "name": "vet",
+      "description": "Analyze Go code for suspicious constructs",
+      "options": [
+        { "name": ["-x"], "description": "Print executed commands" },
+        { "name": ["-v"], "description": "Verbose output" },
+        { "name": ["-tags"], "description": "Build tags", "args": [{"name": "tags"}] },
+        { "name": ["-C"], "description": "Change to directory before running", "args": [{"name": "dir"}] }
+      ],
+      "args": [
+        { "name": "packages", "description": "Packages to vet", "isOptional": true, "isVariadic": true }
+      ]
+    },
+    {
+      "name": "generate",
+      "description": "Generate Go source code by running directives in files",
+      "options": [
+        { "name": ["-x"], "description": "Print executed commands" },
+        { "name": ["-n"], "description": "Print commands that would be executed" },
+        { "name": ["-v"], "description": "Verbose output" },
+        { "name": ["-tags"], "description": "Build tags", "args": [{"name": "tags"}] },
+        { "name": ["-run"], "description": "Run only directives matching regex", "args": [{"name": "regex"}] }
+      ],
+      "args": [
+        { "name": "packages", "description": "Packages to generate", "isOptional": true, "isVariadic": true }
+      ]
+    },
+    {
+      "name": "env",
+      "description": "Print Go environment information",
+      "args": [
+        { "name": "vars", "description": "Environment variables to print", "isOptional": true, "isVariadic": true }
+      ],
+      "options": [
+        { "name": ["-u"], "description": "Unset unset variables" },
+        { "name": ["-w"], "description": "Set a variable in go env", "args": [{"name": "key=value"}] }
+      ]
+    },
+    {
+      "name": "doc",
+      "description": "Show documentation for a package or symbol",
+      "args": [
+        { "name": "target", "description": "Package, symbol, or method", "isOptional": true }
+      ],
+      "options": [
+        { "name": ["-u"], "description": "Show unexported symbols" },
+        { "name": ["-c"], "description": "Match case-sensitively" },
+        { "name": ["-src"], "description": "Show source code" },
+        { "name": ["-url"], "description": "Print documentation URL" }
+      ]
+    },
+    {
+      "name": "clean",
+      "description": "Remove compiled object files",
+      "options": [
+        { "name": ["-x"], "description": "Print executed commands" },
+        { "name": ["-n"], "description": "Print commands that would be executed" },
+        { "name": ["-i"], "description": "Remove installed packages" },
+        { "name": ["-r"], "description": "Remove recursively" },
+        { "name": ["-cache"], "description": "Remove the entire cache" },
+        { "name": ["-testcache"], "description": "Expire test results in cache" },
+        { "name": ["-fuzzcache"], "description": "Remove fuzz cache" },
+        { "name": ["-modcache"], "description": "Remove module download cache" }
+      ],
+      "args": [
+        { "name": "packages", "description": "Packages to clean", "isOptional": true, "isVariadic": true }
+      ]
+    },
+    {
+      "name": "fix",
+      "description": "Update packages to use new APIs",
+      "options": [
+        { "name": ["-x"], "description": "Print executed commands" },
+        { "name": ["-v"], "description": "Verbose output" }
+      ],
+      "args": [
+        { "name": "packages", "description": "Packages to fix", "isOptional": true, "isVariadic": true }
+      ]
+    },
+    {
+      "name": "work",
+      "description": "Workspace management for Go 1.18+",
+      "subcommands": [
+        { "name": "init", "description": "Initialize a workspace", "args": [{"name": "dirs", "isVariadic": true}] },
+        { "name": "use", "description": "Add a module to the workspace", "args": [{"name": "dirs", "isVariadic": true}] },
+        { "name": "edit", "description": "Edit go.work programmatically" },
+        { "name": "sync", "description": "Sync workspace dependencies" }
+      ]
+    }
+  ]
+}

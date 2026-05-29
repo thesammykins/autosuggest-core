@@ -1,0 +1,212 @@
+{
+  "name": "uv",
+  "description": "Fast Python package and project manager",
+  "requiresSubcommand": true,
+  "options": [
+    { "name": ["-h", "--help"], "description": "Show help and exit" },
+    { "name": ["-V", "--version"], "description": "Show version and exit" },
+    { "name": ["-q", "--quiet"], "description": "Suppress output" },
+    { "name": ["-v", "--verbose"], "description": "Increase verbosity" },
+    { "name": ["--color"], "description": "Control color output", "args": [{"name": "when", "suggestions": ["auto", "always", "never"]}] },
+    { "name": ["--cache-dir"], "description": "Override cache directory", "args": [{"name": "path"}] },
+    { "name": ["--native-tls"], "description": "Use the system's TLS library" },
+    { "name": ["--offline"], "description": "Disable network access" }
+  ],
+  "subcommands": [
+    {
+      "name": "add",
+      "description": "Add a dependency to the project",
+      "args": [
+        { "name": "package", "description": "Package(s) to add", "isVariadic": true }
+      ],
+      "options": [
+        { "name": ["--dev"], "description": "Add as a dev dependency" },
+        { "name": ["--optional"], "description": "Add as an optional dependency group", "args": [{"name": "group"}] },
+        { "name": ["-r", "--rev"], "description": "Git revision to pin", "args": [{"name": "revision"}] },
+        { "name": ["-b", "--branch"], "description": "Git branch to pin", "args": [{"name": "branch"}] },
+        { "name": ["-t", "--tag"], "description": "Git tag to pin", "args": [{"name": "tag"}] },
+        { "name": ["--editable"], "description": "Add as an editable dependency" }
+      ]
+    },
+    {
+      "name": "remove",
+      "description": "Remove a dependency from the project",
+      "args": [
+        { "name": "package", "description": "Package(s) to remove", "isVariadic": true }
+      ],
+      "options": [
+        { "name": ["--dev"], "description": "Remove from dev dependencies" },
+        { "name": ["--optional"], "description": "Remove from optional dependency group", "args": [{"name": "group"}] }
+      ]
+    },
+    {
+      "name": "sync",
+      "description": "Synchronize the project's dependencies with the lockfile",
+      "options": [
+        { "name": ["--dev"], "description": "Include dev dependencies" },
+        { "name": ["--no-dev"], "description": "Exclude dev dependencies" },
+        { "name": ["-f", "--frozen"], "description": "Do not update the lockfile" },
+        { "name": ["--no-install-project"], "description": "Skip installing the project itself" },
+        { "name": ["--no-build"], "description": "Skip building source distributions" }
+      ]
+    },
+    {
+      "name": "lock",
+      "description": "Update the project's lockfile without installing",
+      "options": [
+        { "name": ["--check"], "description": "Check if the lockfile is up-to-date" }
+      ]
+    },
+    {
+      "name": "run",
+      "description": "Run a command or script in the project environment",
+      "args": [
+        { "name": "command", "description": "Command to run", "isVariadic": true }
+      ],
+      "options": [
+        { "name": ["--with"], "description": "Temporarily add a dependency", "args": [{"name": "package"}] },
+        { "name": ["--extra"], "description": "Include optional dependency group", "args": [{"name": "group"}] },
+        { "name": ["--no-sync"], "description": "Skip syncing before running" },
+        { "name": ["--isolated"], "description": "Run in an isolated virtual environment" }
+      ]
+    },
+    {
+      "name": "build",
+      "description": "Build the project into distribution archives",
+      "options": [
+        { "name": ["-o", "--out-dir"], "description": "Output directory", "args": [{"name": "path"}] },
+        { "name": ["--sdist"], "description": "Build only a source distribution" },
+        { "name": ["--wheel"], "description": "Build only a wheel" }
+      ]
+    },
+    {
+      "name": "publish",
+      "description": "Upload packages to a package registry",
+      "args": [
+        { "name": "files", "description": "Distribution files to publish", "isVariadic": true, "template": "filepaths" }
+      ],
+      "options": [
+        { "name": ["-u", "--username"], "description": "Registry username", "args": [{"name": "username"}] },
+        { "name": ["-p", "--password"], "description": "Registry password", "args": [{"name": "password"}] },
+        { "name": ["--publish-url"], "description": "Package registry URL", "args": [{"name": "url"}] },
+        { "name": ["--token"], "description": "API token for the registry", "args": [{"name": "token"}] },
+        { "name": ["--check-url"], "description": "Check URL for existing file before uploading", "args": [{"name": "url"}] }
+      ]
+    },
+    {
+      "name": "tool",
+      "description": "Manage tools and CLI applications",
+      "subcommands": [
+        { "name": "run", "description": "Run a tool in an isolated environment", "args": [{"name": "tool"}], "options": [
+          { "name": ["--from"], "description": "Specify the tool's package", "args": [{"name": "package"}] }
+        ]},
+        { "name": "install", "description": "Install a tool globally", "args": [{"name": "package"}], "options": [
+          { "name": ["-f", "--force"], "description": "Force reinstall" }
+        ]},
+        { "name": "list", "description": "List installed tools" },
+        { "name": "uninstall", "description": "Uninstall a tool", "args": [{"name": "tool"}] },
+        { "name": "update-shell", "description": "Update tool PATH in shell configuration files" }
+      ]
+    },
+    {
+      "name": "pip",
+      "description": "Pip-compatible package management interface",
+      "subcommands": [
+        { "name": "install", "description": "Install packages", "args": [{"name": "package", "isVariadic": true}], "options": [
+          { "name": ["-r", "--requirement"], "description": "Install from requirements file", "args": [{"name": "file"}] },
+          { "name": ["-e", "--editable"], "description": "Editable install", "args": [{"name": "path"}] },
+          { "name": ["--no-deps"], "description": "Skip dependency installation" },
+          { "name": ["--upgrade"], "description": "Upgrade packages" },
+          { "name": ["-U", "--upgrade-package"], "description": "Upgrade specific package", "args": [{"name": "package"}] }
+        ]},
+        { "name": "show", "description": "Show information about a package", "args": [{"name": "package"}] },
+        { "name": "list", "description": "List installed packages", "options": [
+          { "name": ["-o", "--outdated"], "description": "Show outdated packages" }
+        ]},
+        { "name": "freeze", "description": "Output installed packages in requirements format" },
+        { "name": "compile", "description": "Compile a requirements file to a lockfile", "args": [{"name": "input", "isOptional": true}], "options": [
+          { "name": ["-o", "--output"], "description": "Output file path", "args": [{"name": "file"}] },
+          { "name": ["--universal"], "description": "Platform-independent output" }
+        ]},
+        { "name": "sync", "description": "Sync environment to match a requirements file", "args": [{"name": "file"}] }
+      ]
+    },
+    {
+      "name": "python",
+      "description": "Manage Python installations",
+      "subcommands": [
+        { "name": "list", "description": "List available Python versions" },
+        { "name": "install", "description": "Install a Python version", "args": [{"name": "version", "isOptional": true}] },
+        { "name": "uninstall", "description": "Uninstall a Python version", "args": [{"name": "version"}] },
+        { "name": "pin", "description": "Pin a Python version for the project", "args": [{"name": "version", "isOptional": true}] },
+        { "name": "find", "description": "Find an installed Python", "args": [{"name": "version", "isOptional": true}] },
+        { "name": "directory", "description": "Show the Python directory" }
+      ]
+    },
+    {
+      "name": "cache",
+      "description": "Manage uv's cache",
+      "subcommands": [
+        { "name": "clean", "description": "Remove all cached data", "args": [{"name": "package", "isOptional": true}] },
+        { "name": "prune", "description": "Remove stale cached data" }
+      ]
+    },
+    {
+      "name": "venv",
+      "description": "Create a virtual environment",
+      "args": [
+        { "name": "name", "description": "Virtual environment directory", "isOptional": true }
+      ],
+      "options": [
+        { "name": ["-p", "--python"], "description": "Python interpreter to use", "args": [{"name": "version"}] },
+        { "name": ["--seed"], "description": "Install seed packages (pip, setuptools)" },
+        { "name": ["--relocatable"], "description": "Make the virtual environment relocatable" }
+      ]
+    },
+    {
+      "name": "init",
+      "description": "Initialize a new Python project",
+      "args": [
+        { "name": "path", "description": "Project directory", "isOptional": true }
+      ],
+      "options": [
+        { "name": ["-p", "--python"], "description": "Python version to use", "args": [{"name": "version"}] },
+        { "name": ["--app"], "description": "Initialize with an app layout" },
+        { "name": ["--lib", "--library"], "description": "Initialize with a library layout" },
+        { "name": ["--package"], "description": "Initialize with a package" },
+        { "name": ["--no-readme"], "description": "Skip README creation" },
+        { "name": ["-r", "--author-from"], "description": "Where to get author info", "args": [{"name": "source", "suggestions": ["auto", "git", "none"]}] }
+      ]
+    },
+    {
+      "name": "export",
+      "description": "Export the project's lockfile to a requirements format",
+      "options": [
+        { "name": ["-o", "--output"], "description": "Output file path", "args": [{"name": "file"}] },
+        { "name": ["--dev"], "description": "Include dev dependencies" },
+        { "name": ["--group"], "description": "Include an optional dependency group", "args": [{"name": "group"}] },
+        { "name": ["--no-hashes"], "description": "Omit hashes in output" },
+        { "name": ["--no-editable"], "description": "Use non-editable format" },
+        { "name": ["--prune"], "description": "Prune unrelated dependencies" }
+      ]
+    },
+    {
+      "name": "tree",
+      "description": "Display the project's dependency tree",
+      "options": [
+        { "name": ["--dev"], "description": "Include dev dependencies" },
+        { "name": ["-d", "--depth"], "description": "Maximum display depth", "args": [{"name": "n"}] },
+        { "name": ["-p", "--package"], "description": "Show tree for a specific package", "args": [{"name": "name"}] },
+        { "name": ["--no-dedupe"], "description": "Show duplicates" },
+        { "name": ["--invert"], "description": "Invert the dependency tree" }
+      ]
+    },
+    {
+      "name": "clean",
+      "description": "Remove cached distribution files and build artifacts",
+      "args": [
+        { "name": "package", "description": "Specific package to clean", "isOptional": true }
+      ]
+    }
+  ]
+}

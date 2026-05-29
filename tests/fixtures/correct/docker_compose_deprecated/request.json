@@ -1,0 +1,1 @@
+{ "v": 1, "op": "correct", "id": 32, "script": "docker-compose up -d", "stderr": "docker-compose: command not found", "exitCode": 127 }

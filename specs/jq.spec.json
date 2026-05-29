@@ -1,0 +1,32 @@
+{
+  "name": "jq",
+  "description": "Command-line JSON processor using a query language",
+  "options": [
+    { "name": ["-r", "--raw-output"], "description": "Output raw strings, not JSON-encoded" },
+    { "name": ["-c", "--compact"], "description": "Compact output instead of pretty-printed" },
+    { "name": ["-f", "--from-file"], "description": "Read filter from file", "args": [{"name": "file"}] },
+    { "name": ["-n", "--null-input"], "description": "Use null as input value" },
+    { "name": ["-s", "--slurp"], "description": "Read all inputs into an array" },
+    { "name": ["-R", "--raw-input"], "description": "Read raw input strings, not JSON" },
+    { "name": ["-M", "--monochrome"], "description": "Disable color output" },
+    { "name": ["-C", "--color-output"], "description": "Force color output" },
+    { "name": ["-e", "--exit-status"], "description": "Exit with non-zero status if result is false/null" },
+    { "name": ["-S", "--sort-keys"], "description": "Sort object keys in output" },
+    { "name": ["--tab"], "description": "Indent output with tabs" },
+    { "name": ["--indent"], "description": "Indent output with N spaces", "args": [{"name": "n"}] },
+    { "name": ["-L", "--library-path"], "description": "Library search path for modules", "args": [{"name": "path"}] },
+    { "name": ["--arg"], "description": "Pass string variable to jq", "args": [{"name": "name"}, {"name": "value"}] },
+    { "name": ["--argjson"], "description": "Pass JSON variable to jq", "args": [{"name": "name"}, {"name": "json"}] },
+    { "name": ["--rawfile"], "description": "Read file contents as a string variable", "args": [{"name": "name"}, {"name": "file"}] },
+    { "name": ["--slurpfile"], "description": "Read file into an array variable", "args": [{"name": "name"}, {"name": "file"}] },
+    { "name": ["-h", "--help"], "description": "Show help and exit" },
+    { "name": ["--version"], "description": "Show version and exit" }
+  ],
+  "args": [
+    { "name": "filter", "description": "jq query expression", "isOptional": false },
+    { "name": "files", "description": "JSON file(s) to process", "isOptional": true, "isVariadic": true, "template": "filepaths" }
+  ],
+  "parserDirectives": {
+    "optionsMustPrecedeArguments": true
+  }
+}

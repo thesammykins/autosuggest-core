@@ -25,12 +25,30 @@ const ENV_SPECS_DIR: &str = "AUTOSUGGEST_SPECS_DIR";
 /// Environment variable overriding the rules directory.
 const ENV_RULES_DIR: &str = "AUTOSUGGEST_RULES_DIR";
 
+/// Environment variable overriding the history database path.
+const ENV_HISTORY_DB: &str = "AUTOSUGGEST_HISTORY_DB";
+
 fn main() -> ExitCode {
     let mut args = std::env::args().skip(1);
-    let specs_dir = resolve_dir(args.next(), ENV_SPECS_DIR, DEFAULT_SPECS_DIR);
-    let rules_dir = resolve_dir(args.next(), ENV_RULES_DIR, DEFAULT_RULES_DIR);
+    let mut history_db: Option<PathBuf> = None;
+    let mut pos_args = Vec::new();
 
-    let engine = match Engine::load(&specs_dir, &rules_dir) {
+    // Simple argument parser: consume `--history-db <path>` from the arg list,
+    // treat everything else as positional.
+    while let Some(arg) = args.next() {
+        if arg == "--history-db" {
+            history_db = args.next().map(PathBuf::from);
+        } else {
+            pos_args.push(arg);
+        }
+    }
+
+    let mut pos = pos_args.into_iter();
+    let specs_dir = resolve_dir(pos.next(), ENV_SPECS_DIR, DEFAULT_SPECS_DIR);
+    let rules_dir = resolve_dir(pos.next(), ENV_RULES_DIR, DEFAULT_RULES_DIR);
+    let history_db = history_db.or_else(|| std::env::var_os(ENV_HISTORY_DB).map(PathBuf::from));
+
+    let engine = match Engine::load_with_history(&specs_dir, &rules_dir, history_db.as_deref()) {
         Ok(engine) => engine,
         Err(err) => {
             // A startup data error is fatal and reported on stderr; the wire

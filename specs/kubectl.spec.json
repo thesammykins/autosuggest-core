@@ -1,0 +1,682 @@
+{
+  "name": "kubectl",
+  "description": "Kubernetes cluster command-line tool",
+  "requiresSubcommand": true,
+  "options": [
+    { "name": ["--help"], "description": "Show help and exit" },
+    { "name": ["--version"], "description": "Show version information" },
+    { "name": ["--namespace", "-n"], "description": "Kubernetes namespace scope", "args": [{"name": "namespace"}] },
+    { "name": ["--context"], "description": "Kubernetes config context", "args": [{"name": "context"}] },
+    { "name": ["--kubeconfig"], "description": "Path to kubeconfig file", "args": [{"name": "path", "template": "filepaths"}] },
+    { "name": ["-A", "--all-namespaces"], "description": "Query across all namespaces" },
+    { "name": ["--server"], "description": "API server address", "args": [{"name": "url"}] },
+    { "name": ["--token"], "description": "Bearer token for API auth", "args": [{"name": "token"}] },
+    { "name": ["--user"], "description": "Kubeconfig user to use", "args": [{"name": "name"}] },
+    { "name": ["--cluster"], "description": "Kubeconfig cluster to use", "args": [{"name": "name"}] },
+    { "name": ["--insecure-skip-tls-verify"], "description": "Skip TLS verification" },
+    { "name": ["--request-timeout"], "description": "Request timeout duration", "args": [{"name": "duration"}] },
+    { "name": ["-v", "--v"], "description": "Log verbosity level", "args": [{"name": "level"}] }
+  ],
+  "subcommands": [
+    {
+      "name": "get",
+      "description": "List one or more resources",
+      "options": [
+        { "name": ["-o", "--output"], "description": "Output format", "args": [{"name": "format", "suggestions": ["json", "yaml", "wide", "name", "custom-columns", "custom-columns-file", "go-template", "go-template-file", "jsonpath", "jsonpath-as-json", "jsonpath-file", "table"]}] },
+        { "name": ["-l", "--selector"], "description": "Label selector filter", "args": [{"name": "selector"}] },
+        { "name": ["--field-selector"], "description": "Field selector filter", "args": [{"name": "selector"}] },
+        { "name": ["-w", "--watch"], "description": "Watch for changes" },
+        { "name": ["--all-namespaces", "-A"], "description": "Query all namespaces" },
+        { "name": ["--sort-by"], "description": "Sort by a JSONPath", "args": [{"name": "jsonpath"}] },
+        { "name": ["--template"], "description": "Go template for output", "args": [{"name": "template"}] },
+        { "name": ["--no-headers"], "description": "Don't print headers" },
+        { "name": ["--chunk-size"], "description": "Chunk size for large lists", "args": [{"name": "n"}] },
+        { "name": ["--show-labels"], "description": "Show all labels" },
+        { "name": ["--show-kind"], "description": "Show resource kind" },
+        { "name": ["--ignore-not-found"], "description": "Don't error if resource is missing" },
+        { "name": ["--label-columns", "-L"], "description": "Show label columns", "args": [{"name": "label"}] },
+        { "name": ["--cascade"], "description": "Cascade deletion (for delete, not get)", "args": [{"name": "strategy"}] }
+      ],
+      "args": [
+        { "name": "resource", "description": "Resource type (pods, deployments, services, nodes, etc.)", "suggestions": [
+          {"name": ["pods", "po"], "description": "Pod resources"},
+          {"name": ["services", "svc"], "description": "Service resources"},
+          {"name": ["deployments", "deploy"], "description": "Deployment resources"},
+          {"name": ["nodes", "no"], "description": "Cluster node resources"},
+          {"name": ["namespaces", "ns"], "description": "Namespace resources"},
+          {"name": ["configmaps", "cm"], "description": "ConfigMap resources"},
+          {"name": ["secrets"], "description": "Secret resources"},
+          {"name": ["events", "ev"], "description": "Event resources"},
+          {"name": ["ingress", "ing"], "description": "Ingress resources"},
+          {"name": ["persistentvolumes", "pv"], "description": "PersistentVolume resources"},
+          {"name": ["persistentvolumeclaims", "pvc"], "description": "PersistentVolumeClaim resources"},
+          {"name": ["serviceaccounts", "sa"], "description": "ServiceAccount resources"},
+          {"name": ["statefulsets", "sts"], "description": "StatefulSet resources"},
+          {"name": ["daemonsets", "ds"], "description": "DaemonSet resources"},
+          {"name": ["jobs"], "description": "Job resources"},
+          {"name": ["cronjobs", "cj"], "description": "CronJob resources"},
+          {"name": ["horizontalpodautoscalers", "hpa"], "description": "HorizontalPodAutoscaler resources"},
+          {"name": ["replicasets", "rs"], "description": "ReplicaSet resources"},
+          {"name": ["endpoints", "ep"], "description": "Endpoint resources"},
+          {"name": ["networkpolicies", "netpol"], "description": "NetworkPolicy resources"},
+          {"name": ["roles"], "description": "Role resources"},
+          {"name": ["rolebindings"], "description": "RoleBinding resources"},
+          {"name": ["clusterroles"], "description": "ClusterRole resources"},
+          {"name": ["clusterrolebindings"], "description": "ClusterRoleBinding resources"},
+          {"name": ["storageclasses", "sc"], "description": "StorageClass resources"},
+          {"name": ["mutatingwebhookconfigurations"], "description": "MutatingWebhookConfiguration resources"},
+          {"name": ["validatingwebhookconfigurations"], "description": "ValidatingWebhookConfiguration resources"}
+        ]},
+        { "name": "name", "description": "Resource name to get", "isOptional": true },
+        { "name": "flags", "description": "Additional flags", "isOptional": true, "isVariadic": true }
+      ]
+    },
+    {
+      "name": "describe",
+      "description": "Show detailed state of a resource",
+      "options": [
+        { "name": ["-l", "--selector"], "description": "Label selector filter", "args": [{"name": "selector"}] },
+        { "name": ["-f", "--filename"], "description": "Filename or URL", "args": [{"name": "file", "template": "filepaths"}] },
+        { "name": ["--show-events"], "description": "Show resource events" }
+      ],
+      "args": [
+        { "name": "resource", "description": "Resource type", "suggestions": [
+          {"name": ["pods", "po"]},
+          {"name": ["services", "svc"]},
+          {"name": ["deployments", "deploy"]},
+          {"name": ["nodes", "no"]},
+          {"name": ["events", "ev"]}
+        ]},
+        { "name": "name", "description": "Resource name", "isOptional": true }
+      ]
+    },
+    {
+      "name": "apply",
+      "description": "Apply a configuration change to a resource",
+      "options": [
+        { "name": ["-f", "--filename"], "description": "Filename(s) or URL(s)", "args": [{"name": "file", "isVariadic": true, "template": "filepaths"}] },
+        { "name": ["-k", "--kustomize"], "description": "Kustomize directory", "args": [{"name": "dir"}] },
+        { "name": ["-l", "--selector"], "description": "Label selector", "args": [{"name": "selector"}] },
+        { "name": ["--server-side"], "description": "Use server-side apply" },
+        { "name": ["--force-conflicts"], "description": "Force conflicts in server-side apply" },
+        { "name": ["--field-manager"], "description": "Field manager name", "args": [{"name": "name"}] },
+        { "name": ["--prune"], "description": "Prune resources not in config" },
+        { "name": ["--prune-allowlist"], "description": "Resource kinds to allow for pruning", "args": [{"name": "kinds"}] },
+        { "name": ["--record"], "description": "Record current command in annotation" },
+        { "name": ["--dry-run"], "description": "Simulate the operation", "args": [{"name": "mode", "suggestions": ["client", "server", "none"]}] },
+        { "name": ["--validate"], "description": "Validation mode", "args": [{"name": "mode", "suggestions": ["strict", "warn"]}] }
+      ],
+      "args": [
+        { "name": "file", "description": "Configuration file or stdin", "isOptional": true, "isVariadic": true, "template": "filepaths" }
+      ]
+    },
+    {
+      "name": "delete",
+      "description": "Delete resources",
+      "options": [
+        { "name": ["-f", "--filename"], "description": "Filename(s) or URL(s)", "args": [{"name": "file", "isVariadic": true, "template": "filepaths"}] },
+        { "name": ["-l", "--selector"], "description": "Label selector", "args": [{"name": "selector"}] },
+        { "name": ["--all"], "description": "Delete all resources in namespace" },
+        { "name": ["-A", "--all-namespaces"], "description": "Delete across all namespaces" },
+        { "name": ["--cascade"], "description": "Cascade deletion", "args": [{"name": "strategy", "suggestions": ["background", "orphan", "foreground"]}] },
+        { "name": ["--force"], "description": "Force deletion" },
+        { "name": ["--grace-period"], "description": "Grace period (seconds)", "args": [{"name": "seconds"}] },
+        { "name": ["--now"], "description": "Delete immediately" },
+        { "name": ["--dry-run"], "description": "Simulate the operation", "args": [{"name": "mode", "suggestions": ["client", "server", "none"]}] },
+        { "name": ["-k", "--kustomize"], "description": "Kustomize directory", "args": [{"name": "dir"}] },
+        { "name": ["--wait"], "description": "Wait for deletion to complete" },
+        { "name": ["--ignore-not-found"], "description": "Don't error if resource is missing" }
+      ],
+      "args": [
+        { "name": "resource", "description": "Resource type", "isOptional": true, "suggestions": [
+          {"name": ["pods", "po"]},
+          {"name": ["services", "svc"]},
+          {"name": ["deployments", "deploy"]},
+          {"name": ["configmaps", "cm"]},
+          {"name": ["secrets"]},
+          {"name": ["jobs"]}
+        ]},
+        { "name": "name", "description": "Resource name(s)", "isOptional": true, "isVariadic": true }
+      ]
+    },
+    {
+      "name": "logs",
+      "description": "Print pod container logs",
+      "options": [
+        { "name": ["-f", "--follow"], "description": "Stream logs" },
+        { "name": ["-p", "--previous"], "description": "Show previous terminated container logs" },
+        { "name": ["--tail"], "description": "Show last N log lines", "args": [{"name": "n"}] },
+        { "name": ["--since"], "description": "Show logs since a duration (e.g. 5m)", "args": [{"name": "duration"}] },
+        { "name": ["--since-time"], "description": "Show logs since a time (RFC3339)", "args": [{"name": "timestamp"}] },
+        { "name": ["--all-containers", "-c"], "description": "Show all containers in the pod" },
+        { "name": ["--container", "-c"], "description": "Specify a container", "args": [{"name": "name"}] },
+        { "name": ["--prefix"], "description": "Prefix log lines with pod/container name" },
+        { "name": ["--timestamps"], "description": "Show timestamps" },
+        { "name": ["--max-log-requests"], "description": "Max concurrent log streams", "args": [{"name": "n"}] }
+      ],
+      "args": [
+        { "name": "pod", "description": "Pod name" },
+        { "name": "container", "description": "Container name (for multi-container pods)", "isOptional": true }
+      ]
+    },
+    {
+      "name": "exec",
+      "description": "Execute a command in a container",
+      "options": [
+        { "name": ["-it", "--stdin", "-i"], "description": "Pass stdin to the container" },
+        { "name": ["--tty", "-t"], "description": "Allocate a pseudo-TTY" },
+        { "name": ["--container", "-c"], "description": "Container name", "args": [{"name": "name"}] },
+        { "name": ["--pod-running-timeout"], "description": "Wait timeout for pod", "args": [{"name": "duration"}] }
+      ],
+      "args": [
+        { "name": "pod", "description": "Pod name" },
+        { "name": "command", "description": "Command to execute", "isVariadic": true }
+      ]
+    },
+    {
+      "name": "port-forward",
+      "description": "Forward local ports to a pod",
+      "options": [
+        { "name": ["--address"], "description": "Addresses to listen on", "args": [{"name": "address"}] },
+        { "name": ["--pod-running-timeout"], "description": "Wait timeout for pod", "args": [{"name": "duration"}] }
+      ],
+      "args": [
+        { "name": "resource", "description": "Pod or service name" },
+        { "name": "ports", "description": "Port mappings (local:remote)", "isVariadic": true }
+      ]
+    },
+    {
+      "name": "config",
+      "description": "Modify kubeconfig files",
+      "subcommands": [
+        { "name": "current-context", "description": "Show the current context" },
+        { "name": "delete-cluster", "description": "Delete a cluster from kubeconfig", "args": [{"name": "name"}] },
+        { "name": "delete-context", "description": "Delete a context from kubeconfig", "args": [{"name": "name"}] },
+        { "name": "delete-user", "description": "Delete a user from kubeconfig", "args": [{"name": "name"}] },
+        { "name": "get-clusters", "description": "List clusters in kubeconfig" },
+        { "name": "get-contexts", "description": "List contexts in kubeconfig" },
+        { "name": "get-users", "description": "List users in kubeconfig" },
+        { "name": "rename-context", "description": "Rename a context", "args": [{"name": "old-name"}, {"name": "new-name"}] },
+        { "name": "set", "description": "Set a value in kubeconfig", "args": [{"name": "property"}, {"name": "value"}] },
+        { "name": "set-cluster", "description": "Set a cluster entry", "args": [{"name": "name"}], "options": [
+          { "name": ["--server"], "description": "API server URL", "args": [{"name": "url"}] },
+          { "name": ["--certificate-authority"], "description": "CA cert path", "args": [{"name": "path"}] },
+          { "name": ["--insecure-skip-tls-verify"], "description": "Skip TLS" }
+        ]},
+        { "name": "set-context", "description": "Set a context entry", "args": [{"name": "name", "isOptional": true}], "options": [
+          { "name": ["--cluster"], "description": "Cluster name", "args": [{"name": "name"}] },
+          { "name": ["--namespace", "-n"], "description": "Namespace", "args": [{"name": "ns"}] },
+          { "name": ["--user"], "description": "User name", "args": [{"name": "name"}] }
+        ]},
+        { "name": "set-credentials", "description": "Set a user entry", "args": [{"name": "name"}], "options": [
+          { "name": ["--client-certificate"], "description": "Client cert path", "args": [{"name": "path"}] },
+          { "name": ["--client-key"], "description": "Client key path", "args": [{"name": "path"}] },
+          { "name": ["--token"], "description": "Bearer token", "args": [{"name": "token"}] },
+          { "name": ["--username"], "description": "Username for basic auth", "args": [{"name": "user"}] },
+          { "name": ["--password"], "description": "Password for basic auth", "args": [{"name": "pass"}] }
+        ]},
+        { "name": "unset", "description": "Unset a value in kubeconfig", "args": [{"name": "property"}] },
+        { "name": "use-context", "description": "Set the current context", "args": [{"name": "name"}] },
+        { "name": "view", "description": "Show merged kubeconfig", "options": [
+          { "name": ["--flatten"], "description": "Flatten the config" },
+          { "name": ["--merge"], "description": "Merge with defaults" },
+          { "name": ["--minify"], "description": "Minify to only active context" },
+          { "name": ["-o", "--output"], "description": "Output format", "args": [{"name": "format", "suggestions": ["json", "yaml"]}] }
+        ]}
+      ]
+    },
+    {
+      "name": "rollout",
+      "description": "Manage the rollout of resources",
+      "subcommands": [
+        { "name": "history", "description": "View rollout history", "args": [{"name": "resource"}], "options": [
+          { "name": ["--revision"], "description": "Revision number", "args": [{"name": "n"}] }
+        ]},
+        { "name": "pause", "description": "Mark a resource as paused", "args": [{"name": "resource"}] },
+        { "name": "restart", "description": "Restart a resource", "args": [{"name": "resource"}] },
+        { "name": "resume", "description": "Resume a paused resource", "args": [{"name": "resource"}] },
+        { "name": "status", "description": "Watch rollout status", "args": [{"name": "resource"}], "options": [
+          { "name": ["-w", "--watch"], "description": "Watch for status changes" },
+          { "name": ["--timeout"], "description": "Timeout duration", "args": [{"name": "duration"}] }
+        ]},
+        { "name": "undo", "description": "Roll back a rollout", "args": [{"name": "resource"}], "options": [
+          { "name": ["--to-revision"], "description": "Target revision", "args": [{"name": "n"}] }
+        ]}
+      ]
+    },
+    {
+      "name": "explain",
+      "description": "Documentation of resources and their fields",
+      "args": [
+        { "name": "resource", "description": "Resource field path", "isOptional": true }
+      ],
+      "options": [
+        { "name": ["--api-version"], "description": "API version", "args": [{"name": "version"}] },
+        { "name": ["--recursive"], "description": "Show fields recursively" }
+      ]
+    },
+    {
+      "name": "create",
+      "description": "Create a resource from a file or stdin",
+      "options": [
+        { "name": ["-f", "--filename"], "description": "Filename(s) or URL(s)", "args": [{"name": "file", "isVariadic": true, "template": "filepaths"}] },
+        { "name": ["-k", "--kustomize"], "description": "Kustomize directory", "args": [{"name": "dir"}] },
+        { "name": ["-l", "--selector"], "description": "Label selector", "args": [{"name": "selector"}] },
+        { "name": ["--dry-run"], "description": "Simulate the operation", "args": [{"name": "mode", "suggestions": ["client", "server", "none"]}] },
+        { "name": ["--save-config"], "description": "Save config annotations" },
+        { "name": ["--record"], "description": "Record current command in annotation" },
+        { "name": ["--validate"], "description": "Validation mode", "args": [{"name": "mode", "suggestions": ["strict", "warn"]}] },
+        { "name": ["--edit"], "description": "Edit the resource before creating" }
+      ],
+      "args": [
+        { "name": "file", "description": "Configuration file", "isOptional": true, "isVariadic": true, "template": "filepaths" }
+      ]
+    },
+    {
+      "name": "edit",
+      "description": "Edit a resource via editor",
+      "options": [
+        { "name": ["-f", "--filename"], "description": "Filename(s)", "args": [{"name": "file", "isVariadic": true, "template": "filepaths"}] },
+        { "name": ["-l", "--selector"], "description": "Label selector", "args": [{"name": "selector"}] },
+        { "name": ["--output-patch"], "description": "Output the patch" },
+        { "name": ["--save-config"], "description": "Save config annotations" },
+        { "name": ["--validate"], "description": "Validation mode", "args": [{"name": "mode", "suggestions": ["strict", "warn"]}] },
+        { "name": ["--windows-line-endings"], "description": "Use Windows line endings" }
+      ],
+      "args": [
+        { "name": "resource", "description": "Resource type", "isOptional": true },
+        { "name": "name", "description": "Resource name", "isOptional": true }
+      ]
+    },
+    {
+      "name": "patch",
+      "description": "Update fields of a resource",
+      "options": [
+        { "name": ["-p", "--patch"], "description": "Patch JSON/YAML", "args": [{"name": "patch"}] },
+        { "name": ["--patch-file"], "description": "Patch file path", "args": [{"name": "file", "template": "filepaths"}] },
+        { "name": ["-f", "--filename"], "description": "Filename", "args": [{"name": "file", "template": "filepaths"}] },
+        { "name": ["-l", "--selector"], "description": "Label selector", "args": [{"name": "selector"}] },
+        { "name": ["-k", "--kustomize"], "description": "Kustomize directory", "args": [{"name": "dir"}] },
+        { "name": ["--type"], "description": "Patch type", "args": [{"name": "type", "suggestions": ["json", "merge", "strategic"]}] },
+        { "name": ["--dry-run"], "description": "Simulate the operation", "args": [{"name": "mode", "suggestions": ["client", "server", "none"]}] }
+      ],
+      "args": [
+        { "name": "resource", "description": "Resource type" },
+        { "name": "name", "description": "Resource name" }
+      ]
+    },
+    {
+      "name": "scale",
+      "description": "Set a new size for a Deployment, ReplicaSet, or StatefulSet",
+      "options": [
+        { "name": ["--replicas"], "description": "Target replica count", "args": [{"name": "n"}] },
+        { "name": ["--current-replicas"], "description": "Current replica count for preconditions", "args": [{"name": "n"}] },
+        { "name": ["-f", "--filename"], "description": "Filename", "args": [{"name": "file", "template": "filepaths"}] },
+        { "name": ["-l", "--selector"], "description": "Label selector", "args": [{"name": "selector"}] },
+        { "name": ["--dry-run"], "description": "Simulate the operation", "args": [{"name": "mode", "suggestions": ["client", "server", "none"]}] },
+        { "name": ["--timeout"], "description": "Timeout duration", "args": [{"name": "duration"}] }
+      ],
+      "args": [
+        { "name": "resource", "description": "Resource type" },
+        { "name": "name", "description": "Resource name" }
+      ]
+    },
+    {
+      "name": "autoscale",
+      "description": "Auto-scale a Deployment, ReplicaSet, or StatefulSet",
+      "options": [
+        { "name": ["--min"], "description": "Minimum replica count", "args": [{"name": "n"}] },
+        { "name": ["--max"], "description": "Maximum replica count", "args": [{"name": "n"}] },
+        { "name": ["--cpu-percent"], "description": "CPU utilization target", "args": [{"name": "percent"}] },
+        { "name": ["--dry-run"], "description": "Simulate the operation", "args": [{"name": "mode", "suggestions": ["client", "server", "none"]}] }
+      ],
+      "args": [
+        { "name": "resource", "description": "Resource type" },
+        { "name": "name", "description": "Resource name" }
+      ]
+    },
+    {
+      "name": "top",
+      "description": "Display resource (CPU/memory) usage",
+      "subcommands": [
+        { "name": "node", "description": "Show node resource usage", "options": [
+          { "name": ["-l", "--selector"], "description": "Label selector", "args": [{"name": "selector"}] },
+          { "name": ["--no-headers"], "description": "Don't print headers" },
+          { "name": ["--sort-by"], "description": "Sort by field", "args": [{"name": "field", "suggestions": ["cpu", "memory"]}] }
+        ]},
+        { "name": "pod", "description": "Show pod resource usage", "options": [
+          { "name": ["-l", "--selector"], "description": "Label selector", "args": [{"name": "selector"}] },
+          { "name": ["-A", "--all-namespaces"], "description": "Show across all namespaces" },
+          { "name": ["--no-headers"], "description": "Don't print headers" },
+          { "name": ["--sort-by"], "description": "Sort by field", "args": [{"name": "field", "suggestions": ["cpu", "memory"]}] },
+          { "name": ["--containers"], "description": "Show per-container metrics" }
+        ]}
+      ]
+    },
+    {
+      "name": "cluster-info",
+      "description": "Display cluster information",
+      "subcommands": [
+        { "name": "dump", "description": "Dump cluster state", "options": [
+          { "name": ["--namespaces"], "description": "Namespaces to dump", "args": [{"name": "ns"}] },
+          { "name": ["-A", "--all-namespaces"], "description": "Dump all namespaces" }
+        ]}
+      ],
+      "options": [
+        { "name": ["-w", "--watch"], "description": "Watch cluster info changes" }
+      ]
+    },
+    {
+      "name": "cordon",
+      "description": "Mark a node as unschedulable",
+      "args": [
+        { "name": "node", "description": "Node name" }
+      ],
+      "options": [
+        { "name": ["-l", "--selector"], "description": "Label selector", "args": [{"name": "selector"}] },
+        { "name": ["--dry-run"], "description": "Simulate the operation", "args": [{"name": "mode", "suggestions": ["client", "server", "none"]}] }
+      ]
+    },
+    {
+      "name": "uncordon",
+      "description": "Mark a node as schedulable",
+      "args": [
+        { "name": "node", "description": "Node name" }
+      ],
+      "options": [
+        { "name": ["-l", "--selector"], "description": "Label selector", "args": [{"name": "selector"}] },
+        { "name": ["--dry-run"], "description": "Simulate the operation", "args": [{"name": "mode", "suggestions": ["client", "server", "none"]}] }
+      ]
+    },
+    {
+      "name": "drain",
+      "description": "Drain a node in preparation for maintenance",
+      "args": [
+        { "name": "node", "description": "Node name" }
+      ],
+      "options": [
+        { "name": ["--delete-emptydir-data"], "description": "Delete pods with emptyDir" },
+        { "name": ["--force"], "description": "Force drain despite warnings" },
+        { "name": ["--ignore-daemonsets"], "description": "Ignore DaemonSet pods" },
+        { "name": ["--disable-eviction"], "description": "Disable eviction" },
+        { "name": ["--pod-selector"], "description": "Label selector for pods", "args": [{"name": "selector"}] },
+        { "name": ["-l", "--selector"], "description": "Label selector for nodes", "args": [{"name": "selector"}] },
+        { "name": ["--timeout"], "description": "Timeout duration", "args": [{"name": "duration"}] },
+        { "name": ["--dry-run"], "description": "Simulate the operation", "args": [{"name": "mode", "suggestions": ["client", "server", "none"]}] },
+        { "name": ["--grace-period"], "description": "Grace period", "args": [{"name": "seconds"}] }
+      ]
+    },
+    {
+      "name": "taint",
+      "description": "Update taints on a node",
+      "args": [
+        { "name": "node", "description": "Node name" },
+        { "name": "taint", "description": "Taint specification (key=value:Effect)", "isOptional": true }
+      ],
+      "options": [
+        { "name": ["-l", "--selector"], "description": "Label selector", "args": [{"name": "selector"}] },
+        { "name": ["--overwrite"], "description": "Overwrite existing taints" },
+        { "name": ["--dry-run"], "description": "Simulate the operation", "args": [{"name": "mode", "suggestions": ["client", "server", "none"]}] }
+      ]
+    },
+    {
+      "name": "label",
+      "description": "Update labels on a resource",
+      "args": [
+        { "name": "resource", "description": "Resource type" },
+        { "name": "name", "description": "Resource name" },
+        { "name": "key-value", "description": "Key=value label pairs", "isVariadic": true }
+      ],
+      "options": [
+        { "name": ["-l", "--selector"], "description": "Label selector", "args": [{"name": "selector"}] },
+        { "name": ["-f", "--filename"], "description": "Filename", "args": [{"name": "file", "template": "filepaths"}] },
+        { "name": ["--overwrite"], "description": "Overwrite existing labels" },
+        { "name": ["--all"], "description": "Update all resources of type" },
+        { "name": ["-A", "--all-namespaces"], "description": "Across all namespaces" },
+        { "name": ["--dry-run"], "description": "Simulate the operation", "args": [{"name": "mode", "suggestions": ["client", "server", "none"]}] }
+      ]
+    },
+    {
+      "name": "annotate",
+      "description": "Update annotations on a resource",
+      "args": [
+        { "name": "resource", "description": "Resource type" },
+        { "name": "name", "description": "Resource name" },
+        { "name": "key-value", "description": "Key=value annotations", "isVariadic": true }
+      ],
+      "options": [
+        { "name": ["-l", "--selector"], "description": "Label selector", "args": [{"name": "selector"}] },
+        { "name": ["-f", "--filename"], "description": "Filename", "args": [{"name": "file", "template": "filepaths"}] },
+        { "name": ["--overwrite"], "description": "Overwrite existing annotations" },
+        { "name": ["--all"], "description": "Update all resources of type" },
+        { "name": ["-A", "--all-namespaces"], "description": "Across all namespaces" },
+        { "name": ["--dry-run"], "description": "Simulate the operation", "args": [{"name": "mode", "suggestions": ["client", "server", "none"]}] }
+      ]
+    },
+    {
+      "name": "set",
+      "description": "Set specific features on objects",
+      "subcommands": [
+        { "name": "image", "description": "Update container image", "args": [{"name": "resource"}, {"name": "container-image", "isVariadic": true}], "options": [
+          { "name": ["-f", "--filename"], "description": "Filename", "args": [{"name": "file", "template": "filepaths"}] },
+          { "name": ["-l", "--selector"], "description": "Label selector", "args": [{"name": "selector"}] },
+          { "name": ["--dry-run"], "description": "Simulate", "args": [{"name": "mode", "suggestions": ["client", "server", "none"]}] },
+          { "name": ["--all"], "description": "Update all resources" }
+        ]},
+        { "name": "resources", "description": "Update resource requests/limits", "args": [{"name": "resource"}, {"name": "name", "isOptional": true}], "options": [
+          { "name": ["--requests"], "description": "CPU/memory requests", "args": [{"name": "spec"}] },
+          { "name": ["--limits"], "description": "CPU/memory limits", "args": [{"name": "spec"}] },
+          { "name": ["--containers"], "description": "Specify containers", "args": [{"name": "names"}] }
+        ]},
+        { "name": "selector", "description": "Update selector on a resource", "args": [{"name": "resource"}, {"name": "name"}, {"name": "expression"}], "options": [
+          { "name": ["-f", "--filename"], "description": "Filename", "args": [{"name": "file", "template": "filepaths"}] },
+          { "name": ["--dry-run"], "description": "Simulate", "args": [{"name": "mode", "suggestions": ["client", "server", "none"]}] }
+        ]},
+        { "name": "serviceaccount", "description": "Update service account", "args": [{"name": "resource"}, {"name": "name"}, {"name": "account-name"}], "options": [
+          { "name": ["-f", "--filename"], "description": "Filename", "args": [{"name": "file", "template": "filepaths"}] },
+          { "name": ["--dry-run"], "description": "Simulate", "args": [{"name": "mode", "suggestions": ["client", "server", "none"]}] }
+        ]},
+        { "name": "subject", "description": "Update subject in ClusterRoleBinding/RoleBinding", "args": [{"name": "resource"}, {"name": "name"}, {"name": "subject", "isVariadic": true}], "options": [
+          { "name": ["--serviceaccount"], "description": "Service account subject", "args": [{"name": "sa"}] }
+        ]}
+      ]
+    },
+    {
+      "name": "expose",
+      "description": "Expose a resource as a new Kubernetes service",
+      "options": [
+        { "name": ["-f", "--filename"], "description": "Filename", "args": [{"name": "file", "template": "filepaths"}] },
+        { "name": ["-l", "--selector"], "description": "Label selector", "args": [{"name": "selector"}] },
+        { "name": ["--port"], "description": "Service port", "args": [{"name": "port"}] },
+        { "name": ["--target-port"], "description": "Target container port", "args": [{"name": "port"}] },
+        { "name": ["--name"], "description": "Service name", "args": [{"name": "name"}] },
+        { "name": ["--type"], "description": "Service type", "args": [{"name": "type", "suggestions": ["ClusterIP", "NodePort", "LoadBalancer", "ExternalName"]}] },
+        { "name": ["--protocol"], "description": "Network protocol", "args": [{"name": "protocol", "suggestions": ["TCP", "UDP", "SCTP"]}] },
+        { "name": ["--external-ip"], "description": "External IP", "args": [{"name": "ip"}] },
+        { "name": ["--session-affinity"], "description": "Session affinity", "args": [{"name": "mode", "suggestions": ["ClientIP", "None"]}] },
+        { "name": ["--cluster-ip"], "description": "Cluster IP", "args": [{"name": "ip"}] },
+        { "name": ["--dry-run"], "description": "Simulate", "args": [{"name": "mode", "suggestions": ["client", "server", "none"]}] }
+      ],
+      "args": [
+        { "name": "resource", "description": "Resource type" },
+        { "name": "name", "description": "Resource name" }
+      ]
+    },
+    {
+      "name": "run",
+      "description": "Run a pod in the cluster",
+      "options": [
+        { "name": ["--image"], "description": "Container image", "args": [{"name": "image"}] },
+        { "name": ["--restart"], "description": "Restart policy", "args": [{"name": "policy", "suggestions": ["Always", "OnFailure", "Never"]}] },
+        { "name": ["--port"], "description": "Container port", "args": [{"name": "port"}] },
+        { "name": ["--labels", "-l"], "description": "Labels", "args": [{"name": "labels"}] },
+        { "name": ["--env"], "description": "Environment variables", "args": [{"name": "env"}] },
+        { "name": ["--command"], "description": "Override command" },
+        { "name": ["--attach"], "description": "Attach to the pod" },
+        { "name": ["-it", "--stdin"], "description": "Pass stdin" },
+        { "name": ["--tty"], "description": "Allocate TTY" },
+        { "name": ["--limits"], "description": "Resource limits", "args": [{"name": "spec"}] },
+        { "name": ["--requests"], "description": "Resource requests", "args": [{"name": "spec"}] },
+        { "name": ["--dry-run"], "description": "Simulate", "args": [{"name": "mode", "suggestions": ["client", "server", "none"]}] },
+        { "name": ["-q", "--quiet"], "description": "Quiet output" },
+        { "name": ["--rm"], "description": "Remove pod after completion" },
+        { "name": ["--overrides"], "description": "Override config", "args": [{"name": "json"}] },
+        { "name": ["--image-pull-policy"], "description": "Image pull policy", "args": [{"name": "policy", "suggestions": ["Always", "Never", "IfNotPresent"]}] }
+      ],
+      "args": [
+        { "name": "name", "description": "Pod name" },
+        { "name": "args", "description": "Args for the container", "isOptional": true, "isVariadic": true }
+      ]
+    },
+    {
+      "name": "attach",
+      "description": "Attach to a running container",
+      "options": [
+        { "name": ["-it", "--stdin", "-i"], "description": "Pass stdin" },
+        { "name": ["--tty", "-t"], "description": "Allocate TTY" },
+        { "name": ["--container", "-c"], "description": "Container name", "args": [{"name": "name"}] },
+        { "name": ["--pod-running-timeout"], "description": "Wait timeout", "args": [{"name": "duration"}] }
+      ],
+      "args": [
+        { "name": "pod", "description": "Pod name" }
+      ]
+    },
+    {
+      "name": "cp",
+      "description": "Copy files and directories to and from containers",
+      "args": [
+        { "name": "source", "description": "Source path (pod:path or local path)" },
+        { "name": "destination", "description": "Destination path (pod:path or local path)" }
+      ],
+      "options": [
+        { "name": ["--container", "-c"], "description": "Container name", "args": [{"name": "name"}] },
+        { "name": ["--retries"], "description": "Number of retries", "args": [{"name": "n"}] }
+      ]
+    },
+    {
+      "name": "auth",
+      "description": "Inspect authorization",
+      "subcommands": [
+        { "name": "can-i", "description": "Check whether an action is allowed", "args": [{"name": "verb"}, {"name": "resource"}], "options": [
+          { "name": ["-n", "--namespace"], "description": "Namespace", "args": [{"name": "ns"}] },
+          { "name": ["--as"], "description": "Impersonate user", "args": [{"name": "username"}] },
+          { "name": ["--as-group"], "description": "Impersonate group", "args": [{"name": "group"}] },
+          { "name": ["-A", "--all-namespaces"], "description": "Check across namespaces" }
+        ]},
+        { "name": "reconcile", "description": "Reconcile RBAC resources" }
+      ]
+    },
+    {
+      "name": "plugin",
+      "description": "Manage kubectl plugins",
+      "subcommands": [
+        { "name": "list", "description": "List installed plugins" },
+        { "name": "uninstall", "description": "Uninstall a plugin", "args": [{"name": "name"}] }
+      ],
+      "options": [
+        { "name": ["--completion-bin-dir"], "description": "Completion binary directory", "args": [{"name": "dir"}] },
+        { "name": ["--name-only"], "description": "Print only plugin names" }
+      ]
+    },
+    {
+      "name": "api-resources",
+      "description": "List supported API resources on the server",
+      "options": [
+        { "name": ["--api-group"], "description": "API group filter", "args": [{"name": "group"}] },
+        { "name": ["-o", "--output"], "description": "Output format", "args": [{"name": "format", "suggestions": ["wide", "name"]}] },
+        { "name": ["--namespaced"], "description": "Show only namespaced resources" },
+        { "name": ["--no-headers"], "description": "Don't print headers" },
+        { "name": ["--sort-by"], "description": "Sort by field", "args": [{"name": "field", "suggestions": ["name", "kind"]}] },
+        { "name": ["--verbs"], "description": "Filter by verbs", "args": [{"name": "verbs"}] }
+      ]
+    },
+    {
+      "name": "api-versions",
+      "description": "List supported API versions on the server"
+    },
+    {
+      "name": "certificate",
+      "description": "Certificate management",
+      "subcommands": [
+        { "name": "approve", "description": "Approve a certificate signing request", "args": [{"name": "csr-name"}], "options": [
+          { "name": ["-f", "--filename"], "description": "Filename", "args": [{"name": "file"}] }
+        ]},
+        { "name": "deny", "description": "Deny a certificate signing request", "args": [{"name": "csr-name"}] }
+      ]
+    },
+    {
+      "name": "completion",
+      "description": "Generate shell completion scripts",
+      "args": [
+        { "name": "shell", "description": "Shell type", "suggestions": ["bash", "zsh", "fish", "powershell"] }
+      ]
+    },
+    {
+      "name": "diff",
+      "description": "Diff live config against file",
+      "options": [
+        { "name": ["-f", "--filename"], "description": "Filename(s)", "args": [{"name": "file", "isVariadic": true, "template": "filepaths"}] },
+        { "name": ["-k", "--kustomize"], "description": "Kustomize directory", "args": [{"name": "dir"}] },
+        { "name": ["-l", "--selector"], "description": "Label selector", "args": [{"name": "selector"}] },
+        { "name": ["--field-manager"], "description": "Field manager", "args": [{"name": "name"}] },
+        { "name": ["--server-side"], "description": "Use server-side apply" },
+        { "name": ["--force-conflicts"], "description": "Force conflicts" }
+      ]
+    },
+    {
+      "name": "options",
+      "description": "List global command-line options"
+    },
+    {
+      "name": "version",
+      "description": "Print the client and server version",
+      "options": [
+        { "name": ["--client"], "description": "Print only client version" },
+        { "name": ["-o", "--output"], "description": "Output format", "args": [{"name": "format", "suggestions": ["json", "yaml"]}] },
+        { "name": ["--short"], "description": "Print only version info" }
+      ]
+    },
+    {
+      "name": "wait",
+      "description": "Wait for a resource condition",
+      "options": [
+        { "name": ["-f", "--filename"], "description": "Filename(s)", "args": [{"name": "file", "isVariadic": true, "template": "filepaths"}] },
+        { "name": ["-l", "--selector"], "description": "Label selector", "args": [{"name": "selector"}] },
+        { "name": ["--for"], "description": "Condition to wait for (e.g. delete, condition=Available)", "args": [{"name": "condition"}] },
+        { "name": ["--timeout"], "description": "Timeout duration", "args": [{"name": "duration"}] },
+        { "name": ["--all"], "description": "Wait for all matching resources" },
+        { "name": ["-A", "--all-namespaces"], "description": "Across all namespaces" }
+      ],
+      "args": [
+        { "name": "resource", "description": "Resource type" },
+        { "name": "name", "description": "Resource name", "isOptional": true }
+      ]
+    },
+    {
+      "name": "kustomize",
+      "description": "Manage kustomization files",
+      "args": [
+        { "name": "dir", "description": "Kustomization directory" }
+      ],
+      "options": [
+        { "name": ["--load-restrictor"], "description": "Load restriction", "args": [{"name": "mode", "suggestions": ["LoadRestrictionsRootOnly", "LoadRestrictionsNone"]}] },
+        { "name": ["-o", "--output"], "description": "Output path", "args": [{"name": "file"}] }
+      ]
+    },
+    {
+      "name": "proxy",
+      "description": "Run a proxy to the Kubernetes API server",
+      "options": [
+        { "name": ["--port"], "description": "Local proxy port", "args": [{"name": "port"}] },
+        { "name": ["--address"], "description": "Address to listen on", "args": [{"name": "address"}] },
+        { "name": ["--www-prefix"], "description": "Static file prefix", "args": [{"name": "prefix"}] },
+        { "name": ["--api-prefix"], "description": "API path prefix", "args": [{"name": "prefix"}] },
+        { "name": ["--accept-hosts"], "description": "Allowed hosts", "args": [{"name": "regex"}] },
+        { "name": ["--reject-paths"], "description": "Rejected paths", "args": [{"name": "regex"}] },
+        { "name": ["--reject-methods"], "description": "Rejected methods", "args": [{"name": "methods"}] },
+        { "name": ["--disable-filter"], "description": "Disable request filtering" },
+        { "name": ["--www"], "description": "Serve static files from directory", "args": [{"name": "dir"}] }
+      ]
+    }
+  ]
+}

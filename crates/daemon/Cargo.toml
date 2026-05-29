@@ -21,3 +21,8 @@ serde_json = { workspace = true }
 autosuggest-core = { path = "../core" }
 autosuggest-data = { path = "../data" }
 autosuggest-protocol = { path = "../protocol" }
+autosuggest-history-store = { path = "../history-store", optional = true }
+
+[features]
+default = []
+sqlite-store = ["autosuggest-history-store"]

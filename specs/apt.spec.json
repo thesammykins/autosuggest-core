@@ -1,0 +1,155 @@
+{
+  "name": "apt",
+  "description": "Advanced Package Tool — package manager for Debian-based Linux",
+  "requiresSubcommand": true,
+  "options": [
+    { "name": ["-h", "--help"], "description": "Show help and exit" },
+    { "name": ["-v", "--version"], "description": "Show program version" },
+    { "name": ["-y", "--yes", "--assume-yes"], "description": "Assume yes to all prompts" },
+    { "name": ["-q", "--quiet"], "description": "Quiet mode, suppress progress output" },
+    { "name": ["-s", "--simulate", "--dry-run"], "description": "Simulate actions without actually changing the system" },
+    { "name": ["-d", "--download-only"], "description": "Download only, do not install or unpack" },
+    { "name": ["-f", "--fix-broken"], "description": "Fix broken dependencies" },
+    { "name": ["--no-upgrade"], "description": "Do not upgrade packages when installing" },
+    { "name": ["--only-upgrade"], "description": "Only upgrade, do not install new packages" },
+    { "name": ["--reinstall"], "description": "Reinstall packages" },
+    { "name": ["--no-install-recommends"], "description": "Do not install recommended packages" },
+    { "name": ["--allow-unauthenticated"], "description": "Ignore authentication" }
+  ],
+  "subcommands": [
+    {
+      "name": "install",
+      "description": "Install or upgrade packages",
+      "args": [
+        { "name": "package", "description": "Package name(s) to install", "isVariadic": true, "isOptional": false }
+      ],
+      "options": [
+        { "name": ["--reinstall"], "description": "Reinstall already installed packages" },
+        { "name": ["--no-install-recommends"], "description": "Skip recommended packages" },
+        { "name": ["--only-upgrade"], "description": "Only upgrade, do not install new" }
+      ]
+    },
+    {
+      "name": "remove",
+      "description": "Remove installed packages",
+      "args": [
+        { "name": "package", "description": "Package name(s) to remove", "isVariadic": true }
+      ],
+      "options": [
+        { "name": ["--purge"], "description": "Remove configuration files too" },
+        { "name": ["--auto-remove"], "description": "Automatically remove unused dependencies" }
+      ]
+    },
+    {
+      "name": "purge",
+      "description": "Remove packages including configuration files",
+      "args": [
+        { "name": "package", "description": "Package name(s) to purge", "isVariadic": true }
+      ]
+    },
+    {
+      "name": "update",
+      "description": "Update the package index from sources"
+    },
+    {
+      "name": "upgrade",
+      "description": "Upgrade all upgradable packages",
+      "options": [
+        { "name": ["--new"], "description": "Also install new packages" }
+      ]
+    },
+    {
+      "name": "full-upgrade",
+      "description": "Upgrade with intelligent dependency handling and removal"
+    },
+    {
+      "name": "autoremove",
+      "description": "Remove automatically installed unused dependencies",
+      "options": [
+        { "name": ["--purge"], "description": "Remove configuration files too" }
+      ]
+    },
+    {
+      "name": "search",
+      "description": "Search for packages by keyword",
+      "args": [
+        { "name": "pattern", "description": "Search term or regex", "isVariadic": false }
+      ],
+      "options": [
+        { "name": ["--full", "-f"], "description": "Show full package descriptions" },
+        { "name": ["--names-only", "-n"], "description": "Search only package names" }
+      ]
+    },
+    {
+      "name": "show",
+      "description": "Display detailed information about packages",
+      "args": [
+        { "name": "package", "description": "Package name(s)", "isVariadic": true }
+      ]
+    },
+    {
+      "name": "list",
+      "description": "List packages based on filter criteria",
+      "options": [
+        { "name": ["--installed"], "description": "List only installed packages" },
+        { "name": ["--upgradable"], "description": "List only upgradable packages" },
+        { "name": ["--all-versions"], "description": "Show all versions" },
+        { "name": ["--manual-installed"], "description": "List manually installed packages" }
+      ],
+      "args": [
+        { "name": "pattern", "description": "Optional package name pattern", "isOptional": true }
+      ]
+    },
+    {
+      "name": "edit-sources",
+      "description": "Edit the sources.list file"
+    },
+    {
+      "name": "clean",
+      "description": "Clear the local package cache"
+    },
+    {
+      "name": "autoclean",
+      "description": "Remove obsolete packages from the local cache"
+    },
+    {
+      "name": "satisfies",
+      "description": "Check if dependencies are satisfied",
+      "args": [
+        { "name": "dependency", "description": "Dependency string to check" }
+      ]
+    },
+    {
+      "name": "depends",
+      "description": "Show package dependencies",
+      "args": [
+        { "name": "package", "description": "Package name", "isVariadic": true }
+      ],
+      "options": [
+        { "name": ["--recurse"], "description": "Show dependencies recursively" },
+        { "name": ["--important"], "description": "Only show important relationships" }
+      ]
+    },
+    {
+      "name": "rdepends",
+      "description": "Show reverse dependencies (packages that depend on this one)",
+      "args": [
+        { "name": "package", "description": "Package name", "isVariadic": true }
+      ]
+    },
+    {
+      "name": "hold",
+      "description": "Mark a package as held back (prevent upgrades)",
+      "args": [
+        { "name": "package", "description": "Package name(s) to hold", "isVariadic": true }
+      ]
+    },
+    {
+      "name": "unhold",
+      "description": "Remove a hold on a package (allow upgrades)",
+      "args": [
+        { "name": "package", "description": "Package name(s) to unhold", "isVariadic": true }
+      ]
+    }
+  ]
+}

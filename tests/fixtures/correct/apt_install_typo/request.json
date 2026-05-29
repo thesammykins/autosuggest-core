@@ -1,0 +1,1 @@
+{ "v": 1, "op": "correct", "id": 30, "script": "apt intall vim", "stderr": "E: Invalid operation intall", "exitCode": 1 }

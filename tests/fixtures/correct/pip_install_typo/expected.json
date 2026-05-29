@@ -1,0 +1,7 @@
+[
+  {
+    "desc": "Correct mistyped pip subcommands",
+    "insert": "pip install flask",
+    "score": 0.6
+  }
+]

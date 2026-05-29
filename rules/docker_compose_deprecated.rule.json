@@ -1,0 +1,9 @@
+{
+  "id": "docker_compose_deprecated",
+  "description": "Use docker compose instead of the deprecated docker-compose",
+  "priority": 75,
+  "match": {
+    "scriptStartsWith": "docker-compose "
+  },
+  "rewrite": { "regexReplace": { "pattern": "^docker-compose\\b", "with": "docker compose" } }
+}

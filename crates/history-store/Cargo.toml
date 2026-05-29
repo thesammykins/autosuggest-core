@@ -1,0 +1,24 @@
+[package]
+name = "autosuggest-history-store"
+version = "0.0.0"
+description = "SQLite-backed command history store for autosuggest-core (behind daemon --history-db)."
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+
+[lib]
+name = "autosuggest_history_store"
+path = "src/lib.rs"
+
+[dependencies]
+rusqlite = { version = "0.32", features = ["bundled"] }
+serde = { workspace = true }
+serde_json = { workspace = true }
+autosuggest-protocol = { path = "../protocol" }
+
+[dev-dependencies]
+tempfile = "3"
+
+[features]
+default = []
