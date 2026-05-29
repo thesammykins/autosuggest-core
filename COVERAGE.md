@@ -5,7 +5,7 @@ This document maps the shipped data set to the coverage targets in
 "what does v1 actually cover". Counts are mechanical: one `*.spec.json` per
 command, one `*.rule.json` per correction rule (native rules included).
 
-- **Specs:** 66 (`specs/*.spec.json`)
+- **Specs:** 64 (`specs/*.spec.json`)
 - **Correction rules:** 15 (`rules/*.rule.json`; 2 native, 13 JSON)
 
 ## 1. Command specs by domain (PRODUCT.md §7 + 2026 additions)
@@ -22,7 +22,7 @@ command, one `*.rule.json` per correction rule (native rules included).
 | Package mgmt | `apt` (1) |
 | Editors/misc | `man echo` (2) |
 
-Total: 66 specs. `git` is authored deep (25+ subcommands); `cargo`, `npm`,
+Total: 64 specs. `git` is authored deep (25+ subcommands); `cargo`, `npm`,
 `docker`, `gh`, `kubectl`, and `terraform` carry rich subcommand trees.
 
 ## 2. Completion mechanisms (SCHEMA.md §1) and their golden proof
