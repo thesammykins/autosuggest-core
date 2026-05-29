@@ -11,8 +11,9 @@
 //!   templates read from the filesystem relative to `cwd` (the one allowed I/O,
 //!   delegated to [`crate::fs_source`]).
 //!
-//! Generators are **not** executed in M1 (that is M4); an arg whose only source
-//! is a `generator` contributes no dynamic items here. The hook is marked below.
+//! Generators are executed only when a [`GeneratorRunner`] is injected via
+//! [`collect_with_generators`] (M4). The pure [`collect`] entry point never runs
+//! a generator, so the engine stays side-effect-free unless a host opts in.
 //!
 //! Output [`Candidate`]s are unranked; [`crate::rank`] filters and scores them.
 
@@ -20,7 +21,8 @@ use std::path::Path;
 
 use crate::fs_source::{self, FsKind};
 use crate::parse::{CursorKind, ParseState};
-use crate::types::{Arg, Opt, Subcommand, Template};
+use crate::types::{Arg, Generator, Opt, Subcommand, Template};
+use crate::GeneratorRunner;
 
 /// A single unranked completion candidate.
 #[derive(Debug, Clone, PartialEq)]
@@ -67,7 +69,36 @@ impl Candidate {
 /// nested path); it selects which directory path templates read from. For an
 /// inline `--opt=value` form the parser's `inline_value_prefix` takes
 /// precedence as the path partial.
+///
+/// This is the **pure** entry point: generators are never executed. To produce
+/// generator-backed dynamic candidates, use [`collect_with_generators`].
 pub fn collect(state: &ParseState, query: &str, cwd: &Path) -> Vec<Candidate> {
+    collect_inner(state, query, cwd, None)
+}
+
+/// As [`collect`], but executes argument [`Generator`]s through the injected
+/// `runner` (M4). The `runner` is the only path by which `complete` causes
+/// process execution; `core` itself remains pure and merely forwards the
+/// declarative generator spec to the host-provided runner.
+///
+/// A generator that errors (not allow-listed, timeout, etc.) contributes no
+/// candidates — completion degrades gracefully rather than failing.
+pub fn collect_with_generators(
+    state: &ParseState,
+    query: &str,
+    cwd: &Path,
+    runner: &dyn GeneratorRunner,
+) -> Vec<Candidate> {
+    collect_inner(state, query, cwd, Some(runner))
+}
+
+/// Shared implementation: `runner` is `Some` only on the generator-aware path.
+fn collect_inner(
+    state: &ParseState,
+    query: &str,
+    cwd: &Path,
+    runner: Option<&dyn GeneratorRunner>,
+) -> Vec<Candidate> {
     match &state.cursor {
         CursorKind::Subcommand => {
             let mut out = subcommand_candidates(state.active());
@@ -80,8 +111,12 @@ pub fn collect(state: &ParseState, query: &str, cwd: &Path) -> Vec<Candidate> {
             out
         }
         CursorKind::Option => option_candidates(state),
-        CursorKind::OptionArgument(opt) => option_argument_candidates(state, opt, query, cwd),
-        CursorKind::CommandArgument(arg) => command_argument_candidates(arg, state, query, cwd),
+        CursorKind::OptionArgument(opt) => {
+            option_argument_candidates(state, opt, query, cwd, runner)
+        }
+        CursorKind::CommandArgument(arg) => {
+            command_argument_candidates(arg, state, query, cwd, runner)
+        }
         CursorKind::Empty => Vec::new(),
     }
 }
@@ -191,12 +226,13 @@ fn option_argument_candidates(
     opt: &Opt,
     query: &str,
     cwd: &Path,
+    runner: Option<&dyn GeneratorRunner>,
 ) -> Vec<Candidate> {
     // An option may declare one arg (its value); use the first.
     let Some(arg) = opt.args.first() else {
         return Vec::new();
     };
-    arg_candidates(arg, state, query, cwd)
+    arg_candidates(arg, state, query, cwd, runner)
 }
 
 /// Candidates for a positional command argument.
@@ -205,12 +241,20 @@ fn command_argument_candidates(
     state: &ParseState,
     query: &str,
     cwd: &Path,
+    runner: Option<&dyn GeneratorRunner>,
 ) -> Vec<Candidate> {
-    arg_candidates(arg, state, query, cwd)
+    arg_candidates(arg, state, query, cwd, runner)
 }
 
-/// Shared arg-suggestion logic: static suggestions + template filesystem reads.
-fn arg_candidates(arg: &Arg, state: &ParseState, query: &str, cwd: &Path) -> Vec<Candidate> {
+/// Shared arg-suggestion logic: static suggestions + template filesystem reads
+/// + (when a `runner` is injected) dynamic generator output.
+fn arg_candidates(
+    arg: &Arg,
+    state: &ParseState,
+    query: &str,
+    cwd: &Path,
+    runner: Option<&dyn GeneratorRunner>,
+) -> Vec<Candidate> {
     let mut out = Vec::new();
 
     // Static suggestions, included as-is.
@@ -264,12 +308,43 @@ fn arg_candidates(arg: &Arg, state: &ParseState, query: &str, cwd: &Path) -> Vec
         }
     }
 
-    // M4 hook: if `arg.generator` is set we would execute it through the
-    // injected `GeneratorRunner` here. In M1 generators contribute nothing.
-    // TODO(M4): run arg.generator via GeneratorRunner and extend `out`.
-    let _ = &arg.generator;
+    // M4: execute the declarative generator through the injected runner, if any.
+    // `core` performs no I/O itself — it forwards the spec and maps the runner's
+    // produced strings into candidates. Generator failures degrade silently.
+    if let (Some(generator), Some(runner)) = (arg.generator.as_ref(), runner) {
+        out.extend(generator_to_candidates(generator, cwd, runner));
+    }
 
     out
+}
+
+/// Run an argument [`Generator`] via the injected `runner` and map its produced
+/// strings into [`Candidate`]s, applying the generator's optional `priority`.
+///
+/// `cwd` is converted to a UTF-8 string for the runner; a non-UTF-8 path yields
+/// no candidates (the runner contract takes `&str`).
+fn generator_to_candidates(
+    generator: &Generator,
+    cwd: &Path,
+    runner: &dyn GeneratorRunner,
+) -> Vec<Candidate> {
+    let Some(cwd) = cwd.to_str() else {
+        return Vec::new();
+    };
+    match runner.run(generator, cwd) {
+        Ok(values) => values
+            .into_iter()
+            .filter(|v| !v.is_empty())
+            .map(|value| {
+                let mut c = Candidate::simple(value);
+                c.priority = generator.priority;
+                c
+            })
+            .collect(),
+        // A failed generator (timeout, not allow-listed, spawn error) simply
+        // produces no dynamic candidates; static/template ones still stand.
+        Err(_) => Vec::new(),
+    }
 }
 
 /// Convert filesystem entries into candidates. Directories get a small priority

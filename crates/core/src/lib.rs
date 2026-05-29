@@ -19,8 +19,10 @@
 //! plus native predicates (`SCHEMA.md §2`/§2.1), with the host's `$PATH` probe
 //! injected via [`correct::CommandResolver`].
 //!
-//! Generators are not executed in M1 (that is M4); the hook exists in
-//! [`complete`]. See `ROADMAP.md`.
+//! Generators (dynamic arguments) are executed only when a [`GeneratorRunner`]
+//! is injected via [`complete_line_with_generators`]; the real sandboxed runner
+//! lives in the `autosuggest-data` crate (M4). The pure [`complete_line`] never
+//! runs a generator. See `ROADMAP.md`.
 //!
 //! # Example
 //!
@@ -85,6 +87,35 @@ pub fn complete_line(
         .unwrap_or_else(|| tokens.query());
 
     let candidates = complete::collect(&state, effective_query, cwd);
+    rank::rank(candidates, effective_query)
+}
+
+/// As [`complete_line`], but executes argument generators through the injected
+/// `runner` (M4). This is the entry point a host uses to surface dynamic
+/// suggestions (e.g. `git checkout <branch>` listing local branches).
+///
+/// `core` still performs no process I/O itself: the `runner` (provided by the
+/// `autosuggest-data` crate's sandboxed implementation, or a test mock) owns all
+/// execution, allow-listing, timeouts, and caching. A generator that fails
+/// contributes no candidates, so completion degrades gracefully.
+///
+/// The pure [`complete_line`] remains unchanged and never runs a generator.
+pub fn complete_line_with_generators(
+    spec: &Subcommand,
+    line: &str,
+    cursor: usize,
+    cwd: &Path,
+    runner: &dyn GeneratorRunner,
+) -> Vec<CompletionItem> {
+    let tokens = tokenize::tokenize(line, cursor);
+    let state = parse::parse(spec, tokens.committed(), tokens.query());
+
+    let effective_query = state
+        .inline_value_prefix
+        .as_deref()
+        .unwrap_or_else(|| tokens.query());
+
+    let candidates = complete::collect_with_generators(&state, effective_query, cwd, runner);
     rank::rank(candidates, effective_query)
 }
 
@@ -249,5 +280,129 @@ mod tests {
         let items = complete_line(&ls, line, line.len(), std::path::Path::new("."));
         assert!(items.iter().any(|i| i.insert == "always"));
         assert!(items.iter().all(|i| i.insert != "never"));
+    }
+
+    /// A deterministic in-memory [`GeneratorRunner`] that returns canned values
+    /// (or a canned error) without spawning a process. This proves the engine
+    /// stays pure: dynamic suggestions flow through `complete`/`rank` driven
+    /// purely by the trait, with no I/O in `core`.
+    struct MockRunner {
+        result: Result<Vec<String>, GeneratorError>,
+        calls: std::cell::Cell<usize>,
+    }
+
+    impl MockRunner {
+        fn ok(values: &[&str]) -> Self {
+            MockRunner {
+                result: Ok(values.iter().map(|s| s.to_string()).collect()),
+                calls: std::cell::Cell::new(0),
+            }
+        }
+        fn err(e: GeneratorError) -> Self {
+            MockRunner {
+                result: Err(e),
+                calls: std::cell::Cell::new(0),
+            }
+        }
+    }
+
+    impl GeneratorRunner for MockRunner {
+        fn run(
+            &self,
+            _generator: &types::Generator,
+            _cwd: &str,
+        ) -> Result<Vec<String>, GeneratorError> {
+            self.calls.set(self.calls.get() + 1);
+            self.result.clone()
+        }
+    }
+
+    /// A spec with `checkout <branch>` whose `branch` arg is generator-backed.
+    fn checkout_with_generator() -> Subcommand {
+        Subcommand {
+            name: "git".into(),
+            description: None,
+            subcommands: vec![Subcommand {
+                name: "checkout".into(),
+                description: None,
+                subcommands: vec![],
+                options: vec![],
+                args: vec![types::Arg {
+                    name: Some("branch".into()),
+                    description: None,
+                    is_optional: false,
+                    is_variadic: false,
+                    template: None,
+                    suggestions: vec![],
+                    generator: Some(types::Generator {
+                        run: vec!["git".into(), "branch".into()],
+                        split_on: None,
+                        trim: None,
+                        extract: None,
+                        priority: Some(80),
+                        cache: None,
+                    }),
+                    is_command: false,
+                }],
+                requires_subcommand: false,
+                parser_directives: None,
+            }],
+            options: vec![],
+            args: vec![],
+            requires_subcommand: true,
+            parser_directives: None,
+        }
+    }
+
+    #[test]
+    fn generator_suggestions_flow_through_ranking() {
+        let spec = checkout_with_generator();
+        let runner = MockRunner::ok(&["main", "feature/login", "feature/cache"]);
+        let line = "git checkout fea";
+        let items = complete_line_with_generators(
+            &spec,
+            line,
+            line.len(),
+            std::path::Path::new("."),
+            &runner,
+        );
+        assert_eq!(runner.calls.get(), 1, "runner must be invoked once");
+        // Only the prefix-matching branches survive ranking, best first.
+        assert!(items.iter().any(|i| i.insert == "feature/login"));
+        assert!(items.iter().any(|i| i.insert == "feature/cache"));
+        assert!(
+            items.iter().all(|i| i.insert != "main"),
+            "non-matching branch must be filtered: {items:?}"
+        );
+    }
+
+    #[test]
+    fn generator_failure_degrades_to_no_candidates() {
+        let spec = checkout_with_generator();
+        let runner = MockRunner::err(GeneratorError::Timeout);
+        let line = "git checkout fea";
+        let items = complete_line_with_generators(
+            &spec,
+            line,
+            line.len(),
+            std::path::Path::new("."),
+            &runner,
+        );
+        assert!(
+            items.is_empty(),
+            "a failing generator must not produce candidates: {items:?}"
+        );
+    }
+
+    #[test]
+    fn pure_complete_line_never_invokes_generator() {
+        // The pure entry point must not surface generator values at all.
+        let spec = checkout_with_generator();
+        let line = "git checkout fea";
+        let items = complete_line(&spec, line, line.len(), std::path::Path::new("."));
+        assert!(
+            items.iter().all(|i| !i.insert.starts_with("feature")),
+            "pure path must not run generators: {items:?}"
+        );
     }
 }

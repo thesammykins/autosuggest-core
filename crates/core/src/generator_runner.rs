@@ -6,16 +6,18 @@
 //! allow-listed, timeout-bounded runner. Keeping execution behind a trait lets
 //! the engine stay pure and unit-testable with mock runners.
 //!
-//! # Milestone status (M0)
+//! # Milestone status (M4)
 //!
-//! This is a stub: the trait shape is defined but no runner is provided. The
-//! real sandboxed implementation lands in M4 (see `ROADMAP.md`).
+//! The trait shape is defined here in `core` (kept pure); the real sandboxed,
+//! allow-listed, timeout-bounded, TTL-caching runner lives in the `data` crate
+//! (`autosuggest-data`, see `ROADMAP.md` M4 and `TECH.md §3.4`).
 
 use crate::types::Generator;
 
 /// Error returned by a [`GeneratorRunner`] when a generator cannot be executed.
 ///
-/// The concrete variants will be refined in M4; M0 only fixes the public shape.
+/// `#[non_exhaustive]` so runners may surface new failure modes (M4 added
+/// [`GeneratorError::EmptyRun`]) without a breaking change.
 #[derive(Debug, Clone, PartialEq, Eq)]
 #[non_exhaustive]
 pub enum GeneratorError {
@@ -25,6 +27,8 @@ pub enum GeneratorError {
     Timeout,
     /// The generator process failed to spawn or exited abnormally.
     Execution(String),
+    /// The generator's `run` argv was empty, so there is no program to launch.
+    EmptyRun,
 }
 
 impl core::fmt::Display for GeneratorError {
@@ -35,6 +39,7 @@ impl core::fmt::Display for GeneratorError {
             }
             GeneratorError::Timeout => write!(f, "generator timed out"),
             GeneratorError::Execution(msg) => write!(f, "generator execution failed: {msg}"),
+            GeneratorError::EmptyRun => write!(f, "generator has an empty run argv"),
         }
     }
 }
@@ -48,10 +53,10 @@ impl std::error::Error for GeneratorError {}
 /// described in `TECH.md §3.4`. The engine treats this purely as a data source
 /// and never passes a shell string — only the generator's `run` argv vector.
 ///
-/// # Milestone status (M0)
+/// # Milestone status (M4)
 ///
-/// No production implementation exists yet; this trait is the injection seam the
-/// M4 `data` crate will satisfy.
+/// Implemented by `autosuggest_data::SandboxedRunner`. The engine composes a
+/// runner through [`crate::complete_line_with_generators`].
 pub trait GeneratorRunner {
     /// Run `generator` with the given working directory and return the raw
     /// candidate strings it produced, or a [`GeneratorError`].
