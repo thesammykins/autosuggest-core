@@ -55,20 +55,32 @@ clippy clean.
 **Carry-over (→ M6):** add `tests/fixtures/correct/` golden pairs for parity
 with M1/M2 (M3 shipped a case-table; DoD met, goldens deferred).
 
-### M4 — Generators + caching  `feat/m4-generators`  — STATUS: in progress
-`data` crate sandboxed generator runner (allow-list, timeout, TTL cache);
-generator-backed specs (`git checkout <branch>`, `git add <file>`).
-**Exit:** dynamic suggestions correct; `<15 ms` warm bench; allow-list enforced.
+### M4 — Generators + caching  `feat/m4-generators`  — STATUS: ✅ merged (M4 in d8df85b)
+`data` crate (`autosuggest-data`) sandboxed `SandboxedRunner` (allow-list, no
+shell, 100 ms timeout + kill, output cap, TTL cache); additive pure entry
+`complete_line_with_generators`; generator-backed specs (`git checkout
+<branch>`, `git add <file>`). Core stayed pure.
+**Exit:** ✅ dynamic suggestions correct; warm bench ~1.79 µs (<15 ms);
+allow-list enforced; clippy/fmt clean; 126 tests (105 core + 21 data).
 
-### M5 — Adapters: daemon + C ABI  `feat/m5-adapters`  — STATUS: in progress
-`daemon` (stdio JSON lines per `SCHEMA.md §4`); `ffi` cdylib + cbindgen header
-(`TECH.md §4.2`); reference mock-host demo exercising all three ops.
-**Exit:** end-to-end demo runs over stdio AND via C ABI; no panics cross FFI.
+### M5 — Adapters: daemon + C ABI  `feat/m5-adapters`  — STATUS: ✅ merged (d8df85b)
+`daemon` (shared `Engine` lib + `autosuggest-daemon` bin, stdio JSON lines per
+`SCHEMA.md §4`, `bad_request`/`internal` errors, no-crash on bad input, EOF→0);
+`ffi` cdylib/staticlib (`autosuggest_request_json` + `autosuggest_string_free`,
+`catch_unwind`-guarded, `OnceLock` engine cache, cbindgen header). Static-only
+(generators not yet wired into daemon — see M6).
+**Exit:** ✅ end-to-end stdio + C ABI demos for all 3 ops; no panics cross FFI;
+malformed input handled; clippy/fmt clean.
 
-### M6 — Dataset growth + docs  `feat/m6-dataset`  — STATUS: blocked(M1,M3)
+### M6 — Dataset growth + docs  `feat/m6-dataset`  — STATUS: in progress (unblocked: M1,M3,M4 merged)
 Expand to the full `PRODUCT.md §7` coverage (~45–55 specs + rule set); finalize
-`INTEGRATING.md` recipe; coverage report.
-**Exit:** coverage list authored & tested; docs complete.
+`INTEGRATING.md` recipe (reconcile FFI API shape — M5 shipped the simple
+JSON-in/out pair vs the handle-based Path B in the doc); add the carried-over
+`tests/fixtures/correct/` golden pairs (M3 parity); wire generators into the
+daemon `complete` path (M4 `SandboxedRunner` + `complete_line_with_generators`);
+coverage report.
+**Exit:** coverage list authored & tested; correct/ goldens green; docs
+complete & consistent with shipped adapters.
 
 ## Progress log
 
@@ -82,3 +94,7 @@ Expand to the full `PRODUCT.md §7` coverage (~45–55 specs + rule set); finali
 | (init) | M3 | Correction engine; audited (fmt/clippy/59 tests, case table) | ✅ merged 3577940 |
 | (init) | — | Merged tree verified: fmt/clippy clean, 123 tests green | ✅ |
 | (init) | M4/M5 | Worktrees created, subagents dispatched (M6 held: needs M1+M3 only, runs after) | in progress |
+| (init) | M4 | Generators+caching; audited (core purity, allow-list/timeout/cap, 126 tests, warm ~1.79µs) | ✅ merged d8df85b |
+| (init) | M5 | Daemon+FFI adapters; audited (OnceLock engine, unsafe confined to ffi, stdio+ffi e2e) | ✅ merged d8df85b |
+| (init) | — | Merged tree verified: fmt/clippy clean, 156 tests green | ✅ |
+| (init) | M6 | Final milestone: dataset growth, correct/ goldens, daemon generator wiring, docs finalize | dispatching |
