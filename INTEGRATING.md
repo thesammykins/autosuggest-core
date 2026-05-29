@@ -32,28 +32,43 @@ one response line per request line.
 
 ## Path B — C ABI (recommended for ghostty / native hosts)
 
-Link `libautosuggest_core.{dylib,so}` and include the generated header.
+Link `libautosuggest_ffi.{dylib,so,a}` and include the generated header
+`autosuggest.h` (produced by `cargo build -p autosuggest-ffi`).
+
+The C surface is intentionally tiny and **stateless from the caller's view**: a
+single entry point handles every op by taking one JSON request string and
+returning one JSON response string. Internally a process-wide engine is built
+lazily on first call from the specs/rules directories, so there is no handle to
+create, pass, or free.
 
 ```c
-#include "autosuggest_core.h"
+#include "autosuggest.h"
 
-AscEngine* eng = asc_engine_new("./specs", "./rules");
+/* Point the lazily-built engine at your data BEFORE the first call.
+ * Defaults are "./specs" and "./rules" relative to the process cwd. */
+setenv("AUTOSUGGEST_SPECS_DIR", "/opt/autosuggest/specs", 1);
+setenv("AUTOSUGGEST_RULES_DIR", "/opt/autosuggest/rules", 1);
 
 const char* req = "{\"v\":1,\"id\":1,\"op\":\"complete\","
                   "\"line\":\"git ch\",\"cursor\":6,\"cwd\":\"/repo\"}";
-char* resp = asc_complete(eng, req);   // JSON string, caller frees
-/* parse resp -> items[] ... */
-asc_string_free(resp);
-
-asc_engine_free(eng);
+char* resp = autosuggest_request_json(req);   /* JSON string, caller frees */
+/* parse resp -> {"v":1,"id":1,"items":[...]} ... */
+autosuggest_string_free(resp);
 ```
 
+The same `autosuggest_request_json` serves `complete`, `autosuggest`, and
+`correct` — switch by the request's `op` field, exactly as the stdio daemon
+does. Match responses by `id`.
+
 Notes:
-- All strings are UTF-8. The engine copies what it needs; you free returned
-  strings with `asc_string_free`.
-- The boundary never panics (errors come back as a JSON `error` object).
-- Thread-safety: create one `AscEngine` per thread, or guard with your own lock
-  (v1 engine handle is not internally synchronized).
+- All strings are UTF-8. The library owns returned strings; free each with
+  `autosuggest_string_free` (passing null is a no-op; double-free is UB).
+- The boundary never panics and never returns null on the normal path. Null or
+  non-UTF-8 input yields a valid JSON `error` response string.
+- If the specs/rules directories fail to load, requests return a JSON `error`
+  response rather than crashing, so a host can degrade gracefully.
+- Specs/rules directories are read once when the engine is first built; set the
+  environment variables before the first request.
 
 ## History ownership
 
@@ -64,6 +79,9 @@ query entries; the daemon exposes `--history-db <path>` to enable it.
 
 ## ghostty-style recipe (sketch)
 
-ghostty (Zig) links the C ABI: call `asc_engine_new` at startup, `asc_complete`
-on input change to draw a suggestion overlay, `asc_correct` after a non-zero
-exit to offer a fix line. Full worked example lands in M5.
+ghostty (Zig) links the C ABI: set `AUTOSUGGEST_SPECS_DIR` /
+`AUTOSUGGEST_RULES_DIR` at startup, then call `autosuggest_request_json` with an
+`op:"complete"` request on input change to draw a suggestion overlay, and with an
+`op:"correct"` request after a non-zero exit to offer a fix line. Free every
+returned string with `autosuggest_string_free`.
+
