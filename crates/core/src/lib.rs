@@ -5,12 +5,14 @@
 //! owns logic. Generator execution is injected through the [`GeneratorRunner`]
 //! trait so the engine never performs file or network I/O directly.
 //!
-//! # Milestone status (M0)
+//! # Milestone status
 //!
-//! Only the [`types`] module is implemented in M0: Rust models for every object
-//! in `SCHEMA.md §1`. The remaining engine modules ([`tokenize`], [`parse`],
-//! [`complete`], [`rank`], [`history`], [`correct`]) exist as empty stubs and
-//! gain logic in later milestones (see `ROADMAP.md`).
+//! The [`types`] module (M0) models every object in `SCHEMA.md §1`. The
+//! [`correct`] module (M3) implements failed-command correction: a JSON rule
+//! engine plus native predicates (`SCHEMA.md §2`/§2.1), with the host's `$PATH`
+//! probe injected via [`correct::CommandResolver`]. The remaining engine modules
+//! ([`tokenize`], [`parse`], [`complete`], [`rank`], [`history`]) are stubs that
+//! gain logic in their milestones (see `ROADMAP.md`).
 
 #![forbid(unsafe_code)]
 #![warn(missing_docs)]
