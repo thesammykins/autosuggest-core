@@ -1,0 +1,11 @@
+{
+  "id": "mkdir_p",
+  "description": "Create missing parent directories with -p",
+  "priority": 90,
+  "match": {
+    "scriptStartsWith": "mkdir ",
+    "stderrContains": ["No such file or directory"],
+    "exitCodeIn": [1]
+  },
+  "rewrite": { "insertFlag": { "after": "mkdir", "flag": "-p" } }
+}

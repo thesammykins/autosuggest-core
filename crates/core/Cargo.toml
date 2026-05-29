@@ -11,12 +11,20 @@ repository.workspace = true
 name = "autosuggest_core"
 path = "src/lib.rs"
 
+[features]
+# Real, read-only `$PATH` scanner (`correct::PathCommandResolver`). Enabled by
+# default for convenient embedding; the pure engine paths never require it and
+# always take an injected `CommandResolver`. See `correct::resolver` docs.
+default = ["std-resolver"]
+std-resolver = []
+
 [dependencies]
 serde = { workspace = true }
 serde_json = { workspace = true }
 # Reuse the canonical history/protocol models so the engine and the wire format
 # never drift (TECH.md §2; CONTRIBUTING "prefer reusing protocol types").
 autosuggest-protocol = { path = "../protocol" }
+regex = { workspace = true }
 
 [dev-dependencies]
 criterion = { version = "0.5", default-features = false }

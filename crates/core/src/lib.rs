@@ -5,7 +5,7 @@
 //! owns logic. Generator execution is injected through the [`GeneratorRunner`]
 //! trait so the engine never performs file or network I/O directly.
 //!
-//! # Milestone status (M1 + M2)
+//! # Milestone status (M1 + M2 + M3)
 //!
 //! As-you-type completion is implemented: [`tokenize`] (pure lexer), [`parse`]
 //! (pure parse-state machine), [`complete`] (candidate collection, including the
@@ -15,9 +15,12 @@
 //! History autosuggestion is implemented: [`history`] provides the stateless
 //! [`history::autosuggest`] continuation finder.
 //!
-//! The [`correct`] module remains a stub and gains logic in M3 (see
-//! `ROADMAP.md`). Generators are not executed in M1 (that is M4); the hook
-//! exists in [`complete`].
+//! Failed-command correction is implemented: [`correct`] is a JSON rule engine
+//! plus native predicates (`SCHEMA.md §2`/§2.1), with the host's `$PATH` probe
+//! injected via [`correct::CommandResolver`].
+//!
+//! Generators are not executed in M1 (that is M4); the hook exists in
+//! [`complete`]. See `ROADMAP.md`.
 //!
 //! # Example
 //!

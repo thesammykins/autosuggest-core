@@ -1,0 +1,6 @@
+{
+  "id": "no_command",
+  "description": "Suggest a known command when the base command is not found",
+  "native": true,
+  "priority": 30
+}

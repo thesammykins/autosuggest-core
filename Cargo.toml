@@ -14,3 +14,4 @@ repository = "https://github.com/autosuggest-core/autosuggest-core"
 [workspace.dependencies]
 serde = { version = "1", features = ["derive"] }
 serde_json = "1"
+regex = "1"
