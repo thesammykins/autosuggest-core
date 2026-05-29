@@ -1,0 +1,23 @@
+[package]
+name = "autosuggest-ffi"
+version = "0.0.0"
+description = "C ABI shim over the autosuggest engine (TECH.md §4)."
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+
+[lib]
+name = "autosuggest_ffi"
+# `cdylib` for dynamic linking from C/host languages; `staticlib` for static
+# embedding. `rlib` so Rust integration tests can link the crate too.
+crate-type = ["cdylib", "staticlib", "rlib"]
+path = "src/lib.rs"
+
+[dependencies]
+autosuggest-daemon = { path = "../daemon" }
+
+[build-dependencies]
+# Generates `include/autosuggest.h` at build time from the `extern "C"` surface
+# so the committed header never drifts from the code (TECH.md §4). Build-only.
+cbindgen = { version = "0.27", default-features = false }
