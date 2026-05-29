@@ -28,7 +28,8 @@ use std::path::Path;
 use autosuggest_core::correct::rule::Rule;
 use autosuggest_core::correct::{self, CorrectContext, PathCommandResolver, Resolver};
 use autosuggest_core::types::Subcommand;
-use autosuggest_core::{complete_line, history, CompletionItem};
+use autosuggest_core::{complete_line_with_generators, history, CompletionItem, GeneratorRunner};
+use autosuggest_data::SandboxedRunner;
 use autosuggest_protocol::request::{AutosuggestRequest, CompleteRequest, CorrectRequest};
 use autosuggest_protocol::{Item, Request, Response};
 
@@ -56,17 +57,39 @@ pub struct Engine {
     rules: Vec<Rule>,
     /// Host capability for `$PATH` probing, injected into correction.
     resolver: Box<dyn Resolver + Send + Sync>,
+    /// Sandboxed, allow-listed argument generator runner (`TECH.md §3.4`).
+    ///
+    /// Drives dynamic completions (e.g. `git checkout <branch>`). Execution is
+    /// allow-listed, timeout-bounded, and cached; a generator that fails
+    /// contributes nothing, so completion degrades to the static spec.
+    runner: Box<dyn GeneratorRunner + Send + Sync>,
 }
 
 impl Engine {
     /// Build an engine from in-memory specs, rules, and a resolver.
     ///
-    /// Useful for tests and embedders that supply their own data. The on-disk
-    /// loader [`Engine::load`] is the usual entry point.
+    /// Useful for tests and embedders that supply their own data. Uses the
+    /// default [`SandboxedRunner`] for argument generators; use
+    /// [`Engine::with_runner`] to inject a custom runner. The on-disk loader
+    /// [`Engine::load`] is the usual entry point.
     pub fn new(
         specs: Vec<Subcommand>,
         rules: Vec<Rule>,
         resolver: Box<dyn Resolver + Send + Sync>,
+    ) -> Self {
+        Self::with_runner(specs, rules, resolver, Box::new(SandboxedRunner::new()))
+    }
+
+    /// Build an engine, also injecting the argument-generator `runner`.
+    ///
+    /// Embedders and tests use this to supply a narrower allow-list or a
+    /// deterministic mock runner; [`Engine::new`] defaults to the standard
+    /// [`SandboxedRunner`].
+    pub fn with_runner(
+        specs: Vec<Subcommand>,
+        rules: Vec<Rule>,
+        resolver: Box<dyn Resolver + Send + Sync>,
+        runner: Box<dyn GeneratorRunner + Send + Sync>,
     ) -> Self {
         let specs_by_name = index_specs(&specs);
         Self {
@@ -74,6 +97,7 @@ impl Engine {
             specs,
             rules,
             resolver,
+            runner,
         }
     }
 
@@ -138,7 +162,13 @@ impl Engine {
             return Response::items(req.id, Vec::new());
         };
 
-        let items = complete_line(spec, &req.line, cursor, Path::new(cwd));
+        let items = complete_line_with_generators(
+            spec,
+            &req.line,
+            cursor,
+            Path::new(cwd),
+            self.runner.as_ref(),
+        );
         Response::items(req.id, items.iter().map(item_to_wire).collect())
     }
 

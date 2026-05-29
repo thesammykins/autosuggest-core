@@ -19,4 +19,5 @@ path = "src/main.rs"
 serde = { workspace = true }
 serde_json = { workspace = true }
 autosuggest-core = { path = "../core" }
+autosuggest-data = { path = "../data" }
 autosuggest-protocol = { path = "../protocol" }
