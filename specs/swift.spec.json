@@ -1,0 +1,100 @@
+{
+  "name": "swift",
+  "description": "Swift programming language compiler and toolchain (Apple)",
+  "requiresSubcommand": true,
+  "options": [
+    { "name": ["-h", "--help"], "description": "Show help and exit" },
+    { "name": ["--version"], "description": "Show version and exit" }
+  ],
+  "subcommands": [
+    {
+      "name": "build",
+      "description": "Build Swift packages",
+      "options": [
+        { "name": ["-c", "--configuration"], "description": "Build configuration", "args": [{"name": "config", "suggestions": ["debug", "release"]}] },
+        { "name": ["--product"], "description": "Build a specific product", "args": [{"name": "product"}] },
+        { "name": ["--target"], "description": "Build a specific target", "args": [{"name": "target"}] },
+        { "name": ["-Xswiftc"], "description": "Pass Swift compiler flag", "args": [{"name": "flag"}] },
+        { "name": ["--triple"], "description": "Cross-compile for a specific triple", "args": [{"name": "triple"}] },
+        { "name": ["--sanitize"], "description": "Enable sanitizer", "args": [{"name": "type", "suggestions": ["address", "thread", "undefined"]}] },
+        { "name": ["-v", "--verbose"], "description": "Verbose output" },
+        { "name": ["--static-swift-stdlib"], "description": "Statically link Swift stdlib" }
+      ]
+    },
+    {
+      "name": "test",
+      "description": "Run package tests",
+      "options": [
+        { "name": ["-c", "--configuration"], "description": "Build configuration", "args": [{"name": "config", "suggestions": ["debug", "release"]}] },
+        { "name": ["--filter"], "description": "Filter tests by regex", "args": [{"name": "regex"}] },
+        { "name": ["--parallel"], "description": "Run tests in parallel" },
+        { "name": ["-Xswiftc"], "description": "Pass Swift compiler flag", "args": [{"name": "flag"}] },
+        { "name": ["--num-workers"], "description": "Number of test workers", "args": [{"name": "n"}] },
+        { "name": ["--enable-code-coverage"], "description": "Enable code coverage" },
+        { "name": ["--xunit-output"], "description": "Output xUnit results", "args": [{"name": "path"}] }
+      ]
+    },
+    {
+      "name": "run",
+      "description": "Run a Swift executable",
+      "options": [
+        { "name": ["-c", "--configuration"], "description": "Build configuration", "args": [{"name": "config", "suggestions": ["debug", "release"]}] },
+        { "name": ["--product"], "description": "Run a specific product", "args": [{"name": "product"}] }
+      ],
+      "args": [
+        { "name": "executable", "description": "Executable to run", "isOptional": true },
+        { "name": "args", "description": "Arguments to pass", "isOptional": true, "isVariadic": true }
+      ]
+    },
+    {
+      "name": "package",
+      "description": "Manage Swift packages",
+      "subcommands": [
+        { "name": "init", "description": "Initialize a new package", "options": [
+          { "name": ["--type"], "description": "Package template type", "args": [{"name": "type", "suggestions": ["executable", "library", "tool", "macro", "empty"]}] },
+          { "name": ["--name"], "description": "Package name", "args": [{"name": "name"}] }
+        ]},
+        { "name": "update", "description": "Update package dependencies", "options": [
+          { "name": ["--dry-run"], "description": "Show what would change" }
+        ]},
+        { "name": "resolve", "description": "Resolve package dependencies" },
+        { "name": "describe", "description": "Describe a package", "options": [
+          { "name": ["--type"], "description": "Description type", "args": [{"name": "type", "suggestions": ["text", "json"]}] }
+        ]},
+        { "name": "clean", "description": "Clean the build artifacts" },
+        { "name": "purge-cache", "description": "Purge the global cache" },
+        { "name": "plugins", "description": "List available package plugins" },
+        { "name": "generate-xcodeproj", "description": "Generate an Xcode project" }
+      ]
+    },
+    {
+      "name": "format",
+      "description": "Format Swift source code",
+      "options": [
+        { "name": ["-i", "--in-place"], "description": "Format files in place" },
+        { "name": ["-p", "--parallel"], "description": "Format files in parallel" },
+        { "name": ["--recursive"], "description": "Recurse into subdirectories" }
+      ],
+      "args": [
+        { "name": "files", "description": "Files to format", "isOptional": true, "isVariadic": true, "template": "filepaths" }
+      ]
+    },
+    {
+      "name": "c-interop",
+      "description": "Generate C header interoperability files",
+      "options": [
+        { "name": ["--target"], "description": "Target triple", "args": [{"name": "triple"}] },
+        { "name": ["-s", "--module-name"], "description": "Swift module name", "args": [{"name": "name"}] },
+        { "name": ["-o", "--output-dir"], "description": "Output directory", "args": [{"name": "dir"}] }
+      ]
+    },
+    {
+      "name": "experimental-sdk",
+      "description": "Manage experimental SDKs",
+      "subcommands": [
+        { "name": "list", "description": "List available experimental SDKs" },
+        { "name": "install", "description": "Install an experimental SDK", "args": [{"name": "sdk"}] }
+      ]
+    }
+  ]
+}

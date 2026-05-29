@@ -1,0 +1,21 @@
+{
+  "name": "column",
+  "description": "Columnate and format text into aligned columns",
+  "options": [
+    { "name": ["-t", "--table"], "description": "Create an aligned table" },
+    { "name": ["-s", "--separator"], "description": "Input column separator", "args": [{"name": "delimiter"}] },
+    { "name": ["-o", "--output-separator"], "description": "Output column separator", "args": [{"name": "delimiter"}] },
+    { "name": ["-R", "--table-right"], "description": "Right-align columns (by index)", "args": [{"name": "columns"}] },
+    { "name": ["-H", "--table-hide"], "description": "Hide specified columns", "args": [{"name": "columns"}] },
+    { "name": ["-c", "--columns"], "description": "Output width in columns (deprecated)", "args": [{"name": "n"}] },
+    { "name": ["-J", "--json"], "description": "Output JSON" },
+    { "name": ["-n", "--table-name"], "description": "Table name for JSON output", "args": [{"name": "name"}] },
+    { "name": ["-d", "--table-noheadings"], "description": "Suppress header line" },
+    { "name": ["-x", "--fillrows"], "description": "Fill rows before columns" },
+    { "name": ["-h", "--help"], "description": "Show help" },
+    { "name": ["-V", "--version"], "description": "Show version" }
+  ],
+  "args": [
+    { "name": "file", "description": "File(s) to columnate", "isOptional": true, "isVariadic": true, "template": "filepaths" }
+  ]
+}

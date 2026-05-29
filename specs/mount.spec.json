@@ -1,0 +1,27 @@
+{
+  "name": "mount",
+  "description": "Mount filesystems (Linux/macOS)",
+  "options": [
+    { "name": ["-t", "--types"], "description": "Filesystem type", "args": [{"name": "type", "suggestions": ["ext4", "xfs", "btrfs", "ntfs", "vfat", "exfat", "hfsplus", "apfs", "nfs", "tmpfs", "devtmpfs", "proc", "sysfs", "cgroup2"]}] },
+    { "name": ["-a", "--all"], "description": "Mount all filesystems in fstab" },
+    { "name": ["-o", "--options"], "description": "Mount options", "args": [{"name": "opts"}] },
+    { "name": ["-r", "--read-only"], "description": "Mount read-only" },
+    { "name": ["-w", "--read-write"], "description": "Mount read-write (default)" },
+    { "name": ["-v", "--verbose"], "description": "Verbose output" },
+    { "name": ["-L", "--label"], "description": "Mount by volume label", "args": [{"name": "label"}] },
+    { "name": ["-U", "--uuid"], "description": "Mount by UUID", "args": [{"name": "uuid"}] },
+    { "name": ["-B", "--bind"], "description": "Bind mount a subtree" },
+    { "name": ["--move"], "description": "Move a mount to another location" },
+    { "name": ["-N", "--namespace"], "description": "Mount in a namespace", "args": [{"name": "ns"}] },
+    { "name": ["--make-shared"], "description": "Mark mount as shared" },
+    { "name": ["--make-private"], "description": "Mark mount as private" },
+    { "name": ["--make-slave"], "description": "Mark mount as slave" },
+    { "name": ["--make-unbindable"], "description": "Mark mount as unbindable" },
+    { "name": ["-h", "--help"], "description": "Show help" },
+    { "name": ["-V", "--version"], "description": "Show version" }
+  ],
+  "args": [
+    { "name": "source", "description": "Device or remote path", "isOptional": true },
+    { "name": "target", "description": "Mount point directory", "isOptional": true, "template": "folders" }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "name": "watch",
+  "description": "Execute a program periodically and show output",
+  "options": [
+    { "name": ["-n", "--interval"], "description": "Update interval in seconds", "args": [{"name": "seconds"}] },
+    { "name": ["-d", "--differences"], "description": "Highlight changes between updates", "args": [{"name": "mode", "isOptional": true, "suggestions": ["permanent", "cumulative"]}] },
+    { "name": ["-t", "--no-title"], "description": "Turn off the header" },
+    { "name": ["-b", "--beep"], "description": "Beep if command has non-zero exit" },
+    { "name": ["-e", "--errexit"], "description": "Exit on command error" },
+    { "name": ["-g", "--chgexit"], "description": "Exit when command output changes" },
+    { "name": ["-c", "--color"], "description": "Interpret ANSI colors in output" },
+    { "name": ["-p", "--precise"], "description": "Attempt precise interval timing" },
+    { "name": ["-x", "--exec"], "description": "Pass command to sh -c" },
+    { "name": ["-w", "--no-wrap"], "description": "Don't wrap long lines" },
+    { "name": ["-h", "--help"], "description": "Show help" },
+    { "name": ["-v", "--version"], "description": "Show version" }
+  ],
+  "args": [
+    { "name": "command", "description": "Command to run", "isVariadic": true }
+  ]
+}

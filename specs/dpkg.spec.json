@@ -1,0 +1,165 @@
+{
+  "name": "dpkg",
+  "description": "Debian package manager (Linux)",
+  "requiresSubcommand": true,
+  "subcommands": [
+    {
+      "name": "install",
+      "description": "Install a .deb package file",
+      "args": [
+        { "name": "file", "description": "Package file(s) to install", "isVariadic": true, "template": "filepaths" }
+      ],
+      "options": [
+        { "name": ["-R", "--recursive"], "description": "Recursively process directories" },
+        { "name": ["-G", "--refuse-downgrade"], "description": "Refuse to downgrade packages" }
+      ]
+    },
+    {
+      "name": "remove",
+      "description": "Remove an installed package",
+      "args": [
+        { "name": "package", "description": "Package name(s) to remove", "isVariadic": true }
+      ],
+      "options": [
+        { "name": ["--purge"], "description": "Remove configuration files too" }
+      ]
+    },
+    {
+      "name": "purge",
+      "description": "Remove a package including configuration files",
+      "args": [
+        { "name": "package", "description": "Package name(s)", "isVariadic": true }
+      ]
+    },
+    {
+      "name": "list",
+      "description": "List installed packages matching a pattern",
+      "args": [
+        { "name": "pattern", "description": "Package name pattern", "isOptional": true }
+      ]
+    },
+    {
+      "name": "status",
+      "description": "Show package status details",
+      "args": [
+        { "name": "package", "description": "Package name(s)", "isVariadic": true }
+      ]
+    },
+    {
+      "name": "query",
+      "description": "Show package information from the database",
+      "args": [
+        { "name": "package", "description": "Package name(s)", "isVariadic": true }
+      ]
+    },
+    {
+      "name": "search",
+      "description": "Search for packages that own a file",
+      "args": [
+        { "name": "pattern", "description": "File path pattern to search" }
+      ]
+    },
+    {
+      "name": "contents",
+      "description": "List files installed by a package",
+      "args": [
+        { "name": "package", "description": "Package name" }
+      ]
+    },
+    {
+      "name": "configure",
+      "description": "Reconfigure an unpacked package",
+      "args": [
+        { "name": "package", "description": "Package name(s)", "isVariadic": true }
+      ],
+      "options": [
+        { "name": ["-a", "--pending"], "description": "Configure all unpacked but unconfigured packages" }
+      ]
+    },
+    {
+      "name": "unpack",
+      "description": "Unpack a .deb package without configuring",
+      "args": [
+        { "name": "file", "description": "Package file(s)", "isVariadic": true, "template": "filepaths" }
+      ]
+    },
+    {
+      "name": "verify",
+      "description": "Verify package integrity",
+      "args": [
+        { "name": "package", "description": "Package name(s)", "isOptional": true, "isVariadic": true }
+      ]
+    },
+    {
+      "name": "get-selections",
+      "description": "Show package selections"
+    },
+    {
+      "name": "set-selections",
+      "description": "Set package selections from stdin"
+    },
+    {
+      "name": "clear-selections",
+      "description": "Clear package selections",
+      "args": [
+        { "name": "package", "description": "Package name(s)", "isVariadic": true }
+      ]
+    },
+    {
+      "name": "print-architecture",
+      "description": "Show the target architecture"
+    },
+    {
+      "name": "print-foreign-architectures",
+      "description": "Show additional architectures"
+    },
+    {
+      "name": "add-architecture",
+      "description": "Add a foreign architecture",
+      "args": [
+        { "name": "arch", "description": "Architecture name" }
+      ]
+    },
+    {
+      "name": "remove-architecture",
+      "description": "Remove a foreign architecture",
+      "args": [
+        { "name": "arch", "description": "Architecture name" }
+      ]
+    },
+    {
+      "name": "audit",
+      "description": "Audit packages for issues"
+    },
+    {
+      "name": "clear-avail",
+      "description": "Clear the available packages list"
+    },
+    {
+      "name": "merge-avail",
+      "description": "Merge available packages from a file",
+      "args": [
+        { "name": "file", "description": "Available packages file", "template": "filepaths" }
+      ]
+    },
+    {
+      "name": "update-avail",
+      "description": "Replace available packages from a file",
+      "args": [
+        { "name": "file", "description": "Available packages file", "template": "filepaths" }
+      ]
+    }
+  ],
+  "options": [
+    { "name": ["-h", "--help"], "description": "Show help" },
+    { "name": ["--version"], "description": "Show version" },
+    { "name": ["-B", "--auto-deconfigure"], "description": "Auto-deconfigure conflicting packages" },
+    { "name": ["--force-depends"], "description": "Force dependency issues" },
+    { "name": ["--force-depends-version"], "description": "Force dependency version issues" },
+    { "name": ["--force-confnew"], "description": "Always install new config files" },
+    { "name": ["--force-confold"], "description": "Always keep old config files" },
+    { "name": ["--force-overwrite"], "description": "Overwrite files from other packages" },
+    { "name": ["--no-debsig"], "description": "Skip package signature verification" },
+    { "name": ["-D", "--debug"], "description": "Enable debug output" }
+  ]
+}

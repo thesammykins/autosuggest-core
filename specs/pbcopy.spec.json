@@ -1,0 +1,8 @@
+{
+  "name": "pbcopy",
+  "description": "Copy stdin to the system clipboard (macOS)",
+  "options": [
+    { "name": ["-p", "--prefer"], "description": "Prefer a specific clipboard type", "args": [{"name": "type", "suggestions": ["txt", "rtf", "ps", "pdf"]}] },
+    { "name": ["-h", "--help"], "description": "Show help" }
+  ]
+}

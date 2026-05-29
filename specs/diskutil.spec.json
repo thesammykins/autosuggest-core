@@ -1,0 +1,123 @@
+{
+  "name": "diskutil",
+  "description": "Manage local disks and volumes (macOS)",
+  "requiresSubcommand": true,
+  "subcommands": [
+    {
+      "name": "list",
+      "description": "List disks and partitions",
+      "options": [
+        { "name": ["-plist"], "description": "Output as plist" }
+      ],
+      "args": [
+        { "name": "device", "description": "Device to list", "isOptional": true }
+      ]
+    },
+    {
+      "name": "info",
+      "description": "Get detailed info about a disk",
+      "args": [
+        { "name": "device", "description": "Device identifier" }
+      ]
+    },
+    {
+      "name": "mount",
+      "description": "Mount a volume",
+      "options": [
+        { "name": ["-mountPoint"], "description": "Mount point path", "args": [{"name": "path"}] },
+        { "name": ["-readOnly"], "description": "Mount as read-only" },
+        { "name": ["-owners"], "description": "Enable ownership", "args": [{"name": "bool"}] },
+        { "name": ["-permissions"], "description": "Enable permissions", "args": [{"name": "bool"}] }
+      ],
+      "args": [
+        { "name": "device", "description": "Device to mount" }
+      ]
+    },
+    {
+      "name": "unmount",
+      "description": "Unmount a volume",
+      "options": [
+        { "name": ["-force"], "description": "Force unmount" }
+      ],
+      "args": [
+        { "name": "device", "description": "Device to unmount" }
+      ]
+    },
+    {
+      "name": "eject",
+      "description": "Eject a disk",
+      "args": [
+        { "name": "device", "description": "Device to eject" }
+      ]
+    },
+    {
+      "name": "eraseVolume",
+      "description": "Erase and format a volume",
+      "args": [
+        { "name": "name", "description": "New volume name" },
+        { "name": "format", "description": "Filesystem format", "suggestions": ["APFS", "APFSX", "JHFS+", "MS-DOS FAT32", "ExFAT"] },
+        { "name": "device", "description": "Device to erase" }
+      ]
+    },
+    {
+      "name": "apfs",
+      "description": "APFS-specific operations",
+      "subcommands": [
+        { "name": "list", "description": "List APFS containers" },
+        { "name": "listUsers", "description": "List APFS volume users", "args": [{"name": "volume"}] },
+        { "name": "listCryptoUsers", "description": "List cryptographic users", "args": [{"name": "volume"}] },
+        { "name": "createContainer", "description": "Create an APFS container", "args": [{"name": "device"}] },
+        { "name": "deleteContainer", "description": "Delete an APFS container", "args": [{"name": "container"}] },
+        { "name": "addVolume", "description": "Add an APFS volume to a container", "args": [{"name": "container"}, {"name": "name"}, {"name": "format", "suggestions": ["APFS", "APFSX", "Case-insensitive", "Case-sensitive"]}] },
+        { "name": "deleteVolume", "description": "Delete an APFS volume", "args": [{"name": "volume"}] },
+        { "name": "resizeContainer", "description": "Resize an APFS container", "args": [{"name": "container"}, {"name": "size", "isOptional": true}] },
+        { "name": "unlockVolume", "description": "Unlock an encrypted APFS volume", "args": [{"name": "volume"}], "options": [
+          { "name": ["-passphrase"], "description": "Passphrase", "args": [{"name": "phrase"}] },
+          { "name": ["-recoveryKeychain"], "description": "Use recovery keychain" }
+        ]},
+        { "name": "lockVolume", "description": "Lock an encrypted APFS volume", "args": [{"name": "volume"}] },
+        { "name": "changePassphrase", "description": "Change APFS volume passphrase", "args": [{"name": "volume"}], "options": [
+          { "name": ["-oldPassphrase"], "description": "Old passphrase", "args": [{"name": "phrase"}] },
+          { "name": ["-newPassphrase"], "description": "New passphrase", "args": [{"name": "phrase"}] }
+        ]}
+      ]
+    },
+    {
+      "name": "verifyVolume",
+      "description": "Verify the file system structure of a volume",
+      "args": [
+        { "name": "device", "description": "Device to verify" }
+      ]
+    },
+    {
+      "name": "repairVolume",
+      "description": "Repair the file system of a volume",
+      "args": [
+        { "name": "device", "description": "Device to repair" }
+      ]
+    },
+    {
+      "name": "rename",
+      "description": "Rename a volume",
+      "args": [
+        { "name": "device", "description": "Device" },
+        { "name": "name", "description": "New name" }
+      ]
+    },
+    {
+      "name": "resetUserPermissions",
+      "description": "Reset permissions on a volume for a user",
+      "args": [
+        { "name": "device", "description": "Device" },
+        { "name": "id", "description": "User ID" }
+      ]
+    },
+    {
+      "name": "reformat",
+      "description": "Reformat an existing volume with the same type",
+      "args": [
+        { "name": "device", "description": "Device to reformat" }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "name": "seq",
+  "description": "Print sequences of numbers",
+  "options": [
+    { "name": ["-f", "--format"], "description": "Printf-style format string", "args": [{"name": "format"}] },
+    { "name": ["-s", "--separator"], "description": "Separator string (default \\n)", "args": [{"name": "string"}] },
+    { "name": ["-w", "--equal-width"], "description": "Pad numbers with leading zeros" },
+    { "name": ["-h", "--help"], "description": "Show help" },
+    { "name": ["--version"], "description": "Show version" }
+  ],
+  "args": [
+    { "name": "first", "description": "First number", "isOptional": true },
+    { "name": "increment", "description": "Increment value", "isOptional": true },
+    { "name": "last", "description": "Last number" }
+  ]
+}

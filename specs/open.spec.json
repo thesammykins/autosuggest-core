@@ -1,0 +1,26 @@
+{
+  "name": "open",
+  "description": "Open files, directories, and URLs from the command line (macOS)",
+  "options": [
+    { "name": ["-a", "--application"], "description": "Specify the application to use", "args": [{"name": "application"}] },
+    { "name": ["-b", "--bundle"], "description": "Specify the bundle identifier", "args": [{"name": "bundle-id"}] },
+    { "name": ["-e", "--editor"], "description": "Open in TextEdit" },
+    { "name": ["-t", "--text"], "description": "Open with default text editor" },
+    { "name": ["-f", "--file"], "description": "Read input from stdin and open in TextEdit" },
+    { "name": ["-F", "--fresh"], "description": "Launch fresh (ignore document state)" },
+    { "name": ["-R", "--reveal"], "description": "Reveal in Finder instead of opening" },
+    { "name": ["-W", "--wait"], "description": "Wait until the application exits" },
+    { "name": ["-n", "--new"], "description": "Open a new instance of the application" },
+    { "name": ["-j", "--hide"], "description": "Launch the app hidden" },
+    { "name": ["-g", "--background"], "description": "Do not bring the app to the foreground" },
+    { "name": ["-h", "--header"], "description": "Search header file documentation" },
+    { "name": ["--stdin"], "description": "Read from stdin and pass to application", "args": [{"name": "application"}] },
+    { "name": ["--stderr"], "description": "Redirect stderr", "args": [{"name": "file"}] },
+    { "name": ["--stdout"], "description": "Redirect stdout", "args": [{"name": "file"}] },
+    { "name": ["--env"], "description": "Set environment variables", "args": [{"name": "var=value"}] },
+    { "name": ["--args"], "description": "Pass remaining arguments to the application" }
+  ],
+  "args": [
+    { "name": "target", "description": "File, directory, or URL to open", "isOptional": true, "isVariadic": true, "template": "filepaths" }
+  ]
+}

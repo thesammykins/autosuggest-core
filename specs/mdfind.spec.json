@@ -1,0 +1,20 @@
+{
+  "name": "mdfind",
+  "description": "Spotlight search from the command line (macOS)",
+  "options": [
+    { "name": ["-live"], "description": "Live monitor for results" },
+    { "name": ["-onlyin"], "description": "Search only within a directory", "args": [{"name": "dir", "template": "folders"}] },
+    { "name": ["-name"], "description": "Search by file name only", "args": [{"name": "name"}] },
+    { "name": ["-interpret"], "description": "Interpret natural language queries" },
+    { "name": ["-count"], "description": "Return only result count" },
+    { "name": ["-literal"], "description": "Force literal query" },
+    { "name": ["-attr"], "description": "Show attributes for matching files", "args": [{"name": "attr"}] },
+    { "name": ["-s", "--subgroups"], "description": "Show subgroups of results" },
+    { "name": ["-reprint"], "description": "Reprint results on live updates" },
+    { "name": ["-0"], "description": "Null-delimited output" },
+    { "name": ["-a", "--all"], "description": "Search all directories (default)" }
+  ],
+  "args": [
+    { "name": "query", "description": "Spotlight search query", "isVariadic": true }
+  ]
+}

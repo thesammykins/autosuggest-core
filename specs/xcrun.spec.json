@@ -1,0 +1,40 @@
+{
+  "name": "xcrun",
+  "description": "Invoke Xcode developer tools by bundle path lookup (macOS)",
+  "options": [
+    { "name": ["-h", "--help"], "description": "Show help and exit" },
+    { "name": ["--version"], "description": "Show version and exit" },
+    { "name": ["-sdk"], "description": "Use a specific SDK", "args": [{"name": "sdk", "suggestions": ["macosx", "iphoneos", "iphonesimulator", "appletvos", "watchos", "xr"]}] },
+    { "name": ["-l", "--log"], "description": "Show the command before running" },
+    { "name": ["-n", "--no-cache"], "description": "Do not use the cache" },
+    { "name": ["-k", "--kill"], "description": "Kill the Xcode tool cache" },
+    { "name": ["-r", "--run"], "description": "Run the tool" },
+    { "name": ["-p", "--show-sdk-path"], "description": "Show SDK path and exit" },
+    { "name": ["--show-sdk-version"], "description": "Show SDK version and exit" },
+    { "name": ["--show-sdk-build-version"], "description": "Show SDK build version and exit" },
+    { "name": ["--show-sdk-platform-path"], "description": "Show SDK platform path and exit" },
+    { "name": ["--show-sdk-platform-version"], "description": "Show SDK platform version and exit" }
+  ],
+  "args": [
+    { "name": "tool", "description": "Xcode tool to invoke", "isOptional": true, "suggestions": [
+      {"name": ["xcodebuild"], "description": "Build Xcode projects"},
+      {"name": ["swift"], "description": "Swift compiler"},
+      {"name": ["instruments"], "description": "Performance analysis"},
+      {"name": ["notarytool"], "description": "Apple notarization"},
+      {"name": ["simctl"], "description": "Simulator control"},
+      {"name": ["codesign"], "description": "Code signing"},
+      {"name": ["altool"], "description": "Upload to App Store Connect"},
+      {"name": ["xcode-select"], "description": "Xcode selection"},
+      {"name": ["lipo"], "description": "Universal binary tool"},
+      {"name": ["plutil"], "description": "Property list utility"},
+      {"name": ["clang"], "description": "C/C++/Objective-C compiler"},
+      {"name": ["Metal"], "description": "Metal compiler"},
+      {"name": ["ibtool"], "description": "Interface builder tool"},
+      {"name": ["storyboardtool"], "description": "Storyboard tool"},
+      {"name": ["actool"], "description": "Asset catalog tool"},
+      {"name": ["objdump"], "description": "Object file dump"},
+      {"name": ["nm"], "description": "Symbol table listing"}
+    ]},
+    { "name": "args", "description": "Arguments to pass to the tool", "isOptional": true, "isVariadic": true }
+  ]
+}

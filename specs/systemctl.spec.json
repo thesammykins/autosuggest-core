@@ -1,0 +1,195 @@
+{
+  "name": "systemctl",
+  "description": "Control the systemd service manager (Linux)",
+  "requiresSubcommand": true,
+  "options": [
+    { "name": ["-H", "--host"], "description": "Remote host to operate on", "args": [{"name": "host"}] },
+    { "name": ["-M", "--machine"], "description": "Local container to operate on", "args": [{"name": "container"}] },
+    { "name": ["-l", "--full"], "description": "Don't truncate output" },
+    { "name": ["-t", "--type"], "description": "Unit type filter", "args": [{"name": "type", "suggestions": ["service", "socket", "device", "mount", "automount", "swap", "timer", "path", "slice", "scope", "target"]}] },
+    { "name": ["--state"], "description": "Unit state filter", "args": [{"name": "state", "suggestions": ["loaded", "not-found", "active", "inactive", "enabled", "disabled"]}] },
+    { "name": ["-p", "--property"], "description": "Show only specific property", "args": [{"name": "name"}] },
+    { "name": ["-n", "--lines"], "description": "Number of journal lines to show", "args": [{"name": "n"}] },
+    { "name": ["-o", "--output"], "description": "Output format", "args": [{"name": "format", "suggestions": ["short", "json", "json-pretty", "verbose", "cat"]}] },
+    { "name": ["--no-pager"], "description": "Do not pipe output into pager" },
+    { "name": ["-q", "--quiet"], "description": "Suppress output" }
+  ],
+  "subcommands": [
+    {
+      "name": "start",
+      "description": "Start a unit",
+      "args": [
+        { "name": "unit", "description": "Unit name(s) to start", "isVariadic": true }
+      ]
+    },
+    {
+      "name": "stop",
+      "description": "Stop a unit",
+      "args": [
+        { "name": "unit", "description": "Unit name(s) to stop", "isVariadic": true }
+      ]
+    },
+    {
+      "name": "restart",
+      "description": "Restart a unit",
+      "args": [
+        { "name": "unit", "description": "Unit name(s) to restart", "isVariadic": true }
+      ]
+    },
+    {
+      "name": "reload",
+      "description": "Reload a unit's configuration",
+      "args": [
+        { "name": "unit", "description": "Unit name(s) to reload", "isVariadic": true }
+      ]
+    },
+    {
+      "name": "enable",
+      "description": "Enable a unit to start at boot",
+      "args": [
+        { "name": "unit", "description": "Unit name(s) to enable", "isVariadic": true }
+      ],
+      "options": [
+        { "name": ["--now"], "description": "Also start the unit immediately" }
+      ]
+    },
+    {
+      "name": "disable",
+      "description": "Disable a unit from starting at boot",
+      "args": [
+        { "name": "unit", "description": "Unit name(s) to disable", "isVariadic": true }
+      ],
+      "options": [
+        { "name": ["--now"], "description": "Also stop the unit immediately" }
+      ]
+    },
+    {
+      "name": "status",
+      "description": "Show runtime status of a unit",
+      "args": [
+        { "name": "unit", "description": "Unit name(s)", "isOptional": true, "isVariadic": true }
+      ],
+      "options": [
+        { "name": ["-l", "--full"], "description": "Show full output" }
+      ]
+    },
+    {
+      "name": "is-active",
+      "description": "Check if a unit is active",
+      "args": [
+        { "name": "unit", "description": "Unit name(s)", "isVariadic": true }
+      ]
+    },
+    {
+      "name": "is-enabled",
+      "description": "Check if a unit is enabled",
+      "args": [
+        { "name": "unit", "description": "Unit name(s)", "isVariadic": true }
+      ]
+    },
+    {
+      "name": "list-units",
+      "description": "List loaded units",
+      "options": [
+        { "name": ["-a", "--all"], "description": "Show all units" },
+        { "name": ["--type"], "description": "Unit type filter", "args": [{"name": "type"}] },
+        { "name": ["--state"], "description": "Unit state filter", "args": [{"name": "state"}] }
+      ]
+    },
+    {
+      "name": "list-unit-files",
+      "description": "List installed unit files",
+      "options": [
+        { "name": ["--type"], "description": "Unit type filter", "args": [{"name": "type"}] },
+        { "name": ["--state"], "description": "File state filter", "args": [{"name": "state", "suggestions": ["enabled", "disabled", "static", "generated"]}] }
+      ]
+    },
+    {
+      "name": "daemon-reload",
+      "description": "Reload systemd manager configuration"
+    },
+    {
+      "name": "show",
+      "description": "Show properties of a unit or the manager",
+      "args": [
+        { "name": "unit", "description": "Unit name", "isOptional": true }
+      ],
+      "options": [
+        { "name": ["-p", "--property"], "description": "Show only specific property", "args": [{"name": "name"}] }
+      ]
+    },
+    {
+      "name": "cat",
+      "description": "Show the unit file content",
+      "args": [
+        { "name": "unit", "description": "Unit name(s)", "isVariadic": true }
+      ]
+    },
+    {
+      "name": "edit",
+      "description": "Edit a unit file",
+      "args": [
+        { "name": "unit", "description": "Unit name(s)", "isVariadic": true }
+      ],
+      "options": [
+        { "name": ["--full"], "description": "Edit full unit file, not a snippet" },
+        { "name": ["--force"], "description": "Create unit file if missing" }
+      ]
+    },
+    {
+      "name": "mask",
+      "description": "Mask a unit (prevent activation)",
+      "args": [
+        { "name": "unit", "description": "Unit name(s) to mask", "isVariadic": true }
+      ]
+    },
+    {
+      "name": "unmask",
+      "description": "Unmask a unit",
+      "args": [
+        { "name": "unit", "description": "Unit name(s) to unmask", "isVariadic": true }
+      ]
+    },
+    {
+      "name": "poweroff",
+      "description": "Power off the system"
+    },
+    {
+      "name": "reboot",
+      "description": "Reboot the system"
+    },
+    {
+      "name": "suspend",
+      "description": "Suspend the system"
+    },
+    {
+      "name": "hibernate",
+      "description": "Hibernate the system"
+    },
+    {
+      "name": "list-timers",
+      "description": "List timer units",
+      "options": [
+        { "name": ["-a", "--all"], "description": "Show all timers" }
+      ]
+    },
+    {
+      "name": "list-sockets",
+      "description": "List socket units",
+      "options": [
+        { "name": ["-a", "--all"], "description": "Show all sockets" }
+      ]
+    },
+    {
+      "name": "get-default",
+      "description": "Get the default target"
+    },
+    {
+      "name": "set-default",
+      "description": "Set the default target",
+      "args": [
+        { "name": "target", "description": "Target unit name" }
+      ]
+    }
+  ]
+}

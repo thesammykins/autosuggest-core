@@ -1,0 +1,59 @@
+{
+  "name": "defaults",
+  "description": "Read, write, and delete macOS user defaults (macOS)",
+  "requiresSubcommand": true,
+  "subcommands": [
+    {
+      "name": "read",
+      "description": "Read a preference value",
+      "args": [
+        { "name": "domain", "description": "Application domain or bundle ID", "isOptional": true },
+        { "name": "key", "description": "Preference key to read", "isOptional": true }
+      ]
+    },
+    {
+      "name": "write",
+      "description": "Write a preference value",
+      "args": [
+        { "name": "domain", "description": "Application domain or bundle ID" },
+        { "name": "key", "description": "Preference key" },
+        { "name": "value", "description": "Value to set" }
+      ]
+    },
+    {
+      "name": "delete",
+      "description": "Delete a preference",
+      "args": [
+        { "name": "domain", "description": "Application domain" },
+        { "name": "key", "description": "Key to delete", "isOptional": true }
+      ]
+    },
+    {
+      "name": "find",
+      "description": "Search for preferences matching a pattern",
+      "args": [
+        { "name": "word", "description": "Search term" }
+      ]
+    },
+    {
+      "name": "domains",
+      "description": "List all application domains"
+    },
+    {
+      "name": "import",
+      "description": "Import preferences from a plist file",
+      "args": [
+        { "name": "domain", "description": "Application domain" },
+        { "name": "file", "description": "Plist file to import", "template": "filepaths" }
+      ]
+    },
+    {
+      "name": "export",
+      "description": "Export preferences to a plist file",
+      "args": [
+        { "name": "domain", "description": "Application domain" },
+        { "name": "file", "description": "Output plist file", "template": "filepaths" }
+      ]
+    }
+  ]
+}

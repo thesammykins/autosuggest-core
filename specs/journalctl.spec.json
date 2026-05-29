@@ -1,0 +1,35 @@
+{
+  "name": "journalctl",
+  "description": "Query the systemd journal (Linux)",
+  "options": [
+    { "name": ["-e", "--pager-end"], "description": "Jump to end of journal" },
+    { "name": ["-f", "--follow"], "description": "Follow new log entries" },
+    { "name": ["-k", "--dmesg"], "description": "Show kernel messages" },
+    { "name": ["-b", "--boot"], "description": "Show from a specific boot", "args": [{"name": "id", "isOptional": true}] },
+    { "name": ["-u", "--unit"], "description": "Show logs for a service unit", "args": [{"name": "unit"}] },
+    { "name": ["--user-unit"], "description": "Show logs for a user service", "args": [{"name": "unit"}] },
+    { "name": ["-p", "--priority"], "description": "Minimum log priority", "args": [{"name": "level", "suggestions": ["emerg", "alert", "crit", "err", "warning", "notice", "info", "debug"]}] },
+    { "name": ["-S", "--since"], "description": "Start time for log display", "args": [{"name": "time"}] },
+    { "name": ["-U", "--until"], "description": "End time for log display", "args": [{"name": "time"}] },
+    { "name": ["-n", "--lines"], "description": "Number of recent log lines", "args": [{"name": "n"}] },
+    { "name": ["-r", "--reverse"], "description": "Show logs in reverse order" },
+    { "name": ["-o", "--output"], "description": "Output format", "args": [{"name": "format", "suggestions": ["short", "short-iso", "short-precise", "json", "json-pretty", "cat", "verbose"]}] },
+    { "name": ["--no-pager"], "description": "Do not pipe output into pager" },
+    { "name": ["-x", "--catalog"], "description": "Add message explanations" },
+    { "name": ["--list-boots"], "description": "Show list of boot IDs" },
+    { "name": ["--disk-usage"], "description": "Show journal disk usage" },
+    { "name": ["--vacuum-size"], "description": "Reduce journal to below size", "args": [{"name": "size"}] },
+    { "name": ["--vacuum-time"], "description": "Keep entries within a time range", "args": [{"name": "time"}] },
+    { "name": ["--rotate"], "description": "Rotate journal files" },
+    { "name": ["--flush"], "description": "Flush journal to disk" },
+    { "name": ["-D", "--directory"], "description": "Journal directory path", "args": [{"name": "path", "template": "folders"}] },
+    { "name": ["--header"], "description": "Show journal header information" },
+    { "name": ["-h", "--help"], "description": "Show help" }
+  ],
+  "args": [
+    { "name": "match", "description": "Match fields (FIELD=VALUE)", "isOptional": true, "isVariadic": true }
+  ],
+  "parserDirectives": {
+    "optionsMustPrecedeArguments": true
+  }
+}

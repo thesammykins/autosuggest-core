@@ -1,0 +1,11 @@
+{
+  "name": "yes",
+  "description": "Repeatedly output a string (auto-confirmation)",
+  "args": [
+    { "name": "string", "description": "String to output repeatedly", "isOptional": true }
+  ],
+  "options": [
+    { "name": ["-h", "--help"], "description": "Show help" },
+    { "name": ["--version"], "description": "Show version" }
+  ]
+}

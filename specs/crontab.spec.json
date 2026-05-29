@@ -1,0 +1,32 @@
+{
+  "name": "crontab",
+  "description": "Manage cron job schedules (Linux/macOS)",
+  "requiresSubcommand": true,
+  "options": [
+    { "name": ["-u"], "description": "User's crontab to operate on", "args": [{"name": "user"}] }
+  ],
+  "subcommands": [
+    {
+      "name": "list",
+      "description": "List current crontab entries",
+      "options": [
+        { "name": ["-l"], "description": "List crontab entries (alternative syntax)" }
+      ]
+    },
+    {
+      "name": "edit",
+      "description": "Edit current crontab",
+      "options": [
+        { "name": ["-e"], "description": "Edit crontab (alternative syntax)" }
+      ]
+    },
+    {
+      "name": "remove",
+      "description": "Remove all crontab entries",
+      "options": [
+        { "name": ["-r"], "description": "Remove crontab (alternative syntax)" },
+        { "name": ["-i"], "description": "Prompt before removal" }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,37 @@
+{
+  "name": "ssh-keygen",
+  "description": "Generate, manage, and convert SSH authentication keys",
+  "options": [
+    { "name": ["-t", "--type"], "description": "Key type", "args": [{"name": "type", "suggestions": ["rsa", "ed25519", "ecdsa", "ecdsa-sk", "ed25519-sk", "dsa"]}] },
+    { "name": ["-b", "--bits"], "description": "Number of bits in the key", "args": [{"name": "bits"}] },
+    { "name": ["-C", "--comment"], "description": "Key comment", "args": [{"name": "comment"}] },
+    { "name": ["-f", "--file"], "description": "Key file path", "args": [{"name": "file", "template": "filepaths"}] },
+    { "name": ["-N", "--new-passphrase"], "description": "New passphrase", "args": [{"name": "phrase"}] },
+    { "name": ["-P", "--passphrase"], "description": "Old passphrase", "args": [{"name": "phrase"}] },
+    { "name": ["-p", "--change-passphrase"], "description": "Change passphrase" },
+    { "name": ["-y", "--yield"], "description": "Read private key and output public key" },
+    { "name": ["-l", "--fingerprint"], "description": "Show fingerprint of key" },
+    { "name": ["-B", "--bubblebabble"], "description": "Show bubblebabble fingerprint" },
+    { "name": ["-R", "--remove"], "description": "Remove key from known_hosts", "args": [{"name": "host"}] },
+    { "name": ["-H", "--hash"], "description": "Hash known_hosts entries" },
+    { "name": ["-F", "--find"], "description": "Find host in known_hosts", "args": [{"name": "host"}] },
+    { "name": ["-v", "--verbose"], "description": "Verbose output" },
+    { "name": ["-q", "--quiet"], "description": "Quiet mode" },
+    { "name": ["-a", "--rounds"], "description": "KDF rounds for passphrase", "args": [{"name": "n"}] },
+    { "name": ["-E", "--hash-algo"], "description": "Hash algorithm for fingerprint", "args": [{"name": "algo", "suggestions": ["md5", "sha256"]}] },
+    { "name": ["-A", "--all"], "description": "Show all keys from agent" },
+    { "name": ["-e", "--export"], "description": "Export key to format", "args": [{"name": "format"}] },
+    { "name": ["-i", "--import"], "description": "Import key from format", "args": [{"name": "format"}] },
+    { "name": ["-L", "--list"], "description": "List certificate contents" },
+    { "name": ["-s", "--sign"], "description": "Sign a public key (CA)" },
+    { "name": ["-I", "--identity"], "description": "Certificate identity (CA)", "args": [{"name": "name"}] },
+    { "name": ["-n", "--principal"], "description": "Certificate principal(s)", "args": [{"name": "names"}] },
+    { "name": ["-O", "--option"], "description": "Certificate option", "args": [{"name": "opt"}] },
+    { "name": ["-V", "--validity"], "description": "Certificate validity interval", "args": [{"name": "interval"}] },
+    { "name": ["-h", "--host"], "description": "Generate a host certificate" },
+    { "name": ["-k", "--ca"], "description": "Generate a CA key" }
+  ],
+  "args": [
+    { "name": "file", "description": "Key file path", "isOptional": true, "template": "filepaths" }
+  ]
+}

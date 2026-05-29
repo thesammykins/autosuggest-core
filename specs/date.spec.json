@@ -1,0 +1,21 @@
+{
+  "name": "date",
+  "description": "Display or set the system date and time",
+  "options": [
+    { "name": ["-u", "--utc", "--universal"], "description": "Show or set the time in UTC" },
+    { "name": ["-R", "--rfc-2822"], "description": "RFC 2822 date format" },
+    { "name": ["-I", "--iso-8601"], "description": "ISO 8601 date format", "args": [{"name": "precision", "isOptional": true, "suggestions": ["date", "hours", "minutes", "seconds", "ns"]}] },
+    { "name": ["-r", "--reference"], "description": "Display last modification time of a file", "args": [{"name": "file", "template": "filepaths"}] },
+    { "name": ["-d", "--date"], "description": "Display a described date string", "args": [{"name": "string"}] },
+    { "name": ["-s", "--set"], "description": "Set the system date/time", "args": [{"name": "string"}] },
+    { "name": ["-f", "--file"], "description": "Parse dates from a file", "args": [{"name": "file", "template": "filepaths"}] },
+    { "name": ["-j"], "description": "Do not set the date (macOS)" },
+    { "name": ["-v"], "description": "Adjust date value (macOS)", "args": [{"name": "adjustment"}] },
+    { "name": ["+FORMAT"], "description": "Output format string", "args": [{"name": "format"}] },
+    { "name": ["-h", "--help"], "description": "Show help" },
+    { "name": ["--version"], "description": "Show version" }
+  ],
+  "args": [
+    { "name": "format", "description": "Output format string starting with +", "isOptional": true }
+  ]
+}
