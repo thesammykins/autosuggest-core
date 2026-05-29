@@ -1,0 +1,11 @@
+{
+  "name": "cd",
+  "description": "Change the shell working directory",
+  "options": [
+    { "name": "-L", "description": "Follow symbolic links (use the logical directory structure)" },
+    { "name": "-P", "description": "Resolve symbolic links to physical directories", "exclusiveOn": ["-L"] }
+  ],
+  "args": [
+    { "name": "directory", "description": "Directory to change into", "isOptional": true, "template": "folders", "suggestions": ["-", "..", "~"] }
+  ]
+}
