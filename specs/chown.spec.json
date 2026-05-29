@@ -1,0 +1,14 @@
+{
+  "name": "chown",
+  "description": "Change file owner and group",
+  "options": [
+    { "name": ["-R", "--recursive"], "description": "Operate on files and directories recursively" },
+    { "name": ["-v", "--verbose"], "description": "Print a diagnostic for every file processed" },
+    { "name": ["-h", "--no-dereference"], "description": "Affect symlinks instead of their targets" },
+    { "name": ["--help"], "description": "Show help and exit" }
+  ],
+  "args": [
+    { "name": "owner[:group]", "description": "New owner, optionally with a group" },
+    { "name": "file", "description": "Files whose ownership to change", "template": "filepaths", "isVariadic": true }
+  ]
+}

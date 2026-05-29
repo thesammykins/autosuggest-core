@@ -1,0 +1,15 @@
+{
+  "name": "df",
+  "description": "Report file system disk space usage",
+  "options": [
+    { "name": ["-h", "--human-readable"], "description": "Print sizes in a human-readable form" },
+    { "name": ["-H", "--si"], "description": "Like -h but use powers of 1000 not 1024" },
+    { "name": ["-i", "--inodes"], "description": "List inode usage instead of block usage" },
+    { "name": ["-T", "--print-type"], "description": "Print the file system type" },
+    { "name": ["-a", "--all"], "description": "Include pseudo, duplicate, and inaccessible file systems" },
+    { "name": ["--help"], "description": "Show help and exit" }
+  ],
+  "args": [
+    { "name": "file", "description": "Show the file system containing each file", "template": "filepaths", "isOptional": true, "isVariadic": true }
+  ]
+}

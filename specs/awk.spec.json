@@ -1,0 +1,14 @@
+{
+  "name": "awk",
+  "description": "Pattern-directed scanning and processing language",
+  "options": [
+    { "name": "-F", "description": "Set the input field separator", "args": [ { "name": "sepstring" } ] },
+    { "name": "-v", "description": "Assign a value to a variable before execution", "args": [ { "name": "var=value" } ], "isRepeatable": true },
+    { "name": "-f", "description": "Read the program text from a file", "args": [ { "name": "progfile", "template": "filepaths" } ] },
+    { "name": "--help", "description": "Show help and exit" }
+  ],
+  "args": [
+    { "name": "program", "description": "AWK program text, e.g. '{print $1}'", "isOptional": true },
+    { "name": "file", "description": "Input files", "template": "filepaths", "isOptional": true, "isVariadic": true }
+  ]
+}

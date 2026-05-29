@@ -1,0 +1,15 @@
+{
+  "name": "killall",
+  "description": "Kill processes by name",
+  "options": [
+    { "name": "-s", "description": "Send this signal by name", "args": [ { "name": "signal", "suggestions": ["TERM", "KILL", "HUP", "INT", "QUIT", "STOP", "CONT"] } ] },
+    { "name": "-9", "description": "Send SIGKILL, forcing matched processes to stop" },
+    { "name": "-v", "description": "Report whether each process was signalled" },
+    { "name": "-i", "description": "Prompt for confirmation before signalling" },
+    { "name": "-u", "description": "Limit to processes owned by this user", "args": [ { "name": "user" } ] },
+    { "name": "-m", "description": "Match the argument as a case-sensitive regex" }
+  ],
+  "args": [
+    { "name": "name", "description": "Process names to kill", "isVariadic": true }
+  ]
+}

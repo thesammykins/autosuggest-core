@@ -1,0 +1,16 @@
+{
+  "name": "cut",
+  "description": "Remove sections from each line of files",
+  "options": [
+    { "name": ["-f", "--fields"], "description": "Select only these fields", "args": [ { "name": "list" } ] },
+    { "name": ["-d", "--delimiter"], "description": "Use this character instead of TAB as the field delimiter", "args": [ { "name": "delim" } ] },
+    { "name": ["-c", "--characters"], "description": "Select only these characters", "args": [ { "name": "list" } ] },
+    { "name": ["-b", "--bytes"], "description": "Select only these bytes", "args": [ { "name": "list" } ] },
+    { "name": ["-s", "--only-delimited"], "description": "Do not print lines without the delimiter" },
+    { "name": ["--complement"], "description": "Select the complement of the chosen fields" },
+    { "name": ["--help"], "description": "Show help and exit" }
+  ],
+  "args": [
+    { "name": "file", "description": "Files to process", "template": "filepaths", "isOptional": true, "isVariadic": true }
+  ]
+}

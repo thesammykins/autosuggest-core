@@ -1,0 +1,17 @@
+{
+  "name": "xargs",
+  "description": "Build and execute command lines from standard input",
+  "options": [
+    { "name": ["-0", "--null"], "description": "Items are separated by a null, not whitespace" },
+    { "name": ["-n", "--max-args"], "description": "Use at most this many arguments per command line", "args": [ { "name": "max-args" } ] },
+    { "name": ["-I"], "description": "Replace this string in the command with each input item", "args": [ { "name": "replace-str" } ] },
+    { "name": ["-P", "--max-procs"], "description": "Run up to this many processes at once", "args": [ { "name": "max-procs" } ] },
+    { "name": ["-p", "--interactive"], "description": "Prompt before running each command line" },
+    { "name": ["-t", "--verbose"], "description": "Print each command line before running it" },
+    { "name": ["-r", "--no-run-if-empty"], "description": "Do not run the command if the input is empty" },
+    { "name": ["--help"], "description": "Show help and exit" }
+  ],
+  "args": [
+    { "name": "command", "description": "Command to run for the input items", "isOptional": true, "isCommand": true }
+  ]
+}

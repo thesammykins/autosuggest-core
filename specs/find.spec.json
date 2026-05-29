@@ -1,0 +1,24 @@
+{
+  "name": "find",
+  "description": "Search for files in a directory hierarchy",
+  "options": [
+    { "name": "-name", "description": "Match the base name against a shell pattern", "args": [ { "name": "pattern" } ] },
+    { "name": "-iname", "description": "Like -name but case-insensitive", "args": [ { "name": "pattern" } ] },
+    { "name": "-path", "description": "Match the whole path against a shell pattern", "args": [ { "name": "pattern" } ] },
+    { "name": "-type", "description": "Restrict matches to a file type", "args": [ { "name": "type", "suggestions": ["f", "d", "l", "b", "c", "p", "s"] } ] },
+    { "name": "-maxdepth", "description": "Descend at most this many directory levels", "args": [ { "name": "levels" } ] },
+    { "name": "-mindepth", "description": "Ignore levels shallower than this", "args": [ { "name": "levels" } ] },
+    { "name": "-size", "description": "Match files of the given size, e.g. +1M", "args": [ { "name": "n" } ] },
+    { "name": "-mtime", "description": "Match files modified n*24 hours ago", "args": [ { "name": "n" } ] },
+    { "name": "-newer", "description": "Match files modified more recently than this file", "args": [ { "name": "ref", "template": "filepaths" } ] },
+    { "name": "-empty", "description": "Match empty files and directories" },
+    { "name": "-delete", "description": "Delete matched files" },
+    { "name": "-exec", "description": "Run a command on each match; terminate with ;", "args": [ { "name": "command" } ] },
+    { "name": "-print", "description": "Print the full path of each match" },
+    { "name": "-print0", "description": "Print matches separated by a null byte" },
+    { "name": "-prune", "description": "Do not descend into the matched directory" }
+  ],
+  "args": [
+    { "name": "path", "description": "Starting points for the search", "template": "folders", "isOptional": true, "isVariadic": true }
+  ]
+}

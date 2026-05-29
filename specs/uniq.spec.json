@@ -1,0 +1,17 @@
+{
+  "name": "uniq",
+  "description": "Report or omit repeated adjacent lines",
+  "options": [
+    { "name": ["-c", "--count"], "description": "Prefix lines with the number of occurrences" },
+    { "name": ["-d", "--repeated"], "description": "Print only duplicated lines", "exclusiveOn": ["-u", "--unique"] },
+    { "name": ["-u", "--unique"], "description": "Print only non-repeated lines", "exclusiveOn": ["-d", "--repeated"] },
+    { "name": ["-i", "--ignore-case"], "description": "Ignore case when comparing lines" },
+    { "name": ["-f", "--skip-fields"], "description": "Skip this many leading fields", "args": [ { "name": "n" } ] },
+    { "name": ["-s", "--skip-chars"], "description": "Skip this many leading characters", "args": [ { "name": "n" } ] },
+    { "name": ["--help"], "description": "Show help and exit" }
+  ],
+  "args": [
+    { "name": "input", "description": "Input file", "template": "filepaths", "isOptional": true },
+    { "name": "output", "description": "Output file", "template": "filepaths", "isOptional": true }
+  ]
+}

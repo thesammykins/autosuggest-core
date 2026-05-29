@@ -1,0 +1,15 @@
+{
+  "name": "ping",
+  "description": "Send ICMP echo requests to a host",
+  "options": [
+    { "name": "-c", "description": "Stop after sending this many packets", "args": [ { "name": "count" } ] },
+    { "name": "-i", "description": "Wait this many seconds between packets", "args": [ { "name": "interval" } ] },
+    { "name": "-t", "description": "Set the IP time-to-live", "args": [ { "name": "ttl" } ] },
+    { "name": "-s", "description": "Set the number of data bytes to send", "args": [ { "name": "size" } ] },
+    { "name": "-W", "description": "Time in milliseconds to wait for a reply", "args": [ { "name": "timeout" } ] },
+    { "name": "-q", "description": "Quiet output; show only summary lines" }
+  ],
+  "args": [
+    { "name": "host", "description": "Host name or IP address to ping" }
+  ]
+}

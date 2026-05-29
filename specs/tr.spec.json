@@ -1,0 +1,15 @@
+{
+  "name": "tr",
+  "description": "Translate or delete characters",
+  "options": [
+    { "name": ["-d", "--delete"], "description": "Delete characters in the first set" },
+    { "name": ["-s", "--squeeze-repeats"], "description": "Collapse repeated characters into one" },
+    { "name": ["-c", "-C", "--complement"], "description": "Use the complement of the first set" },
+    { "name": ["-t", "--truncate-set1"], "description": "Truncate the first set to the length of the second" },
+    { "name": ["--help"], "description": "Show help and exit" }
+  ],
+  "args": [
+    { "name": "set1", "description": "Characters to translate from" },
+    { "name": "set2", "description": "Characters to translate to", "isOptional": true }
+  ]
+}

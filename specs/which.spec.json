@@ -1,0 +1,11 @@
+{
+  "name": "which",
+  "description": "Locate a command in the PATH",
+  "options": [
+    { "name": "-a", "description": "Print all matching pathnames, not just the first" },
+    { "name": "-s", "description": "Print nothing; just set the exit status" }
+  ],
+  "args": [
+    { "name": "command", "description": "Command names to locate", "isVariadic": true }
+  ]
+}

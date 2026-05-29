@@ -1,0 +1,11 @@
+{
+  "name": "export",
+  "description": "Set shell variables for export to the environment",
+  "options": [
+    { "name": "-p", "description": "List all exported variables" },
+    { "name": "-n", "description": "Remove the export property from each name" }
+  ],
+  "args": [
+    { "name": "name[=value]", "description": "Variable assignments to export", "isVariadic": true }
+  ]
+}

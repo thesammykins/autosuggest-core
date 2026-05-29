@@ -1,0 +1,39 @@
+{
+  "name": "brew",
+  "description": "The missing package manager for macOS",
+  "requiresSubcommand": true,
+  "subcommands": [
+    { "name": "install", "description": "Install a formula or cask", "options": [
+      { "name": ["--cask"], "description": "Treat the argument as a cask" },
+      { "name": ["--HEAD"], "description": "Install the development version from the repository head" }
+    ], "args": [ { "name": "formula", "description": "Formulae or casks to install", "isVariadic": true } ] },
+    {
+      "name": "uninstall", "description": "Uninstall a formula or cask",
+      "options": [ { "name": ["-f", "--force"], "description": "Delete all installed versions" } ],
+      "args": [
+        {
+          "name": "formula", "description": "Installed formulae to remove", "isVariadic": true,
+          "generator": { "run": ["brew", "list", "--formula"], "splitOn": "\n", "trim": true, "priority": 75, "cache": { "ttlMs": 5000 } }
+        }
+      ]
+    },
+    {
+      "name": "upgrade", "description": "Upgrade outdated formulae and casks",
+      "args": [
+        {
+          "name": "formula", "description": "Installed formulae to upgrade", "isOptional": true, "isVariadic": true,
+          "generator": { "run": ["brew", "list", "--formula"], "splitOn": "\n", "trim": true, "priority": 70, "cache": { "ttlMs": 5000 } }
+        }
+      ]
+    },
+    { "name": "update", "description": "Fetch the newest version of Homebrew and formulae" },
+    { "name": "list", "description": "List installed formulae and casks", "options": [
+      { "name": ["--formula"], "description": "List only formulae", "exclusiveOn": ["--cask"] },
+      { "name": ["--cask"], "description": "List only casks", "exclusiveOn": ["--formula"] }
+    ] },
+    { "name": "search", "description": "Search for formulae and casks", "args": [ { "name": "text", "description": "Text or regex to search for" } ] },
+    { "name": "info", "description": "Show information about a formula or cask", "args": [ { "name": "formula" } ] },
+    { "name": "doctor", "description": "Check the system for potential problems" },
+    { "name": "cleanup", "description": "Remove stale downloads and old versions" }
+  ]
+}

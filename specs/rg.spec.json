@@ -1,0 +1,31 @@
+{
+  "name": "rg",
+  "description": "Recursively search the current directory for a regex pattern",
+  "parserDirectives": {
+    "flagsArePosixNoncompliant": true,
+    "optionArgSeparators": ["=", " "]
+  },
+  "options": [
+    { "name": ["-i", "--ignore-case"], "description": "Search case-insensitively", "exclusiveOn": ["-s", "--case-sensitive"] },
+    { "name": ["-s", "--case-sensitive"], "description": "Search case-sensitively", "exclusiveOn": ["-i", "--ignore-case"] },
+    { "name": ["-S", "--smart-case"], "description": "Be case-insensitive unless the pattern has uppercase" },
+    { "name": ["-w", "--word-regexp"], "description": "Match only whole words" },
+    { "name": ["-v", "--invert-match"], "description": "Show lines that do not match" },
+    { "name": ["-l", "--files-with-matches"], "description": "Print only the paths that contain a match" },
+    { "name": ["-c", "--count"], "description": "Print the number of matching lines per file" },
+    { "name": ["-n", "--line-number"], "description": "Show line numbers", "exclusiveOn": ["-N", "--no-line-number"] },
+    { "name": ["-N", "--no-line-number"], "description": "Hide line numbers", "exclusiveOn": ["-n", "--line-number"] },
+    { "name": ["-A", "--after-context"], "description": "Show NUM lines after each match", "args": [ { "name": "num" } ] },
+    { "name": ["-B", "--before-context"], "description": "Show NUM lines before each match", "args": [ { "name": "num" } ] },
+    { "name": ["-C", "--context"], "description": "Show NUM lines before and after each match", "args": [ { "name": "num" } ] },
+    { "name": ["-t", "--type"], "description": "Restrict the search to a file type", "args": [ { "name": "type" } ] },
+    { "name": ["-g", "--glob"], "description": "Include or exclude files matching a glob", "args": [ { "name": "glob" } ] },
+    { "name": ["--hidden"], "description": "Search hidden files and directories" },
+    { "name": ["-F", "--fixed-strings"], "description": "Treat the pattern as a literal string" },
+    { "name": ["--help"], "description": "Show help and exit" }
+  ],
+  "args": [
+    { "name": "pattern", "description": "Regex pattern to search for" },
+    { "name": "path", "description": "Files or directories to search", "template": "filepaths", "isOptional": true, "isVariadic": true }
+  ]
+}

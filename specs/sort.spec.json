@@ -1,0 +1,20 @@
+{
+  "name": "sort",
+  "description": "Sort lines of text files",
+  "options": [
+    { "name": ["-n", "--numeric-sort"], "description": "Compare according to numeric value", "exclusiveOn": ["-g", "--general-numeric-sort"] },
+    { "name": ["-g", "--general-numeric-sort"], "description": "Compare according to general numeric value", "exclusiveOn": ["-n", "--numeric-sort"] },
+    { "name": ["-r", "--reverse"], "description": "Reverse the result of comparisons" },
+    { "name": ["-u", "--unique"], "description": "Output only the first of equal lines" },
+    { "name": ["-f", "--ignore-case"], "description": "Fold lowercase to uppercase when comparing" },
+    { "name": ["-k", "--key"], "description": "Sort using the given key definition", "args": [ { "name": "keydef" } ] },
+    { "name": ["-t", "--field-separator"], "description": "Use this character as the field separator", "args": [ { "name": "sep" } ] },
+    { "name": ["-h", "--human-numeric-sort"], "description": "Compare human-readable numbers, e.g. 2K 1G" },
+    { "name": ["-o", "--output"], "description": "Write the result to a file instead of stdout", "args": [ { "name": "file", "template": "filepaths" } ] },
+    { "name": ["-c", "--check"], "description": "Check whether the input is sorted; do not sort" },
+    { "name": ["--help"], "description": "Show help and exit" }
+  ],
+  "args": [
+    { "name": "file", "description": "Files to sort", "template": "filepaths", "isOptional": true, "isVariadic": true }
+  ]
+}

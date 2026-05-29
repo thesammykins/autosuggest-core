@@ -1,0 +1,14 @@
+{
+  "name": "chmod",
+  "description": "Change file mode bits",
+  "options": [
+    { "name": ["-R", "--recursive"], "description": "Change files and directories recursively" },
+    { "name": ["-v", "--verbose"], "description": "Print a diagnostic for every file processed" },
+    { "name": ["-f", "--silent", "--quiet"], "description": "Suppress most error messages" },
+    { "name": ["--help"], "description": "Show help and exit" }
+  ],
+  "args": [
+    { "name": "mode", "description": "Symbolic or octal mode, e.g. u+x or 0644" },
+    { "name": "file", "description": "Files whose mode to change", "template": "filepaths", "isVariadic": true }
+  ]
+}

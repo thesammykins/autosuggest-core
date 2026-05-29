@@ -1,0 +1,16 @@
+{
+  "name": "gunzip",
+  "description": "Decompress files compressed with gzip",
+  "options": [
+    { "name": ["-k", "--keep"], "description": "Keep the input files instead of deleting them" },
+    { "name": ["-r", "--recursive"], "description": "Decompress files in directories recursively" },
+    { "name": ["-f", "--force"], "description": "Overwrite existing files" },
+    { "name": ["-v", "--verbose"], "description": "Show the name and ratio of each decompressed file" },
+    { "name": ["-l", "--list"], "description": "List the contents of the compressed files" },
+    { "name": ["-c", "--stdout"], "description": "Write to stdout and keep the originals" },
+    { "name": ["--help"], "description": "Show help and exit" }
+  ],
+  "args": [
+    { "name": "file", "description": "Files to decompress", "template": "filepaths", "isVariadic": true }
+  ]
+}

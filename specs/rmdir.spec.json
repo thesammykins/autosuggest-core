@@ -1,0 +1,13 @@
+{
+  "name": "rmdir",
+  "description": "Remove empty directories",
+  "options": [
+    { "name": ["-p", "--parents"], "description": "Remove a directory and its now-empty parents" },
+    { "name": ["-v", "--verbose"], "description": "Print a message for each removed directory" },
+    { "name": ["--ignore-fail-on-non-empty"], "description": "Do not fail when a directory is non-empty" },
+    { "name": ["--help"], "description": "Show help and exit" }
+  ],
+  "args": [
+    { "name": "directory", "description": "Empty directories to remove", "template": "folders", "isVariadic": true }
+  ]
+}

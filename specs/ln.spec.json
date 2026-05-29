@@ -1,0 +1,16 @@
+{
+  "name": "ln",
+  "description": "Create links between files",
+  "options": [
+    { "name": ["-s", "--symbolic"], "description": "Create a symbolic link instead of a hard link" },
+    { "name": ["-f", "--force"], "description": "Remove an existing destination first", "exclusiveOn": ["-i"] },
+    { "name": ["-i", "--interactive"], "description": "Prompt before removing an existing destination", "exclusiveOn": ["-f"] },
+    { "name": ["-n", "--no-dereference"], "description": "Treat a symlink to a directory as a normal file" },
+    { "name": ["-v", "--verbose"], "description": "Print the name of each linked file" },
+    { "name": ["--help"], "description": "Show help and exit" }
+  ],
+  "args": [
+    { "name": "target", "description": "Existing file the link points to", "template": "filepaths" },
+    { "name": "link-name", "description": "Name of the link to create", "template": "filepaths", "isOptional": true }
+  ]
+}

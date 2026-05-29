@@ -1,0 +1,17 @@
+{
+  "name": "gzip",
+  "description": "Compress files with the gzip algorithm",
+  "options": [
+    { "name": ["-d", "--decompress"], "description": "Decompress instead of compressing" },
+    { "name": ["-k", "--keep"], "description": "Keep the input files instead of deleting them" },
+    { "name": ["-r", "--recursive"], "description": "Compress files in directories recursively" },
+    { "name": ["-f", "--force"], "description": "Overwrite existing files and compress links" },
+    { "name": ["-v", "--verbose"], "description": "Show the name and compression ratio of each file" },
+    { "name": ["-9", "--best"], "description": "Compress better at the cost of speed", "exclusiveOn": ["-1", "--fast"] },
+    { "name": ["-1", "--fast"], "description": "Compress faster at the cost of size", "exclusiveOn": ["-9", "--best"] },
+    { "name": ["--help"], "description": "Show help and exit" }
+  ],
+  "args": [
+    { "name": "file", "description": "Files to compress", "template": "filepaths", "isOptional": true, "isVariadic": true }
+  ]
+}

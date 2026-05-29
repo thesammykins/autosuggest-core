@@ -1,0 +1,36 @@
+{
+  "name": "cargo",
+  "description": "The Rust package manager and build tool",
+  "requiresSubcommand": true,
+  "options": [
+    { "name": ["-h", "--help"], "description": "Show help and exit", "isPersistent": true },
+    { "name": ["-V", "--version"], "description": "Show version and exit" },
+    { "name": ["-v", "--verbose"], "description": "Use verbose output", "isPersistent": true, "isRepeatable": 2 },
+    { "name": ["-q", "--quiet"], "description": "Do not print cargo log messages", "isPersistent": true },
+    { "name": ["--color"], "description": "Control when colored output is used", "args": [ { "name": "when", "suggestions": ["auto", "always", "never"] } ], "isPersistent": true }
+  ],
+  "subcommands": [
+    { "name": "build", "description": "Compile the current package", "options": [
+      { "name": ["-r", "--release"], "description": "Build in release mode with optimizations" },
+      { "name": ["--bin"], "description": "Build only the specified binary", "args": [ { "name": "name" } ] },
+      { "name": ["--workspace"], "description": "Build all packages in the workspace" }
+    ] },
+    { "name": "run", "description": "Run a binary of the local package", "options": [
+      { "name": ["-r", "--release"], "description": "Run in release mode with optimizations" },
+      { "name": ["--bin"], "description": "Run the specified binary", "args": [ { "name": "name" } ] }
+    ] },
+    { "name": "test", "description": "Run the tests", "options": [
+      { "name": ["--workspace"], "description": "Test all packages in the workspace" },
+      { "name": ["--no-run"], "description": "Compile the tests without running them" }
+    ] },
+    { "name": "check", "description": "Check the package for errors without building it" },
+    { "name": "add", "description": "Add a dependency to Cargo.toml", "args": [ { "name": "crate", "isVariadic": true } ] },
+    { "name": "remove", "description": "Remove a dependency from Cargo.toml", "args": [ { "name": "crate", "isVariadic": true } ] },
+    { "name": "update", "description": "Update dependencies in Cargo.lock" },
+    { "name": "fmt", "description": "Format all source files with rustfmt" },
+    { "name": "clippy", "description": "Lint the package with clippy" },
+    { "name": "clean", "description": "Remove generated build artifacts" },
+    { "name": "doc", "description": "Build the package documentation" },
+    { "name": "publish", "description": "Upload the package to the registry" }
+  ]
+}

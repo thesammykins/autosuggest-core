@@ -1,0 +1,18 @@
+{
+  "name": "tree",
+  "description": "List directory contents in a tree-like format",
+  "options": [
+    { "name": "-a", "description": "List hidden files too" },
+    { "name": "-d", "description": "List directories only" },
+    { "name": "-L", "description": "Descend at most this many levels", "args": [ { "name": "level" } ] },
+    { "name": "-f", "description": "Print the full path prefix for each file" },
+    { "name": "-i", "description": "Do not print indentation lines" },
+    { "name": "-C", "description": "Always colorize the output" },
+    { "name": "-I", "description": "Do not list files matching this pattern", "args": [ { "name": "pattern" } ] },
+    { "name": "-P", "description": "List only files matching this pattern", "args": [ { "name": "pattern" } ] },
+    { "name": "--help", "description": "Show help and exit" }
+  ],
+  "args": [
+    { "name": "directory", "description": "Directories to list", "template": "folders", "isOptional": true, "isVariadic": true }
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "name": "wget",
+  "description": "Retrieve files over HTTP, HTTPS, and FTP",
+  "options": [
+    { "name": ["-O", "--output-document"], "description": "Write documents to this file", "args": [ { "name": "file", "template": "filepaths" } ] },
+    { "name": ["-P", "--directory-prefix"], "description": "Save files into this directory", "args": [ { "name": "prefix", "template": "folders" } ] },
+    { "name": ["-c", "--continue"], "description": "Resume a partially downloaded file" },
+    { "name": ["-r", "--recursive"], "description": "Download recursively" },
+    { "name": ["-np", "--no-parent"], "description": "Do not ascend to the parent directory" },
+    { "name": ["-q", "--quiet"], "description": "Suppress output" },
+    { "name": ["-b", "--background"], "description": "Go to background after startup" },
+    { "name": ["--limit-rate"], "description": "Limit the download rate, e.g. 200k", "args": [ { "name": "rate" } ] },
+    { "name": ["--help"], "description": "Show help and exit" }
+  ],
+  "args": [
+    { "name": "url", "description": "URLs to download", "isVariadic": true }
+  ]
+}
