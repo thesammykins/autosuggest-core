@@ -6,6 +6,9 @@ Cargo.lock.orig
 # Worktrees (subagent isolation)
 /.worktrees/
 
+# Embedded skill repos (not part of this project)
+/.agents/
+
 # OS / editor
 .DS_Store
 *.swp

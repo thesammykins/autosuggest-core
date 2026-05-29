@@ -5,16 +5,19 @@
 //! owns logic. Generator execution is injected through the [`GeneratorRunner`]
 //! trait so the engine never performs file or network I/O directly.
 //!
-//! # Milestone status (M1)
+//! # Milestone status (M1 + M2)
 //!
 //! As-you-type completion is implemented: [`tokenize`] (pure lexer), [`parse`]
 //! (pure parse-state machine), [`complete`] (candidate collection, including the
 //! one permitted filesystem read via [`fs_source`] for path templates), and
 //! [`rank`] (filter + score). The top-level entry point is [`complete_line`].
 //!
-//! The [`history`] and [`correct`] modules remain stubs and gain logic in later
-//! milestones (see `ROADMAP.md`). Generators are not executed in M1 (that is
-//! M4); the hook exists in [`complete`].
+//! History autosuggestion is implemented: [`history`] provides the stateless
+//! [`history::autosuggest`] continuation finder.
+//!
+//! The [`correct`] module remains a stub and gains logic in M3 (see
+//! `ROADMAP.md`). Generators are not executed in M1 (that is M4); the hook
+//! exists in [`complete`].
 //!
 //! # Example
 //!

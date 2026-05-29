@@ -1,0 +1,13 @@
+{
+  "v": 1,
+  "id": 33,
+  "op": "autosuggest",
+  "prefix": "make ",
+  "cwd": "/repo",
+  "history": {
+    "entries": [
+      { "command": "make deploy", "cwd": "/other" },
+      { "command": "make build", "cwd": "/repo" }
+    ]
+  }
+}

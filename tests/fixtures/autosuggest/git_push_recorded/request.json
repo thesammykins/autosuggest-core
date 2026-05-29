@@ -1,0 +1,21 @@
+{
+  "v": 1,
+  "id": 42,
+  "op": "autosuggest",
+  "prefix": "git pu",
+  "cwd": "/home/dev/autosuggest-core",
+  "history": {
+    "entries": [
+      { "command": "cargo clippy --workspace -- -D warnings", "cwd": "/home/dev/autosuggest-core", "exitCode": 0, "ts": 1730051200 },
+      { "command": "git push origin feat/m2-history", "cwd": "/home/dev/autosuggest-core", "exitCode": 0, "ts": 1730051100 },
+      { "command": "git commit -m \"feat(history): autosuggest\"", "cwd": "/home/dev/autosuggest-core", "exitCode": 0, "ts": 1730051000 },
+      { "command": "git add -A", "cwd": "/home/dev/autosuggest-core", "exitCode": 0, "ts": 1730050900 },
+      { "command": "cargo test --workspace", "cwd": "/home/dev/autosuggest-core", "exitCode": 0, "ts": 1730050800 },
+      { "command": "git status", "cwd": "/home/dev/autosuggest-core", "exitCode": 0, "ts": 1730050700 },
+      { "command": "git pull --rebase", "cwd": "/home/dev/autosuggest-core", "exitCode": 0, "ts": 1730050600 },
+      { "command": "git push origin main", "cwd": "/home/dev/autosuggest-core", "exitCode": 0, "ts": 1730050500 },
+      { "command": "cd /home/dev/autosuggest-core", "cwd": "/home/dev", "exitCode": 0, "ts": 1730050400 },
+      { "command": "ls -la", "cwd": "/home/dev", "exitCode": 0, "ts": 1730050300 }
+    ]
+  }
+}
