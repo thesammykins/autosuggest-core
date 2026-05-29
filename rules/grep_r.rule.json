@@ -1,0 +1,11 @@
+{
+  "id": "grep_r",
+  "description": "Add -r when grepping a directory",
+  "priority": 70,
+  "match": {
+    "scriptStartsWith": "grep ",
+    "stderrContains": ["is a directory", "Is a directory"],
+    "exitCodeIn": [1, 2]
+  },
+  "rewrite": { "insertFlag": { "after": "grep", "flag": "-r" } }
+}

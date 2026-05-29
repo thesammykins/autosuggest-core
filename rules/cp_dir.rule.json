@@ -1,0 +1,11 @@
+{
+  "id": "cp_dir",
+  "description": "Add -r when copying a directory",
+  "priority": 75,
+  "match": {
+    "scriptStartsWith": "cp ",
+    "stderrContains": ["omitting directory", "-r not specified"],
+    "exitCodeIn": [1]
+  },
+  "rewrite": { "insertFlag": { "after": "cp", "flag": "-r" } }
+}

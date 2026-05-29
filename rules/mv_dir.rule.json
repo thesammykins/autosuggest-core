@@ -1,0 +1,11 @@
+{
+  "id": "mv_dir",
+  "description": "Add -r when moving a directory across filesystems",
+  "priority": 70,
+  "match": {
+    "scriptStartsWith": "mv ",
+    "stderrContains": ["omitting directory", "-r not specified"],
+    "exitCodeIn": [1]
+  },
+  "rewrite": { "insertFlag": { "after": "mv", "flag": "-r" } }
+}

@@ -1,0 +1,11 @@
+{
+  "id": "rm_dir",
+  "description": "Add -r when removing a directory",
+  "priority": 70,
+  "match": {
+    "scriptStartsWith": "rm ",
+    "stderrContains": ["is a directory", "Is a directory"],
+    "exitCodeIn": [1]
+  },
+  "rewrite": { "insertFlag": { "after": "rm", "flag": "-r" } }
+}

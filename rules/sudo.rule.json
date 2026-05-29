@@ -1,0 +1,15 @@
+{
+  "id": "sudo",
+  "description": "Re-run with sudo when permission is denied",
+  "priority": 80,
+  "match": {
+    "stderrContains": [
+      "Permission denied",
+      "permission denied",
+      "are you root?",
+      "Operation not permitted",
+      "must be run as root"
+    ]
+  },
+  "rewrite": { "prefix": "sudo " }
+}
