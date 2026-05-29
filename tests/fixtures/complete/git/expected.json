@@ -1,0 +1,7 @@
+[
+  { "insert": "-C ", "display": "-C", "desc": "Run as if git was started in the given path", "score": 0.475 },
+  { "insert": "commit ", "display": "commit", "desc": "Record staged changes to the repository", "score": 0.475 },
+  { "insert": "status ", "display": "status", "desc": "Show the working tree status", "score": 0.475 },
+  { "insert": "--version", "desc": "Print the git version and exit", "score": 0.475 },
+  { "insert": "checkout ", "display": "checkout", "desc": "Switch branches or restore working tree files", "score": 0.475 }
+]

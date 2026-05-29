@@ -14,3 +14,11 @@ path = "src/lib.rs"
 [dependencies]
 serde = { workspace = true }
 serde_json = { workspace = true }
+
+[dev-dependencies]
+autosuggest-protocol = { path = "../protocol" }
+criterion = { version = "0.5", default-features = false }
+
+[[bench]]
+name = "complete"
+harness = false
