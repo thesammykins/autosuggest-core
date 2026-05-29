@@ -5,12 +5,15 @@
 //! owns logic. Generator execution is injected through the [`GeneratorRunner`]
 //! trait so the engine never performs file or network I/O directly.
 //!
-//! # Milestone status (M0)
+//! # Milestone status
 //!
-//! Only the [`types`] module is implemented in M0: Rust models for every object
-//! in `SCHEMA.md §1`. The remaining engine modules ([`tokenize`], [`parse`],
-//! [`complete`], [`rank`], [`history`], [`correct`]) exist as empty stubs and
-//! gain logic in later milestones (see `ROADMAP.md`).
+//! - M0: the [`types`] module — Rust models for every object in `SCHEMA.md §1`.
+//! - M2: the [`history`] module — the stateless history autosuggester
+//!   ([`history::autosuggest`]).
+//!
+//! The remaining engine modules ([`tokenize`], [`parse`], [`complete`],
+//! [`rank`], [`correct`]) exist as empty stubs and gain logic in later
+//! milestones (see `ROADMAP.md`).
 
 #![forbid(unsafe_code)]
 #![warn(missing_docs)]

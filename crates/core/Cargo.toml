@@ -14,3 +14,6 @@ path = "src/lib.rs"
 [dependencies]
 serde = { workspace = true }
 serde_json = { workspace = true }
+# Reuse the canonical history/protocol models so the engine and the wire format
+# never drift (TECH.md §2; CONTRIBUTING "prefer reusing protocol types").
+autosuggest-protocol = { path = "../protocol" }

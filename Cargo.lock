@@ -6,6 +6,7 @@ version = 3
 name = "autosuggest-core"
 version = "0.0.0"
 dependencies = [
+ "autosuggest-protocol",
  "serde",
  "serde_json",
 ]
