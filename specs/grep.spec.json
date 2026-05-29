@@ -1,0 +1,31 @@
+{
+  "name": "grep",
+  "description": "Search for patterns in files",
+  "parserDirectives": {
+    "flagsArePosixNoncompliant": true,
+    "optionArgSeparators": ["=", " "]
+  },
+  "options": [
+    { "name": ["-i", "--ignore-case"], "description": "Match case-insensitively" },
+    { "name": ["-v", "--invert-match"], "description": "Select non-matching lines" },
+    { "name": ["-n", "--line-number"], "description": "Prefix each line of output with its line number" },
+    { "name": ["-c", "--count"], "description": "Print only a count of matching lines per file" },
+    { "name": ["-r", "--recursive"], "description": "Recursively search directories" },
+    { "name": ["-R", "--dereference-recursive"], "description": "Recursively search, following all symlinks" },
+    { "name": ["-l", "--files-with-matches"], "description": "Print only names of files containing matches", "exclusiveOn": ["-L"] },
+    { "name": ["-L", "--files-without-match"], "description": "Print only names of files containing no match", "exclusiveOn": ["-l"] },
+    { "name": ["-w", "--word-regexp"], "description": "Match only whole words" },
+    { "name": ["-x", "--line-regexp"], "description": "Match only whole lines" },
+    { "name": ["-E", "--extended-regexp"], "description": "Interpret the pattern as an extended regular expression" },
+    { "name": ["-F", "--fixed-strings"], "description": "Interpret the pattern as fixed strings, not a regex" },
+    { "name": ["-o", "--only-matching"], "description": "Print only the matched parts of a line" },
+    { "name": ["-e", "--regexp"], "description": "Use the next argument as a pattern", "args": [ { "name": "pattern" } ] },
+    { "name": ["-f", "--file"], "description": "Read patterns from a file", "args": [ { "name": "pattern-file", "template": "filepaths" } ] },
+    { "name": ["--color"], "description": "Colorize matching text", "requiresSeparator": true, "args": [ { "name": "when", "suggestions": ["auto", "always", "never"] } ] },
+    { "name": ["--help"], "description": "Show help and exit" }
+  ],
+  "args": [
+    { "name": "pattern", "description": "Pattern to search for" },
+    { "name": "file", "description": "Files to search", "template": "filepaths", "isOptional": true, "isVariadic": true }
+  ]
+}

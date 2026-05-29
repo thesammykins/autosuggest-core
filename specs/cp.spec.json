@@ -1,0 +1,25 @@
+{
+  "name": "cp",
+  "description": "Copy files and directories",
+  "parserDirectives": {
+    "flagsArePosixNoncompliant": false,
+    "optionArgSeparators": [" "]
+  },
+  "options": [
+    { "name": "-R", "description": "Copy directories recursively" },
+    { "name": "-r", "description": "Copy directories recursively (alias of -R)" },
+    { "name": "-i", "description": "Prompt before overwriting an existing file", "exclusiveOn": ["-f", "-n"] },
+    { "name": "-f", "description": "Force overwrite without prompting", "exclusiveOn": ["-i", "-n"] },
+    { "name": "-n", "description": "Do not overwrite an existing file", "exclusiveOn": ["-i", "-f"] },
+    { "name": "-p", "description": "Preserve modification time, modes, and ownership" },
+    { "name": "-a", "description": "Archive mode; preserve structure and attributes" },
+    { "name": "-v", "description": "Show files as they are copied" },
+    { "name": "-H", "description": "Follow symbolic links given on the command line" },
+    { "name": "-L", "description": "Follow all symbolic links" },
+    { "name": "-P", "description": "Do not follow symbolic links" }
+  ],
+  "args": [
+    { "name": "source", "description": "Source file or directory", "template": "filepaths" },
+    { "name": "target", "description": "Destination file or directory", "template": "filepaths", "isVariadic": true }
+  ]
+}

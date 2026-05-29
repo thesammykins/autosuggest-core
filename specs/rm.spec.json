@@ -1,0 +1,25 @@
+{
+  "name": "rm",
+  "description": "Remove files and directories",
+  "parserDirectives": {
+    "flagsArePosixNoncompliant": true,
+    "optionArgSeparators": [" "]
+  },
+  "options": [
+    { "name": "-f", "description": "Ignore nonexistent files and never prompt", "exclusiveOn": ["-i"] },
+    { "name": "-i", "description": "Prompt before every removal", "exclusiveOn": ["-f"] },
+    { "name": "-r", "description": "Remove directories and their contents recursively" },
+    { "name": "-R", "description": "Remove directories and their contents recursively (alias of -r)" },
+    { "name": "-d", "description": "Remove empty directories as well as files" },
+    { "name": "-v", "description": "Show files as they are removed" },
+    { "name": "-P", "description": "Overwrite regular files before deleting them" }
+  ],
+  "args": [
+    {
+      "name": "file",
+      "description": "File or directory to remove",
+      "template": "filepaths",
+      "isVariadic": true
+    }
+  ]
+}
