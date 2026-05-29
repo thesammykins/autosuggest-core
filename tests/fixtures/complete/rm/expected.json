@@ -1,0 +1,9 @@
+[
+  { "insert": "-P", "desc": "Overwrite regular files before deleting them", "score": 0.475 },
+  { "insert": "-R", "desc": "Remove directories and their contents recursively (alias of -r)", "score": 0.475 },
+  { "insert": "-d", "desc": "Remove empty directories as well as files", "score": 0.475 },
+  { "insert": "-f", "desc": "Ignore nonexistent files and never prompt", "score": 0.475 },
+  { "insert": "-i", "desc": "Prompt before every removal", "score": 0.475 },
+  { "insert": "-r", "desc": "Remove directories and their contents recursively", "score": 0.475 },
+  { "insert": "-v", "desc": "Show files as they are removed", "score": 0.475 }
+]

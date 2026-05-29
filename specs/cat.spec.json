@@ -1,0 +1,26 @@
+{
+  "name": "cat",
+  "description": "Concatenate and print files",
+  "parserDirectives": {
+    "flagsArePosixNoncompliant": true,
+    "optionArgSeparators": [" "]
+  },
+  "options": [
+    { "name": "-b", "description": "Number non-blank output lines", "exclusiveOn": ["-n"] },
+    { "name": "-n", "description": "Number all output lines", "exclusiveOn": ["-b"] },
+    { "name": "-s", "description": "Squeeze multiple adjacent blank lines into one" },
+    { "name": "-e", "description": "Display non-printing characters and a $ at end of each line" },
+    { "name": "-t", "description": "Display non-printing characters and tabs as ^I" },
+    { "name": "-v", "description": "Display non-printing characters visibly" },
+    { "name": "-u", "description": "Disable output buffering" }
+  ],
+  "args": [
+    {
+      "name": "file",
+      "description": "File whose contents to print",
+      "template": "filepaths",
+      "isOptional": true,
+      "isVariadic": true
+    }
+  ]
+}

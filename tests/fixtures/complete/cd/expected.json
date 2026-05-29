@@ -1,0 +1,4 @@
+[
+  { "insert": "-L", "desc": "Follow symbolic links (use the logical directory structure)", "score": 0.475 },
+  { "insert": "-P", "desc": "Resolve symbolic links to physical directories", "score": 0.475 }
+]

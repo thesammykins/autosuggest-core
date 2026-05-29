@@ -1,0 +1,18 @@
+{
+  "name": "mv",
+  "description": "Move or rename files and directories",
+  "parserDirectives": {
+    "flagsArePosixNoncompliant": false,
+    "optionArgSeparators": [" "]
+  },
+  "options": [
+    { "name": "-i", "description": "Prompt before overwriting an existing file", "exclusiveOn": ["-f", "-n"] },
+    { "name": "-f", "description": "Force overwrite without prompting", "exclusiveOn": ["-i", "-n"] },
+    { "name": "-n", "description": "Do not overwrite an existing file", "exclusiveOn": ["-i", "-f"] },
+    { "name": "-v", "description": "Show files as they are moved" }
+  ],
+  "args": [
+    { "name": "source", "description": "Source file or directory", "template": "filepaths" },
+    { "name": "target", "description": "Destination file or directory", "template": "filepaths", "isVariadic": true }
+  ]
+}
