@@ -1,0 +1,12 @@
+{
+  "name": "echo",
+  "description": "Write arguments to standard output",
+  "options": [
+    { "name": "-n", "description": "Do not print the trailing newline" },
+    { "name": "-e", "description": "Enable interpretation of backslash escape sequences", "exclusiveOn": ["-E"] },
+    { "name": "-E", "description": "Disable interpretation of backslash escapes" }
+  ],
+  "args": [
+    { "name": "string", "description": "Text to print", "isOptional": true, "isVariadic": true }
+  ]
+}

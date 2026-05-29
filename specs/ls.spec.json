@@ -1,0 +1,26 @@
+{
+  "name": "ls",
+  "description": "List directory contents",
+  "parserDirectives": {
+    "flagsArePosixNoncompliant": true,
+    "optionArgSeparators": ["=", " "]
+  },
+  "options": [
+    { "name": ["-a", "--all"], "description": "Include entries whose names begin with a dot" },
+    { "name": ["-A", "--almost-all"], "description": "List all except . and .." },
+    { "name": "-l", "description": "Use a long listing format" },
+    { "name": ["-h", "--human-readable"], "description": "Print sizes in human readable units", "dependsOn": ["-l"] },
+    { "name": "-t", "description": "Sort by modification time, newest first" },
+    { "name": ["-S"], "description": "Sort by file size, largest first" },
+    { "name": "-r", "description": "Reverse the order of the sort" },
+    { "name": ["-R", "--recursive"], "description": "List subdirectories recursively" },
+    { "name": "-d", "description": "List directories themselves, not their contents" },
+    { "name": "-1", "description": "List one file per line" },
+    { "name": "-F", "description": "Append an indicator character to entries" },
+    { "name": ["--color"], "description": "Colorize the output", "requiresSeparator": true, "args": [ { "name": "when", "suggestions": ["auto", "always", "never"] } ] },
+    { "name": ["--help"], "description": "Show help and exit" }
+  ],
+  "args": [
+    { "name": "file", "description": "Files or directories to list", "isOptional": true, "isVariadic": true, "template": "filepaths" }
+  ]
+}

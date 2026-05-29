@@ -1,0 +1,13 @@
+{
+  "name": "mkdir",
+  "description": "Create directories",
+  "options": [
+    { "name": ["-p", "--parents"], "description": "Create parent directories as needed; no error if existing" },
+    { "name": ["-v", "--verbose"], "description": "Print a message for each created directory" },
+    { "name": ["-m", "--mode"], "description": "Set permission mode of the new directory", "args": [ { "name": "mode" } ] },
+    { "name": ["--help"], "description": "Show help and exit" }
+  ],
+  "args": [
+    { "name": "directory", "description": "Directory paths to create", "isVariadic": true, "template": "folders" }
+  ]
+}

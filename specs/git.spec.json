@@ -1,0 +1,39 @@
+{
+  "name": "git",
+  "description": "Distributed version control system",
+  "requiresSubcommand": true,
+  "options": [
+    { "name": ["--version"], "description": "Print the git version and exit" },
+    { "name": ["-C"], "description": "Run as if git was started in the given path", "isPersistent": true, "args": [ { "name": "path", "template": "folders" } ] }
+  ],
+  "subcommands": [
+    {
+      "name": "status",
+      "description": "Show the working tree status",
+      "options": [
+        { "name": ["-s", "--short"], "description": "Give output in the short format" },
+        { "name": ["-b", "--branch"], "description": "Show the branch and tracking info" }
+      ]
+    },
+    {
+      "name": "commit",
+      "description": "Record staged changes to the repository",
+      "options": [
+        { "name": ["-m", "--message"], "description": "Use the given text as the commit message", "args": [ { "name": "message" } ] },
+        { "name": ["-a", "--all"], "description": "Stage all tracked, modified files before committing" },
+        { "name": ["--amend"], "description": "Replace the tip of the current branch with a new commit" }
+      ]
+    },
+    {
+      "name": ["checkout", "co"],
+      "description": "Switch branches or restore working tree files",
+      "options": [
+        { "name": ["-b"], "description": "Create a new branch and switch to it", "args": [ { "name": "branch" } ] },
+        { "name": ["-f", "--force"], "description": "Discard local changes when switching" }
+      ],
+      "args": [
+        { "name": "branch", "description": "Branch or path to check out", "isOptional": true }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+[package]
+name = "autosuggest-core"
+version = "0.0.0"
+description = "Pure completion & correction engine for terminals (M0: types only)."
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+
+[lib]
+name = "autosuggest_core"
+path = "src/lib.rs"
+
+[dependencies]
+serde = { workspace = true }
+serde_json = { workspace = true }
