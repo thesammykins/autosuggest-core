@@ -32,7 +32,41 @@
         { "name": ["-f", "--force"], "description": "Discard local changes when switching" }
       ],
       "args": [
-        { "name": "branch", "description": "Branch or path to check out", "isOptional": true }
+        {
+          "name": "branch",
+          "description": "Branch or path to check out",
+          "isOptional": true,
+          "generator": {
+            "run": ["git", "branch", "--format=%(refname:short)"],
+            "splitOn": "\n",
+            "trim": true,
+            "priority": 75,
+            "cache": { "ttlMs": 3000 }
+          }
+        }
+      ]
+    },
+    {
+      "name": "add",
+      "description": "Add file contents to the index",
+      "options": [
+        { "name": ["-A", "--all"], "description": "Stage all changes (tracked and untracked)" },
+        { "name": ["-p", "--patch"], "description": "Interactively choose hunks to stage" }
+      ],
+      "args": [
+        {
+          "name": "file",
+          "description": "Files with unstaged changes to add",
+          "isOptional": true,
+          "isVariadic": true,
+          "generator": {
+            "run": ["git", "diff", "--name-only"],
+            "splitOn": "\n",
+            "trim": true,
+            "priority": 70,
+            "cache": { "ttlMs": 2000 }
+          }
+        }
       ]
     }
   ]
