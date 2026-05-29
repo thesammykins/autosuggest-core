@@ -1,0 +1,14 @@
+{
+  "v": 1,
+  "id": 21,
+  "op": "autosuggest",
+  "prefix": "npm ",
+  "history": {
+    "entries": [
+      { "command": "npm run dev" },
+      { "command": "npm install" },
+      { "command": "npm run dev" },
+      { "command": "npm test" }
+    ]
+  }
+}

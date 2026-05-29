@@ -1,0 +1,14 @@
+{
+  "v": 1,
+  "id": 11,
+  "op": "autosuggest",
+  "prefix": "docker ",
+  "cwd": "/repo",
+  "history": {
+    "entries": [
+      { "command": "git push", "cwd": "/repo" },
+      { "command": "ls -la", "cwd": "/repo" },
+      { "command": "cargo run", "cwd": "/repo" }
+    ]
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "v": 1,
+  "id": 55,
+  "op": "autosuggest",
+  "prefix": "kubectl ",
+  "history": {
+    "entries": [
+      { "command": "kubectl apply -f deploy.yaml", "ts": 700 },
+      { "command": "kubectl get pods", "ts": 900 },
+      { "command": "kubectl logs api", "ts": 800 }
+    ]
+  }
+}

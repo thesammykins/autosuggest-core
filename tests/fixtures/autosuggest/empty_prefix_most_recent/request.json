@@ -1,0 +1,13 @@
+{
+  "v": 1,
+  "id": 7,
+  "op": "autosuggest",
+  "prefix": "",
+  "history": {
+    "entries": [
+      { "command": "cargo build" },
+      { "command": "cargo test" },
+      { "command": "cargo build" }
+    ]
+  }
+}
