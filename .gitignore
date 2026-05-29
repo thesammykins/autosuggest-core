@@ -1,0 +1,19 @@
+# Rust
+/target
+**/target
+Cargo.lock.orig
+
+# Worktrees (subagent isolation)
+/.worktrees/
+
+# OS / editor
+.DS_Store
+*.swp
+.idea/
+.vscode/
+
+# Build artifacts
+*.dylib
+*.so
+*.a
+/dist/
