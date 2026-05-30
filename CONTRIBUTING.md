@@ -93,7 +93,7 @@ Rules live in `rules/<slug>.rule.json` and follow `SCHEMA.md §2`.
 
 Available rewrite actions (see `SCHEMA.md §2.3`):
 - **`insertFlag`** — insert a flag after a given word
-- **`prefixCommand`** — prepend text (e.g. `"sudo "`)
+- **`prefix`** — prepend text (e.g. `"sudo "`)
 - **`regexReplace`** — find/replace with a regex
 
 1. Identify a common command failure pattern and its fix.

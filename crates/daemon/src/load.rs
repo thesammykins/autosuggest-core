@@ -42,6 +42,13 @@ pub enum LoadError {
         /// The serde parse error message.
         message: String,
     },
+    /// A configured data directory is not acceptable for production loading.
+    UntrustedDir {
+        /// The directory that failed validation.
+        path: PathBuf,
+        /// Human-readable reason.
+        reason: &'static str,
+    },
 }
 
 impl fmt::Display for LoadError {
@@ -53,6 +60,13 @@ impl fmt::Display for LoadError {
             LoadError::Parse { path, message } => {
                 write!(f, "failed to parse `{}`: {message}", path.display())
             }
+            LoadError::UntrustedDir { path, reason } => {
+                write!(
+                    f,
+                    "refusing untrusted data directory `{}`: {reason}",
+                    path.display()
+                )
+            }
         }
     }
 }
@@ -61,7 +75,7 @@ impl std::error::Error for LoadError {
     fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
         match self {
             LoadError::Io { source, .. } => Some(source),
-            LoadError::Parse { .. } => None,
+            LoadError::Parse { .. } | LoadError::UntrustedDir { .. } => None,
         }
     }
 }
@@ -87,6 +101,8 @@ fn load_dir<T>(dir: &Path, suffix: &str) -> Result<Vec<T>, LoadError>
 where
     T: serde::de::DeserializeOwned,
 {
+    validate_data_dir(dir)?;
+
     let paths = match collect_paths(dir, suffix) {
         Ok(paths) => paths,
         // A missing directory is "no data", not a failure.
@@ -114,6 +130,34 @@ where
     Ok(out)
 }
 
+/// Validate configured data directories before reading specs/rules from them.
+///
+/// Relative defaults are convenient during local development but are unsafe for
+/// privileged/GUI integrations where cwd or env can be attacker influenced.
+fn validate_data_dir(dir: &Path) -> Result<(), LoadError> {
+    if !dir.is_absolute() && !allow_relative_data_dirs() {
+        return Err(LoadError::UntrustedDir {
+            path: dir.to_path_buf(),
+            reason: "path must be absolute unless AUTOSUGGEST_ALLOW_RELATIVE_DATA_DIRS=1",
+        });
+    }
+
+    if let Ok(meta) = std::fs::symlink_metadata(dir) {
+        if meta.file_type().is_symlink() {
+            return Err(LoadError::UntrustedDir {
+                path: dir.to_path_buf(),
+                reason: "directory must not be a symlink",
+            });
+        }
+    }
+
+    Ok(())
+}
+
+fn allow_relative_data_dirs() -> bool {
+    std::env::var_os("AUTOSUGGEST_ALLOW_RELATIVE_DATA_DIRS").is_some_and(|v| v == "1")
+}
+
 /// Return the sorted set of files in `dir` whose name ends in `suffix`.
 fn collect_paths(dir: &Path, suffix: &str) -> Result<Vec<PathBuf>, std::io::Error> {
     let mut paths: Vec<PathBuf> = Vec::new();
@@ -129,4 +173,22 @@ fn collect_paths(dir: &Path, suffix: &str) -> Result<Vec<PathBuf>, std::io::Erro
     }
     paths.sort();
     Ok(paths)
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn relative_data_dir_is_rejected_by_validator() {
+        let err = validate_data_dir(Path::new("specs")).expect_err("relative path rejected");
+        assert!(matches!(err, LoadError::UntrustedDir { .. }));
+    }
+
+    #[test]
+    fn absolute_missing_data_dir_passes_trust_validation() {
+        let path =
+            std::env::temp_dir().join(format!("asc-missing-data-dir-{}", std::process::id()));
+        assert!(validate_data_dir(&path).is_ok());
+    }
 }

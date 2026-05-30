@@ -14,11 +14,11 @@
 
 #![forbid(unsafe_code)]
 
-use std::io::{self, BufRead, Write};
+use std::io::{self, BufRead, Read, Write};
 use std::path::PathBuf;
 use std::process::ExitCode;
 
-use autosuggest_daemon::{Engine, DEFAULT_RULES_DIR, DEFAULT_SPECS_DIR};
+use autosuggest_daemon::{Engine, DEFAULT_RULES_DIR, DEFAULT_SPECS_DIR, MAX_REQUEST_BYTES};
 
 /// Environment variable overriding the specs directory.
 const ENV_SPECS_DIR: &str = "AUTOSUGGEST_SPECS_DIR";
@@ -70,12 +70,22 @@ fn main() -> ExitCode {
 /// Resolve a directory from (in order) an explicit arg, an env var, a default.
 fn resolve_dir(arg: Option<String>, env_key: &str, default: &str) -> PathBuf {
     if let Some(arg) = arg {
-        return PathBuf::from(arg);
+        return normalize_dir(PathBuf::from(arg));
     }
     if let Some(env) = std::env::var_os(env_key) {
-        return PathBuf::from(env);
+        return normalize_dir(PathBuf::from(env));
     }
-    PathBuf::from(default)
+    normalize_dir(PathBuf::from(default))
+}
+
+fn normalize_dir(path: PathBuf) -> PathBuf {
+    if path.is_absolute() {
+        path
+    } else {
+        std::env::current_dir()
+            .map(|cwd| cwd.join(&path))
+            .unwrap_or(path)
+    }
 }
 
 /// The read→dispatch→write loop. Returns once stdin reaches EOF.
@@ -83,18 +93,43 @@ fn run(engine: &Engine) -> io::Result<()> {
     let stdin = io::stdin();
     let stdout = io::stdout();
     let mut out = stdout.lock();
+    let mut reader = stdin.lock();
+    let mut line = String::new();
 
-    for line in stdin.lock().lines() {
-        let line = line?;
+    loop {
+        line.clear();
+        let bytes = reader
+            .by_ref()
+            .take((MAX_REQUEST_BYTES + 2) as u64)
+            .read_line(&mut line)?;
+        if bytes == 0 {
+            break;
+        }
+        if line.ends_with('\n') {
+            line.pop();
+            if line.ends_with('\r') {
+                line.pop();
+            }
+        }
         // Blank lines carry no request; skip them silently to be lenient with
         // editors/pipes that emit stray newlines.
         if line.trim().is_empty() {
             continue;
         }
-        let response = engine.handle_line(&line);
+        let response = if line.len() > MAX_REQUEST_BYTES {
+            drain_oversized_line(&mut reader)?;
+            engine.handle_line(&line[..MAX_REQUEST_BYTES + 1])
+        } else {
+            engine.handle_line(&line)
+        };
         out.write_all(response.as_bytes())?;
         out.write_all(b"\n")?;
         out.flush()?;
     }
     Ok(())
+}
+
+fn drain_oversized_line(reader: &mut impl BufRead) -> io::Result<()> {
+    let mut discard = Vec::new();
+    reader.read_until(b'\n', &mut discard).map(|_| ())
 }

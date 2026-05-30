@@ -1,6 +1,6 @@
 [package]
 name = "autosuggest-protocol"
-version = "0.0.0"
+version = "1.1.0"
 description = "Serde models for the autosuggest-core stdio JSON-lines protocol (schema v1)."
 edition.workspace = true
 rust-version.workspace = true

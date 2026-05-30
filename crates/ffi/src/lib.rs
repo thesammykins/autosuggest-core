@@ -23,7 +23,7 @@ use std::ffi::{c_char, CStr, CString};
 use std::panic::{catch_unwind, AssertUnwindSafe};
 use std::sync::OnceLock;
 
-use autosuggest_daemon::{Engine, DEFAULT_RULES_DIR, DEFAULT_SPECS_DIR};
+use autosuggest_daemon::{Engine, DEFAULT_RULES_DIR, DEFAULT_SPECS_DIR, MAX_REQUEST_BYTES};
 
 /// Environment variable overriding the specs directory (mirrors the daemon).
 const ENV_SPECS_DIR: &str = "AUTOSUGGEST_SPECS_DIR";
@@ -54,9 +54,16 @@ fn engine() -> Option<&'static Engine> {
 
 /// Resolve a directory from an env var, falling back to `default`.
 fn dir_from_env(env_key: &str, default: &str) -> std::path::PathBuf {
-    std::env::var_os(env_key)
+    let path = std::env::var_os(env_key)
         .map(std::path::PathBuf::from)
-        .unwrap_or_else(|| std::path::PathBuf::from(default))
+        .unwrap_or_else(|| std::path::PathBuf::from(default));
+    if path.is_absolute() {
+        path
+    } else {
+        std::env::current_dir()
+            .map(|cwd| cwd.join(&path))
+            .unwrap_or(path)
+    }
 }
 
 /// Pure core of the entry point: borrow the request line, produce a response.
@@ -90,6 +97,9 @@ pub unsafe extern "C" fn autosuggest_request_json(request: *const c_char) -> *mu
         } else {
             // SAFETY: the caller guarantees `request` is a valid NUL-terminated
             // C string for the duration of this call (see `# Safety`).
+            if bounded_cstr_len(request, MAX_REQUEST_BYTES + 1) > MAX_REQUEST_BYTES {
+                return into_c_string(error_response("request exceeds byte limit"));
+            }
             let cstr = unsafe { CStr::from_ptr(request) };
             match cstr.to_str() {
                 Ok(line) => respond(line),
@@ -136,6 +146,17 @@ fn error_response(message: &str) -> String {
     format!(
         "{{\"v\":1,\"id\":-1,\"error\":{{\"code\":\"bad_request\",\"message\":\"{message}\"}}}}"
     )
+}
+
+fn bounded_cstr_len(ptr: *const c_char, limit: usize) -> usize {
+    for offset in 0..limit {
+        // SAFETY: the FFI contract requires a valid C string pointer; we cap the
+        // scan so oversized requests fail before allocating a Rust string.
+        if unsafe { *ptr.add(offset) } == 0 {
+            return offset;
+        }
+    }
+    limit
 }
 
 /// Convert an owned Rust string into a heap C string pointer.

@@ -20,7 +20,7 @@
 //! injected via [`correct::CommandResolver`].
 //!
 //! Generators (dynamic arguments) are executed only when a [`GeneratorRunner`]
-//! is injected via [`complete_line_with_generators`]; the real sandboxed runner
+//! is injected via [`complete_line_with_generators`]; the real constrained runner
 //! lives in the `autosuggest-data` crate (M4). The pure [`complete_line`] never
 //! runs a generator. See `ROADMAP.md`.
 //!
@@ -95,7 +95,7 @@ pub fn complete_line(
 /// suggestions (e.g. `git checkout <branch>` listing local branches).
 ///
 /// `core` still performs no process I/O itself: the `runner` (provided by the
-/// `autosuggest-data` crate's sandboxed implementation, or a test mock) owns all
+/// `autosuggest-data` crate's constrained implementation, or a test mock) owns all
 /// execution, allow-listing, timeouts, and caching. A generator that fails
 /// contributes no candidates, so completion degrades gracefully.
 ///

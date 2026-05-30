@@ -1,6 +1,6 @@
 [package]
 name = "autosuggest-ffi"
-version = "0.0.0"
+version = "1.1.0"
 description = "C ABI shim over the autosuggest engine (TECH.md §4)."
 edition.workspace = true
 rust-version.workspace = true
@@ -15,7 +15,7 @@ crate-type = ["cdylib", "staticlib", "rlib"]
 path = "src/lib.rs"
 
 [dependencies]
-autosuggest-daemon = { path = "../daemon" }
+autosuggest-daemon = { path = "../daemon", default-features = false }
 
 [build-dependencies]
 # Generates `include/autosuggest.h` at build time from the `extern "C"` surface

@@ -56,7 +56,7 @@ clippy clean.
 with M1/M2 (M3 shipped a case-table; DoD met, goldens deferred).
 
 ### M4 — Generators + caching  `feat/m4-generators`  — STATUS: ✅ merged (M4 in d8df85b)
-`data` crate (`autosuggest-data`) sandboxed `SandboxedRunner` (allow-list, no
+`data` crate (`autosuggest-data`) constrained `SandboxedRunner` (allow-list, no
 shell, 100 ms timeout + kill, output cap, TTL cache); additive pure entry
 `complete_line_with_generators`; generator-backed specs (`git checkout
 <branch>`, `git add <file>`). Core stayed pure.
@@ -100,3 +100,4 @@ complete & consistent with shipped adapters.
 | (init) | M6 | Final milestone: dataset growth, correct/ goldens, daemon generator wiring, docs finalize | dispatching |
 | (init) | M6 | 56 specs/13 rules (original), correct/ goldens + harness, daemon generators (graceful degrade), COVERAGE.md + INTEGRATING reconciled | ✅ merged 378b989 |
 | (init) | — | **ALL MILESTONES (M0–M6) MERGED.** Merged tree: fmt/clippy clean, 158 tests green | ✅ complete |
+| 2026-05-30 | hardening | Current tree refreshed to 111 specs/15 rules/10 correction goldens; generator/data-loading hardening and all-features gate added | ✅ current |

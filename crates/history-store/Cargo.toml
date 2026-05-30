@@ -1,6 +1,6 @@
 [package]
 name = "autosuggest-history-store"
-version = "0.0.0"
+version = "1.1.0"
 description = "SQLite-backed command history store for autosuggest-core (behind daemon --history-db)."
 edition.workspace = true
 rust-version.workspace = true

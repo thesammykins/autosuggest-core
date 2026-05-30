@@ -24,6 +24,8 @@ mod load;
 
 use std::collections::BTreeMap;
 use std::path::Path;
+#[cfg(feature = "sqlite-store")]
+use std::sync::Mutex;
 
 use autosuggest_core::correct::rule::Rule;
 use autosuggest_core::correct::{self, CorrectContext, PathCommandResolver, Resolver};
@@ -42,6 +44,9 @@ const CODE_INTERNAL: &str = "internal";
 
 /// Request id used in error responses when the id could not be parsed.
 const UNKNOWN_ID: i64 = -1;
+
+/// Maximum accepted protocol request size in bytes.
+pub const MAX_REQUEST_BYTES: usize = 1024 * 1024;
 
 /// The shared adapter engine: loaded specs + rules + a `$PATH` resolver.
 ///
@@ -65,7 +70,7 @@ pub struct Engine {
     runner: Box<dyn GeneratorRunner + Send + Sync>,
     /// Optional SQLite-backed history store for autosuggestion.
     #[cfg(feature = "sqlite-store")]
-    history_store: Option<autosuggest_history_store::HistoryStore>,
+    history_store: Option<Mutex<autosuggest_history_store::HistoryStore>>,
 }
 
 impl Engine {
@@ -112,7 +117,7 @@ impl Engine {
     /// when the host does not provide a history window in the request.
     #[cfg(feature = "sqlite-store")]
     pub fn with_history_store(mut self, store: autosuggest_history_store::HistoryStore) -> Self {
-        self.history_store = Some(store);
+        self.history_store = Some(Mutex::new(store));
         self
     }
 
@@ -163,6 +168,20 @@ impl Engine {
     /// internal engine errors are all turned into a structured protocol error
     /// [`Response`] and serialized. The returned string has no trailing newline.
     pub fn handle_line(&self, line: &str) -> String {
+        if line.len() > MAX_REQUEST_BYTES {
+            return serde_json::to_string(&Response::error(
+                best_effort_id(line),
+                CODE_BAD_REQUEST,
+                format!("request exceeds {MAX_REQUEST_BYTES} byte limit"),
+            ))
+            .unwrap_or_else(|_| {
+                format!(
+                    "{{\"v\":1,\"id\":{UNKNOWN_ID},\"error\":{{\"code\":\"{CODE_BAD_REQUEST}\",\
+                     \"message\":\"request too large\"}}}}"
+                )
+            });
+        }
+
         let response = match serde_json::from_str::<Request>(line) {
             Ok(request) => self.handle(&request),
             Err(err) => {
@@ -229,8 +248,10 @@ impl Engine {
         #[cfg(feature = "sqlite-store")]
         {
             if let Some(ref store) = self.history_store {
-                if let Ok(window) = store.recent(prefix, 50, cwd) {
-                    return history::autosuggest(prefix, &window, cwd);
+                if let Ok(store) = store.lock() {
+                    if let Ok(window) = store.recent(prefix, 50, cwd) {
+                        return history::autosuggest(prefix, &window, cwd);
+                    }
                 }
             }
         }
@@ -304,14 +325,48 @@ fn item_to_wire(item: &CompletionItem) -> Item {
 /// Best-effort extraction of `id` from a line that failed full parsing, so an
 /// error response can still echo the caller's id where possible.
 fn best_effort_id(line: &str) -> i64 {
-    serde_json::from_str::<IdOnly>(line)
-        .ok()
-        .and_then(|v| v.id)
-        .unwrap_or(UNKNOWN_ID)
+    if let Some(id) = serde_json::from_str::<IdOnly>(line).ok().and_then(|v| v.id) {
+        return id;
+    }
+    scan_id(line).unwrap_or(UNKNOWN_ID)
+}
+
+fn scan_id(line: &str) -> Option<i64> {
+    let pos = line.find("\"id\"")?;
+    let rest = &line[pos + 4..];
+    let colon = rest.find(':')?;
+    let mut chars = rest[colon + 1..].trim_start().chars().peekable();
+    let mut value = String::new();
+    if chars.peek() == Some(&'-') {
+        value.push('-');
+        chars.next();
+    }
+    while let Some(ch) = chars.peek() {
+        if ch.is_ascii_digit() {
+            value.push(*ch);
+            chars.next();
+        } else {
+            break;
+        }
+    }
+    if value.is_empty() || value == "-" {
+        return None;
+    }
+    value.parse().ok()
 }
 
 /// Minimal shape used to salvage `id` from an otherwise-malformed request.
 #[derive(serde::Deserialize)]
 struct IdOnly {
     id: Option<i64>,
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn best_effort_id_scans_truncated_json() {
+        assert_eq!(best_effort_id(r#"{"v":1,"id":42,"op":"complete"#), 42);
+    }
 }

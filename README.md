@@ -23,8 +23,8 @@ output: [
 |---|---|---|
 | **Spec-driven completion** | Subcommands, options, option-args, static suggestions, exclusive/depends-on relationships, argument generators | 111 spec files, 14 golden fixtures |
 | **History autosuggestion** | Prefix-match against a recent-command window with dedup, cwd weighting, recency/frequency ranking | 6 golden fixtures |
-| **Failed-command correction** | Rule engine (insert flag, prefix command, regex replace) against script+stderr+exit code | 15 rule files + 9 golden fixtures + native `no_command`/`subcommand_typo` |
-| **Generator-backed args** | Sandboxed execution of allow-listed programs, output parsing, TTL cache | `echo`-based integration test (+ daemon E2E) |
+| **Failed-command correction** | Rule engine (insert flag, prefix command, regex replace) against script+stderr+exit code | 15 rule files + 10 golden fixtures + native `no_command`/`subcommand_typo` |
+| **Generator-backed args** | Constrained execution of allow-listed programs, output parsing, TTL cache | `echo`-based integration test (+ daemon E2E) |
 | **C ABI** | Single `autosuggest_request_json` entry point, catch_unwind-guarded, cbindgen header | 3 FFI round-trip tests |
 | **Stdio daemon** | JSON-lines protocol, all 3 ops, graceful degradation on bad input | 2 daemon E2E tests |
 
@@ -38,10 +38,10 @@ output: [
   cover `mkdir -p`, `sudo`, `cd` typos, subcommand typos, etc. They work on the
   cases we thought of and documented. They don't learn from real failures.
 - **Generator tests run `echo`, not real commands.** The generator runner
-  (sandboxed, 100ms timeout, output capped) is tested with an allow-listed
-  `echo` program. Real generators (`git branch`, `docker ps`, etc.) are wired in
-  the spec files but run only in the untested daemon path. You own the security
-  of what you put on the allow-list.
+  (allow-listed absolute executables, minimal environment, 100ms timeout, output
+  capped) is tested with an allow-listed `echo` program. Real generators (`git
+  branch`, `docker ps`, etc.) are wired in the spec files but run only in the
+  daemon path. You own the security of what you put on the allow-list.
 - **No filesystem completion tests.** The engine supports `template: "files"` and
   `template: "folders"`, but there are no golden fixtures for them (they'd be
   cwd-dependent and non-deterministic).
@@ -79,7 +79,7 @@ Code lint gates: `cargo fmt --check` + `clippy -D warnings`.
 |---|---|
 | `core` | Pure engine: types, tokenizer, parser, completer, ranker, history, correction |
 | `protocol` | Serde models for stdio JSON protocol |
-| `data` | Spec & rule loading, indexed engine, sandboxed generator runner |
+| `data` | Spec & rule loading, indexed engine, constrained generator runner |
 | `daemon` | Binary: stdio JSON-lines server |
 | `ffi` | cdylib: C ABI via cbindgen |
 | `history-store` | Optional SQLite history persistence |

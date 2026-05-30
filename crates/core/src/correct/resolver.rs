@@ -13,7 +13,7 @@
 //!
 //! ## Where the real implementation lives
 //!
-//! `TECH.md §3.4`/§3.5 envisions the `data` crate owning sandboxed I/O. That
+//! `TECH.md §3.4`/§3.5 envisions the `data` crate owning constrained I/O. That
 //! crate does not exist yet in this workspace (it lands in M4). To keep M3
 //! self-contained and testable, the real `$PATH` scanner
 //! ([`PathCommandResolver`]) ships here behind the **`std-resolver`** cargo
@@ -81,8 +81,6 @@ pub use std_resolver::PathCommandResolver;
 mod std_resolver {
     //! Real, read-only `$PATH` scanner. Behind the `std-resolver` feature.
 
-    use std::collections::BTreeSet;
-
     use super::CommandResolver;
 
     /// A [`CommandResolver`] that reads the process environment's `$PATH`.
@@ -149,7 +147,7 @@ mod std_resolver {
         }
 
         fn path_commands(&self) -> Vec<String> {
-            let mut set: BTreeSet<String> = BTreeSet::new();
+            let mut out = Vec::new();
             for dir in &self.dirs {
                 let Ok(entries) = std::fs::read_dir(dir) else {
                     continue;
@@ -160,12 +158,12 @@ mod std_resolver {
                     };
                     if Self::is_executable(&meta) {
                         if let Some(name) = entry.file_name().to_str() {
-                            set.insert(name.to_string());
+                            out.push(name.to_string());
                         }
                     }
                 }
             }
-            set.into_iter().collect()
+            out
         }
     }
 }
@@ -199,5 +197,51 @@ mod tests {
         let _ = r.path_commands();
         // A path-separator-containing name is never a bare command.
         assert!(!r.exists("/bin/ls"));
+    }
+
+    #[cfg(feature = "std-resolver")]
+    #[test]
+    fn path_resolver_preserves_duplicates_for_frequency_ranking() {
+        let root = std::env::temp_dir().join(format!(
+            "asc-path-resolver-{}-{}",
+            std::process::id(),
+            std::time::SystemTime::now()
+                .duration_since(std::time::UNIX_EPOCH)
+                .map(|d| d.as_nanos())
+                .unwrap_or(0)
+        ));
+        let a = root.join("a");
+        let b = root.join("b");
+        std::fs::create_dir_all(&a).expect("create a");
+        std::fs::create_dir_all(&b).expect("create b");
+
+        make_executable(&a.join("hello"));
+        make_executable(&b.join("hello"));
+
+        let r = PathCommandResolver::from_dirs([a, b]);
+        assert_eq!(
+            r.path_commands()
+                .into_iter()
+                .filter(|cmd| cmd == "hello")
+                .count(),
+            2
+        );
+
+        let _ = std::fs::remove_dir_all(&root);
+    }
+
+    #[cfg(all(feature = "std-resolver", unix))]
+    fn make_executable(path: &std::path::Path) {
+        use std::os::unix::fs::PermissionsExt;
+
+        std::fs::write(path, b"#!/bin/sh\n").expect("write executable");
+        let mut perms = std::fs::metadata(path).expect("metadata").permissions();
+        perms.set_mode(0o755);
+        std::fs::set_permissions(path, perms).expect("chmod");
+    }
+
+    #[cfg(all(feature = "std-resolver", not(unix)))]
+    fn make_executable(path: &std::path::Path) {
+        std::fs::write(path, b"").expect("write executable");
     }
 }

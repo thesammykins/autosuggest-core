@@ -10,7 +10,7 @@
 - Build: `cargo`. Tests: `cargo test` + golden fixtures. Benches: `criterion`.
 - Lint gate: `cargo fmt --check` + `cargo clippy -D warnings`.
 - Dependencies kept minimal: `serde`/`serde_json` (data), `rusqlite` (optional
-  history store, behind daemon `--history-db`), `libc`/`cbindgen` (FFI adapter).
+  history store, behind daemon `--history-db`), `cbindgen` (FFI adapter).
   No async runtime in core. No network crates anywhere.
 
 ## 2. Workspace layout
@@ -41,9 +41,10 @@ autosuggest-core/
 Benches live inside individual crates (`crates/core/benches/`, `crates/data/benches/`).
 ```
 
-`core` MUST NOT perform file or network I/O directly. Generator execution is
+`core` MUST NOT perform process or network I/O directly. Generator execution is
 injected via a `GeneratorRunner` trait so `core` stays pure and testable; the
-`data` crate provides the real (sandboxed) runner.
+`data` crate provides the real constrained runner. Path-template completion is
+the only filesystem-read exception in `core`.
 
 ## 3. Architecture
 
@@ -94,11 +95,15 @@ Stable sort, ties broken by shorter `insert` then lexicographic.
 ### 3.4 Generators (dynamic args)
 
 Declarative only (see `SCHEMA.md`). The `data` crate's runner:
-1. Verifies `run[0]` ∈ allow-list (e.g. `git`, `cargo`, `npm`, `docker`, `ls`).
-2. Spawns with a hard timeout (default 200 ms) and captures stdout.
-3. Splits via `splitOn` and/or applies declared trim/regex extraction.
-4. Caches by `(run, cwd)` for `cache.ttlMs`.
-No shell interpolation; args are passed as an argv vector, never a shell string.
+1. Resolves allow-listed `run[0]` entries to absolute executables from trusted
+   system locations at construction time.
+2. Spawns with a minimal environment, no shell interpolation, a hard timeout
+   (default 100 ms), and a stdout cap.
+3. Kills timed-out children best-effort, including the Unix process group.
+4. Splits via `splitOn` and/or applies declared trim/regex extraction.
+5. Caches by `(run, cwd)` for `cache.ttlMs`.
+This is a constrained subprocess runner, not an OS sandbox. Hosts embedding it in
+higher-risk contexts should narrow the allow-list or add platform sandboxing.
 
 ### 3.5 Correction engine
 

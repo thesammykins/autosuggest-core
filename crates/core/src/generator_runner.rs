@@ -2,13 +2,13 @@
 //!
 //! `core` MUST NOT perform process, file, or network I/O directly (`TECH.md §2`).
 //! Dynamic argument generators are therefore executed through this trait, which a
-//! host crate (the `data` crate, per `TECH.md §3.4`) implements with a sandboxed,
+//! host crate (the `data` crate, per `TECH.md §3.4`) implements with a constrained,
 //! allow-listed, timeout-bounded runner. Keeping execution behind a trait lets
 //! the engine stay pure and unit-testable with mock runners.
 //!
 //! # Milestone status (M4)
 //!
-//! The trait shape is defined here in `core` (kept pure); the real sandboxed,
+//! The trait shape is defined here in `core` (kept pure); the real constrained,
 //! allow-listed, timeout-bounded, TTL-caching runner lives in the `data` crate
 //! (`autosuggest-data`, see `ROADMAP.md` M4 and `TECH.md §3.4`).
 

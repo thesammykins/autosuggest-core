@@ -80,10 +80,9 @@ Every rule in `rules/` is additionally validated by
 
 ## 4. Generators (SCHEMA.md §1.5) — dynamic-output proof
 
-`core` performs no I/O; generators run only through an injected
-`GeneratorRunner`. The daemon wires the sandboxed runner
-(`SandboxedRunner`, `DEFAULT_ALLOW_LIST`), and failures degrade silently and
-never crash the daemon.
+Generators run only through an injected `GeneratorRunner`. The daemon wires the
+constrained runner (`SandboxedRunner`, `DEFAULT_ALLOW_LIST`), and failures
+degrade silently and never crash the daemon.
 
 Because the pure `complete_line` path used by `golden_complete.rs` does not run
 generators, dynamic output is proven separately by an end-to-end daemon test,
@@ -123,10 +122,10 @@ a history window in the request. The history-store crate
 
 | Suite | File | Asserts |
 | --- | --- | --- |
-| Spec validation | `crates/core/tests/specs.rs` | all 107 specs parse + validate |
+| Spec validation | `crates/core/tests/specs.rs` | all 111 specs parse + validate |
 | Completion goldens | `crates/core/tests/golden_complete.rs` | 14 fixtures, exact ranked output |
 | Autosuggest goldens | `crates/core/tests/autosuggest.rs` | history suggestion fixtures |
-| Correction goldens | `crates/core/tests/golden_correct.rs` | 9 fixtures, exact ranked output |
+| Correction goldens | `crates/core/tests/golden_correct.rs` | 10 fixtures, exact ranked output |
 | Daemon stdio | `crates/daemon/tests/stdio.rs` | all ops, malformed input, live generator |
 | FFI ABI | `crates/ffi/tests/ffi.rs` | C ABI round-trips all ops + recovery |
 | History store | `crates/history-store/tests` | record, query, cwd filter, clear, empty |

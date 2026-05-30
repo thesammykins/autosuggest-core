@@ -1,4 +1,4 @@
-//! The sandboxed generator runner (`TECH.md §3.4`, `PRODUCT.md` NFR3).
+//! The constrained generator runner (`TECH.md §3.4`, `PRODUCT.md` NFR3).
 //!
 //! [`SandboxedRunner`] is the side-effectful [`GeneratorRunner`] that the pure
 //! `core` engine never is: it actually spawns processes. It exists *only* in
@@ -20,7 +20,10 @@
 //! - **TTL cache.** Results are cached by `(run, cwd)` for the spec's
 //!   `cache.ttlMs`; warm hits skip execution entirely (NFR1 `< 15 ms` warm).
 
+use std::collections::BTreeSet;
+use std::ffi::OsString;
 use std::io::Read;
+use std::path::PathBuf;
 use std::process::{Command, Stdio};
 use std::sync::mpsc;
 use std::time::{Duration, Instant};
@@ -40,25 +43,48 @@ pub const DEFAULT_TIMEOUT: Duration = Duration::from_millis(100);
 /// identifiers (branches, files); 256 KiB is generous while bounding memory.
 pub const DEFAULT_MAX_OUTPUT_BYTES: usize = 256 * 1024;
 
-/// The default allow-list: the read-only programs the authored generator specs
-/// invoke, plus the common safe completion sources. Anything not here is
-/// rejected (`PRODUCT.md` NFR3). Kept intentionally small; hosts widen it
-/// explicitly via [`SandboxedRunner::with_allow_list`].
+/// The default allow-list: the programs the authored generator specs invoke.
+///
+/// Anything not here is rejected (`PRODUCT.md` NFR3). Hosts should narrow this
+/// list when embedding the runner in a higher-risk environment.
 pub const DEFAULT_ALLOW_LIST: &[&str] = &[
     "git", "ls", "find", "cargo", "npm", "docker", "make", "brew", "echo",
 ];
 
-/// A sandboxed, allow-listed, timeout-bounded, TTL-caching [`GeneratorRunner`].
+/// Fixed directories used to resolve built-in allow-list basenames. The runner
+/// intentionally does not resolve basenames through inherited `PATH`.
+const TRUSTED_PROGRAM_DIRS: &[&str] = &[
+    "/usr/bin",
+    "/bin",
+    "/usr/sbin",
+    "/sbin",
+    "/opt/homebrew/bin",
+    "/usr/local/bin",
+];
+
+/// A constrained, allow-listed, timeout-bounded, TTL-caching [`GeneratorRunner`].
+///
+/// This runner does not claim an OS sandbox. It constrains execution by resolving
+/// built-in allow-list entries to absolute binaries at construction time, using a
+/// minimal environment, passing argv directly without a shell, bounding stdout,
+/// and killing timed-out children best-effort.
 ///
 /// Construct with [`SandboxedRunner::new`] (default policy) or
 /// [`SandboxedRunner::with_allow_list`], then tune via the builder-style
 /// [`SandboxedRunner::timeout`] / [`SandboxedRunner::max_output_bytes`].
 #[derive(Debug)]
 pub struct SandboxedRunner {
-    allow_list: Vec<String>,
+    allow_list: Vec<AllowedProgram>,
+    safe_path: Option<OsString>,
     timeout: Duration,
     max_output_bytes: usize,
     cache: TtlCache,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+struct AllowedProgram {
+    requested: String,
+    executable: PathBuf,
 }
 
 impl Default for SandboxedRunner {
@@ -71,7 +97,7 @@ impl SandboxedRunner {
     /// A runner with the [`DEFAULT_ALLOW_LIST`], [`DEFAULT_TIMEOUT`], and
     /// [`DEFAULT_MAX_OUTPUT_BYTES`].
     pub fn new() -> Self {
-        Self::with_allow_list(DEFAULT_ALLOW_LIST.iter().map(|s| s.to_string()))
+        Self::with_allow_list(DEFAULT_ALLOW_LIST.iter().copied())
     }
 
     /// A runner whose allow-list is exactly `programs` (everything else is
@@ -81,8 +107,16 @@ impl SandboxedRunner {
         I: IntoIterator<Item = S>,
         S: Into<String>,
     {
+        let allow_list: Vec<AllowedProgram> = programs
+            .into_iter()
+            .map(Into::into)
+            .filter_map(resolve_allowed_program)
+            .collect();
+        let safe_path = path_env_for_allow_list(&allow_list);
+
         SandboxedRunner {
-            allow_list: programs.into_iter().map(Into::into).collect(),
+            safe_path,
+            allow_list,
             timeout: DEFAULT_TIMEOUT,
             max_output_bytes: DEFAULT_MAX_OUTPUT_BYTES,
             cache: TtlCache::new(),
@@ -101,9 +135,12 @@ impl SandboxedRunner {
         self
     }
 
-    /// Whether `program` is permitted by the allow-list.
-    fn is_allowed(&self, program: &str) -> bool {
-        self.allow_list.iter().any(|p| p == program)
+    /// Return the trusted executable for `program` if it is permitted.
+    fn allowed_executable(&self, program: &str) -> Option<PathBuf> {
+        self.allow_list
+            .iter()
+            .find(|entry| entry.requested == program)
+            .map(|entry| entry.executable.clone())
     }
 
     /// Execute `generator`'s argv in `cwd`, returning captured (possibly capped)
@@ -111,17 +148,27 @@ impl SandboxedRunner {
     /// output cap. Caching is handled by the caller [`SandboxedRunner::run`].
     fn execute(&self, generator: &Generator, cwd: &str) -> Result<String, GeneratorError> {
         let program = generator.run.first().ok_or(GeneratorError::EmptyRun)?;
-        if !self.is_allowed(program) {
+        let executable = if let Some(executable) = self.allowed_executable(program) {
+            executable
+        } else {
             return Err(GeneratorError::NotAllowListed(program.clone()));
-        }
+        };
 
         // No shell: argv passed directly. Args come from the declarative spec.
-        let mut child = Command::new(program)
+        let mut command = Command::new(&executable);
+        command
             .args(&generator.run[1..])
             .current_dir(cwd)
+            .env_clear()
             .stdin(Stdio::null())
             .stdout(Stdio::piped())
-            .stderr(Stdio::null())
+            .stderr(Stdio::null());
+        if let Some(path) = &self.safe_path {
+            command.env("PATH", path);
+        }
+        configure_child_process(&mut command);
+
+        let mut child = command
             .spawn()
             .map_err(|e| GeneratorError::Execution(format!("spawn {program}: {e}")))?;
 
@@ -148,7 +195,7 @@ impl SandboxedRunner {
                 Ok(Some(_status)) => break,
                 Ok(None) => {
                     if Instant::now() >= deadline {
-                        let _ = child.kill();
+                        kill_child_tree(&mut child);
                         let _ = child.wait();
                         let _ = reader.join();
                         return Err(GeneratorError::Timeout);
@@ -156,7 +203,7 @@ impl SandboxedRunner {
                     std::thread::sleep(POLL_INTERVAL);
                 }
                 Err(e) => {
-                    let _ = child.kill();
+                    kill_child_tree(&mut child);
                     let _ = child.wait();
                     let _ = reader.join();
                     return Err(GeneratorError::Execution(format!("wait: {e}")));
@@ -175,6 +222,119 @@ impl SandboxedRunner {
 
 /// How often the wait loop polls the child between spawn and the deadline.
 const POLL_INTERVAL: Duration = Duration::from_millis(2);
+
+fn resolve_allowed_program(program: String) -> Option<AllowedProgram> {
+    if program.is_empty() {
+        return None;
+    }
+
+    let executable = if has_path_separator(&program) {
+        let path = PathBuf::from(&program);
+        if is_executable_file(&path) {
+            canonicalize_if_possible(path)
+        } else {
+            return None;
+        }
+    } else {
+        resolve_on_path(&program)?
+    };
+
+    Some(AllowedProgram {
+        requested: program,
+        executable,
+    })
+}
+
+fn resolve_on_path(program: &str) -> Option<PathBuf> {
+    TRUSTED_PROGRAM_DIRS
+        .iter()
+        .map(PathBuf::from)
+        .find_map(|dir| {
+            let candidate = dir.join(program);
+            if is_executable_file(&candidate) {
+                Some(canonicalize_if_possible(candidate))
+            } else {
+                None
+            }
+        })
+}
+
+fn path_env_for_allow_list(allow_list: &[AllowedProgram]) -> Option<OsString> {
+    let paths: BTreeSet<PathBuf> = allow_list
+        .iter()
+        .filter_map(|program| program.executable.parent().map(PathBuf::from))
+        .collect();
+
+    if paths.is_empty() {
+        None
+    } else {
+        std::env::join_paths(paths).ok()
+    }
+}
+
+fn canonicalize_if_possible(path: PathBuf) -> PathBuf {
+    path.canonicalize().unwrap_or(path)
+}
+
+fn has_path_separator(program: &str) -> bool {
+    program.contains('/') || program.contains('\\')
+}
+
+fn is_executable_file(path: &std::path::Path) -> bool {
+    let Ok(meta) = std::fs::metadata(path) else {
+        return false;
+    };
+    if !meta.is_file() {
+        return false;
+    }
+    is_executable_meta(&meta)
+}
+
+#[cfg(unix)]
+fn is_executable_meta(meta: &std::fs::Metadata) -> bool {
+    use std::os::unix::fs::PermissionsExt;
+
+    meta.permissions().mode() & 0o111 != 0
+}
+
+#[cfg(not(unix))]
+fn is_executable_meta(_meta: &std::fs::Metadata) -> bool {
+    true
+}
+
+#[cfg(unix)]
+fn configure_child_process(command: &mut Command) {
+    use std::os::unix::process::CommandExt;
+
+    command.process_group(0);
+}
+
+#[cfg(not(unix))]
+fn configure_child_process(_command: &mut Command) {}
+
+#[cfg(unix)]
+fn kill_child_tree(child: &mut std::process::Child) {
+    let group = format!("-{}", child.id());
+    for kill in ["/bin/kill", "/usr/bin/kill"] {
+        if is_executable_file(std::path::Path::new(kill)) {
+            let _ = Command::new(kill)
+                .arg("-KILL")
+                .arg(&group)
+                .env_clear()
+                .stdin(Stdio::null())
+                .stdout(Stdio::null())
+                .stderr(Stdio::null())
+                .status();
+            break;
+        }
+    }
+    let _ = child.kill();
+}
+
+#[cfg(not(unix))]
+fn kill_child_tree(child: &mut std::process::Child) {
+    let _ = child.kill();
+}
 
 impl GeneratorRunner for SandboxedRunner {
     fn run(&self, generator: &Generator, cwd: &str) -> Result<Vec<String>, GeneratorError> {
@@ -225,6 +385,12 @@ mod tests {
         let g = gen("rm", &["-rf", "/"], 0);
         let err = runner.run(&g, ".").expect_err("must reject");
         assert_eq!(err, GeneratorError::NotAllowListed("rm".to_string()));
+    }
+
+    #[test]
+    fn bare_allow_list_does_not_resolve_through_inherited_path() {
+        let runner = SandboxedRunner::with_allow_list(["definitely-not-a-real-asc-tool"]);
+        assert!(runner.allow_list.is_empty());
     }
 
     #[test]

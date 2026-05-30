@@ -342,6 +342,13 @@ fn classify_cursor(
 
     // 2. Inline `--opt=<value>` completion.
     if query.starts_with('-') {
+        if directives
+            .map(|d| d.options_must_precede_arguments)
+            .unwrap_or(false)
+            && positional_started
+        {
+            return command_argument_cursor(path, arg_index).unwrap_or(CursorKind::Empty);
+        }
         if let Some(eq) = query.find('=') {
             let flag = &query[..eq];
             if let Some(opt) = lookup_option(path, persistent, flag) {
@@ -365,20 +372,26 @@ fn classify_cursor(
     }
 
     // 4. Positional argument.
-    if let Some(node) = active {
-        if let Some(arg) = node.args.get(arg_index) {
-            return CursorKind::CommandArgument(arg.clone());
-        }
-        // Variadic last arg keeps applying past its index.
-        if let Some(last) = node.args.last() {
-            if last.is_variadic && arg_index >= node.args.len() {
-                return CursorKind::CommandArgument(last.clone());
-            }
-        }
+    if let Some(cursor) = command_argument_cursor(path, arg_index) {
+        return cursor;
     }
 
     let _ = directives;
     CursorKind::Empty
+}
+
+fn command_argument_cursor(path: &[Subcommand], arg_index: usize) -> Option<CursorKind> {
+    let node = path.last()?;
+    if let Some(arg) = node.args.get(arg_index) {
+        return Some(CursorKind::CommandArgument(arg.clone()));
+    }
+    // Variadic last arg keeps applying past its index.
+    if let Some(last) = node.args.last() {
+        if last.is_variadic && arg_index >= node.args.len() {
+            return Some(CursorKind::CommandArgument(last.clone()));
+        }
+    }
+    None
 }
 
 #[cfg(test)]
@@ -569,6 +582,10 @@ mod tests {
         let toks = tokenize("tool file -x ", 13);
         let st = parse(&spec, toks.committed(), toks.query());
         assert!(!st.seen_options.contains("-x"));
+
+        let toks = tokenize("tool file -", 11);
+        let st = parse(&spec, toks.committed(), toks.query());
+        assert!(matches!(st.cursor, CursorKind::CommandArgument(_)));
     }
 
     #[test]

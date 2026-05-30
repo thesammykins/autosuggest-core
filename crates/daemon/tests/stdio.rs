@@ -9,6 +9,8 @@ use std::io::{BufRead, BufReader, Write};
 use std::path::PathBuf;
 use std::process::{Child, ChildStdin, ChildStdout, Command, Stdio};
 
+use autosuggest_daemon::MAX_REQUEST_BYTES;
+
 /// Repository root, derived from this crate's manifest dir (`crates/daemon`).
 fn repo_root() -> PathBuf {
     PathBuf::from(env!("CARGO_MANIFEST_DIR"))
@@ -123,8 +125,25 @@ fn daemon_handles_all_ops_and_malformed_input() {
     daemon.shutdown();
 }
 
+#[test]
+fn daemon_rejects_oversized_request_and_keeps_running() {
+    let mut daemon = Daemon::spawn();
+    let oversized = format!(
+        r#"{{"v":1,"id":7,"op":"complete","line":"{}","cursor":0}}"#,
+        "x".repeat(MAX_REQUEST_BYTES)
+    );
+
+    let resp = daemon.request(&oversized);
+    assert!(resp.contains("\"id\":7"), "oversized echoes id: {resp}");
+    assert!(resp.contains("bad_request"), "oversized rejected: {resp}");
+
+    let resp = daemon.request(r#"{"v":1,"id":8,"op":"complete","line":"git st","cursor":6}"#);
+    assert!(resp.contains("status"), "daemon recovered: {resp}");
+    daemon.shutdown();
+}
+
 /// End-to-end proof that the daemon executes argument generators through the
-/// sandboxed runner and that the dynamic output is filtered by the query.
+/// constrained runner and that the dynamic output is filtered by the query.
 ///
 /// Uses the allow-listed, deterministic `echo` program (no dependency on `git`
 /// or any external state) on a purpose-built no-subcommand spec, so the single

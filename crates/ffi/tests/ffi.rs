@@ -10,6 +10,7 @@
 use std::ffi::{c_char, CStr, CString};
 use std::path::PathBuf;
 
+use autosuggest_daemon::MAX_REQUEST_BYTES;
 use autosuggest_ffi::{autosuggest_request_json, autosuggest_string_free};
 
 /// Repository root, derived from this crate's manifest dir (`crates/ffi`).
@@ -83,6 +84,25 @@ fn ffi_null_input_is_safe() {
         .to_string_lossy()
         .into_owned();
     assert!(text.contains("\"error\""), "null yields error: {text}");
+    // SAFETY: freeing a library-produced pointer exactly once.
+    unsafe { autosuggest_string_free(ptr) };
+}
+
+#[test]
+fn ffi_oversized_input_is_rejected_before_parse() {
+    let request = "x".repeat(MAX_REQUEST_BYTES + 1);
+    let c_request = CString::new(request).expect("no interior NUL");
+    // SAFETY: `c_request` is a valid NUL-terminated string alive for the call.
+    let ptr = unsafe { autosuggest_request_json(c_request.as_ptr()) };
+    assert!(!ptr.is_null(), "oversized input returns a string");
+    // SAFETY: `ptr` was returned by the entry point; read then free once.
+    let text = unsafe { CStr::from_ptr(ptr) }
+        .to_string_lossy()
+        .into_owned();
+    assert!(
+        text.contains("bad_request"),
+        "oversized yields error: {text}"
+    );
     // SAFETY: freeing a library-produced pointer exactly once.
     unsafe { autosuggest_string_free(ptr) };
 }
