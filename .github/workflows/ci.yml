@@ -13,7 +13,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: dtolnay/rust-toolchain@stable
         with:
-          toolchain: 1.80.0
+          toolchain: stable
           components: rustfmt, clippy
       - name: Check formatting
         run: cargo fmt --all --check
@@ -22,13 +22,23 @@ jobs:
       - name: Run tests
         run: cargo test --workspace --all-features
 
-  advisory:
+  msrv:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: dtolnay/rust-toolchain@stable
         with:
           toolchain: 1.80.0
+      - name: Check library crates on MSRV
+        run: cargo check -p autosuggest-core -p autosuggest-protocol -p autosuggest-data -p autosuggest-daemon
+
+  advisory:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          toolchain: stable
       - uses: taiki-e/install-action@cargo-deny
       - name: Check advisories
         run: cargo deny check advisories
